@@ -5,7 +5,7 @@ set (MY_AUTHORS "Tomer-Mellick_Hod-Vaknin")
 
 include (cmake/CompilerSettings.cmake)
 
-add_executable (${CMAKE_PROJECT_NAME} WIN32)
+add_executable (${CMAKE_PROJECT_NAME})
 
 add_subdirectory (include)
 add_subdirectory (src)
