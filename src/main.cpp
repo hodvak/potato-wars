@@ -9,14 +9,13 @@ bool check_collision(sf::Image &i, sf::Vector2i pos);
 
 int main()
 {
-    Map map("map.txt");
     sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
     window.setFramerateLimit(60);
     sf::Image image;
-    image.loadFromFile("mmap.bmp");
+    image.loadFromFile("resources/mmap.bmp");
     sf::Texture texture;
     std::vector<std::unique_ptr<Ball>> balls;
-    while (true)
+    while (window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))

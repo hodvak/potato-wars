@@ -1,16 +1,11 @@
-#include "ball.h"
 #include <iostream>
+
+#include "ball.h"
 #include "Map.h"
 
-Ball::Ball()
+Ball::Ball(sf::Vector2f pos, float radius)
 {
-    m_shape.setRadius(10);
-    m_shape.setFillColor(sf::Color::Yellow);
-    m_shape.setPosition(floor(WIDTH/2), floor(HEIGHT/2));
-}
-Ball::Ball(sf::Vector2f pos)
-{
-    m_shape.setRadius(10);
+    m_shape.setRadius(radius);
     m_shape.setFillColor(sf::Color::Yellow);
     m_shape.setOutlineColor(sf::Color::White);
     m_shape.setPosition(pos.x, pos.y);
@@ -23,10 +18,6 @@ void Ball::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Ball::update()
 {
 
-}
-void Ball::move(sf::Vector2i moveTo)
-{
-    m_shape.setPosition(moveTo.x, moveTo.y);
 }
 
 void Ball::setRadius(int radius)
