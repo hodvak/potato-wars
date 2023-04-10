@@ -6,14 +6,14 @@ const double PI = 3.141592653589793;
 MovingMapObject::MovingMapObject(float weight,
                                  sf::Vector2f pos,
                                  float radius,
-                                 sf::Vector2f speed,
-                                 sf::Vector2f forces)
+                                 sf::Vector2f startVelocity)
         : m_weight(weight),
-          m_forces(forces),
-          m_velocity(speed),
+          m_velocity(startVelocity),
           m_pos(pos),
           m_radius(radius),
-          m_energy(0.5 * m_weight * sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y) - m_weight * GRAVITY * pos.y) // pos.y going down
+          m_forces(0, m_weight * GRAVITY),
+          resting(false)
+          
 {
 }
 
@@ -35,111 +35,160 @@ void MovingMapObject::draw(sf::RenderTarget &target,
     target.draw(shape);
 }
 
-void MovingMapObject::update_forces(const sf::Image &map,
-                                    std::vector<std::unique_ptr<MovingMapObject>> &objects)
+void MovingMapObject::update_velocity(float deltaTime)
 {
-    sf::Vector2f total_normal_force = {0, 0};
-    float total_fraction_force = 0;
-    sf::Vector2f gravity_force = {0, GRAVITY * m_weight};
-    float velocity_direction = atan2(m_velocity.y, m_velocity.x);
+    m_velocity += m_forces / m_weight * deltaTime;
+}
 
-    for (int i = -m_radius; i < m_radius; i++)
+void MovingMapObject::update_forces(float deltaTime)
+{
+    m_forces = {0, m_weight * GRAVITY};
+}
+
+
+void MovingMapObject::update_position(float deltaTime)
+{
+    m_pos += m_velocity * deltaTime;
+}
+
+void MovingMapObject::update(float deltaTime)
+{
+    if (!resting)
     {
-        for (int j = -m_radius; j < m_radius; j++)
+        update_forces(deltaTime);
+        update_velocity(deltaTime);
+        update_position(deltaTime);
+    }
+}
+
+
+void MovingMapObject::set_velocity(sf::Vector2f velocity)
+{
+    m_velocity = velocity;
+}
+
+void MovingMapObject::set_position(sf::Vector2f pos)
+{
+    m_pos = pos;
+}
+
+void MovingMapObject::set_forces(sf::Vector2f forces)
+{
+    m_forces = forces;
+}
+
+sf::Vector2f MovingMapObject::get_velocity() const
+{
+    return m_velocity;
+}
+
+sf::Vector2f MovingMapObject::get_position() const
+{
+    return m_pos;
+}
+
+sf::Vector2f MovingMapObject::get_forces() const
+{
+    return m_forces;
+}
+
+float MovingMapObject::get_radius() const
+{
+    return m_radius;
+}
+
+bool MovingMapObject::collision_object(MovingMapObject *otherObject)
+{
+    return true;
+}
+
+float MovingMapObject::collision_map(sf::Image &map)
+{
+    
+    sf::Vector2i closestPoint = {(int) -m_radius, (int) -m_radius};
+    float hit_angle = 0;
+    int num_of_pixels = 0;
+    
+    for (int i = (int) -m_radius; i < (int) m_radius; ++i)
+    {
+        for (int j = (int) -m_radius; j < (int) m_radius; ++j)
         {
-            if (i * i + j * j < m_radius * m_radius && (i != 0 || j != 0))
+            if (i * i + j * j <= (int) (m_radius * m_radius) &&
+                (i != 0 || j != 0))
             {
-                sf::Vector2f pos = {m_pos.x + i, m_pos.y + j};
+
+                sf::Vector2i pos = {(int) m_pos.x + i, (int) m_pos.y + j};
                 if (map.getPixel(pos.x, pos.y) == sf::Color::White)
                 {
-                    float normal_length =
-                            sqrt(gravity_force.x * gravity_force.x +
-                                 gravity_force.y * gravity_force.y) *
-                            cos(atan2(j, i) -
-                                atan2(gravity_force.y, gravity_force.x));
-                    sf::Vector2f normal_force = {normal_length * (float) sin(
-                            atan2(j, i) -
-                            atan2(gravity_force.y, gravity_force.x)),
-                                                 -normal_length * (float) cos(
-                                                         atan2(j, i) -
-                                                         atan2(gravity_force.y,
-                                                               gravity_force.x))};
-                    normal_force *= 3.0f;
-
-                    sf::Vector2f fraction_force = {-normal_force.y,
-                                                   normal_force.x};
-
-                    float fraction_length_in_direction =
-                            sqrt(fraction_force.x * fraction_force.x +
-                                 fraction_force.y * fraction_force.y) *
-                            cos(atan2(fraction_force.y, fraction_force.x) -
-                                velocity_direction);
-                    if (fraction_length_in_direction < 0)
+                    if (i * i + j * j < closestPoint.x * closestPoint.x +
+                                        closestPoint.y * closestPoint.y)
                     {
-                        fraction_length_in_direction *= -1;
+                        closestPoint.x = i;
+                        closestPoint.y = j;
                     }
-
-                    total_normal_force += normal_force;
-                    total_fraction_force += fraction_length_in_direction;
+                    hit_angle += (float) atan2(j, i);
+                    num_of_pixels++;
                 }
             }
         }
     }
-    m_forces = gravity_force + total_normal_force;
+    
+    if(num_of_pixels == 0)
+        return -1;
 
-    float force_in_fraction_direction =
-            total_fraction_force * cos(velocity_direction);
-    if (total_fraction_force * STATIC_FRICTION < force_in_fraction_direction)
+    std::cout << "closest point: " << closestPoint.x << ", "
+              << closestPoint.y << std::endl;
+    float to_move = m_radius - (float) sqrt(
+            closestPoint.x * closestPoint.x +
+            closestPoint.y * closestPoint.y);
+    m_pos.x -= to_move * (float) cos(atan2(closestPoint.y, closestPoint.x));
+    m_pos.y -= to_move * (float) sin(atan2(closestPoint.y, closestPoint.x));
+//        
+    hit_angle /= (float) num_of_pixels;
+    float velocity_angle = (float) atan2(m_velocity.y, m_velocity.x);
+    float angle_diff = hit_angle - velocity_angle;
+
+    float velocity_norm_length = -(float) sqrt(m_velocity.x * m_velocity.x +
+                                              m_velocity.y * m_velocity.y) *
+                                 (float) cos(angle_diff);
+    velocity_norm_length *= 0.8f;
+    
+
+
+
+    float velocity_tang_length = -(float) sqrt(m_velocity.x * m_velocity.x +
+                                              m_velocity.y * m_velocity.y) *
+                                 (float) sin(angle_diff);
+    
+    if(abs(velocity_tang_length) < abs(FRICTION  * velocity_norm_length))
     {
-        m_forces += {-total_fraction_force * DYNAMIC_FRICTION *
-                     (float) sin(velocity_direction),
-                     -total_fraction_force * DYNAMIC_FRICTION *
-                     (float) cos(velocity_direction)};
+        velocity_tang_length = 0;
+    }
+    else if (velocity_tang_length > 0)
+    {
+        velocity_tang_length -= abs(FRICTION  * velocity_norm_length);
     }
     else
     {
-        m_forces += {
-                -force_in_fraction_direction * (float) sin(velocity_direction),
-                -force_in_fraction_direction * (float) cos(velocity_direction)};
+        velocity_tang_length += abs(FRICTION  * velocity_norm_length);
     }
+    sf::Vector2f velocity_norm = {
+            (float) cos(hit_angle) * velocity_norm_length,
+            (float) sin(hit_angle) * velocity_norm_length};
 
-//    if(force_in_fraction_direction < 0)
-//    {
-//        force_in_fraction_direction *= -1;
-//    }
-//    if(force_in_fraction_direction >= force_in_fraction_direction * STATIC_FRICTION)
-//    {
-//        m_forces += {-total_fraction_force * (float) sin(velocity_direction),
-//                     -total_fraction_force * (float) cos(velocity_direction)};
-//    }
-//    else
-//    {
-//        m_forces += {-DYNAMIC_FRICTION * (float) sin(velocity_direction),
-//                     -DYNAMIC_FRICTION * (float) cos(velocity_direction)};
-//    }
 
-//    total_fraction_force *= -DYNAMIC_FRICTION;
-//    m_forces += {total_fraction_force * (float) cos(velocity_direction),
-//                 total_fraction_force * (float) sin(velocity_direction)};
-//    
+    sf::Vector2f velocity_tang = {
+            (float) cos(hit_angle + PI/2) * velocity_tang_length,
+            (float) sin(hit_angle + PI/2) * velocity_tang_length};
 
-}
-
-void MovingMapObject::update_speed(float time)
-{
-    m_velocity += m_forces * time / m_weight;
-    float new_energy = 0.5 * m_weight * sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y) - m_weight * GRAVITY * m_pos.y;
+    m_velocity = velocity_norm + velocity_tang;
     
-    if(new_energy > m_energy)
+    if (hit_angle > PI/2 - 0.001 && hit_angle < PI/2 + 0.001 &&
+        abs(velocity_norm_length) + abs(velocity_tang_length) < GRAVITY/2)
     {
-        m_velocity *= 2*(m_energy + m_weight * GRAVITY * m_pos.y)/m_weight/sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+        resting = true;
     }
-    m_energy = 0.5 * m_weight * sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y) - m_weight * GRAVITY * m_pos.y;;
-    std::cout << m_velocity.x << " " << m_velocity.y << std::endl;
-}
-
-void MovingMapObject::update_location(float time)
-{
-    m_pos += m_velocity * time + m_forces * time * time / (2 * m_weight);
-
+    
+    std::cout << "speed: " << abs(velocity_norm_length) + abs(velocity_tang_length) << std::endl;
+    return hit_angle;
 }

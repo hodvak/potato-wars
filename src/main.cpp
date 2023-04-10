@@ -36,7 +36,6 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     balls.push_back(std::make_unique<MovingMapObject>(200, sf::Vector2f(event.mouseButton.x, event.mouseButton.y), 10));
-
                 }
             }
 
@@ -51,15 +50,8 @@ int main()
         
         for (int i = 0; i < balls.size(); ++i)
         {
-            balls[i]->update_forces(image, balls);
-        }
-        for (auto & ball : balls)
-        {
-            ball->update_speed(time);
-        }
-        for (auto & ball : balls)
-        {
-            ball->update_location(time);
+            balls[i]->update(time);
+            balls[i]->collision_map(image);
         }
         for (auto & ball : balls)
         {
