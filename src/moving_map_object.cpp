@@ -221,42 +221,54 @@ void MovingMapObject::collide_generic(MovingMapObject *otherObject)
     float angle = atan2(otherObject->get_position().y - m_pos.y,
                         otherObject->get_position().x - m_pos.x);
     // get the velocity_length in the collision direction
-    float velocity_length = (float) sqrt(m_velocity.x * m_velocity.x +
-                                         m_velocity.y * m_velocity.y);
-    float other_velocity_length = (float) sqrt(
+    float velocity_length = sqrt(m_velocity.x * m_velocity.x +
+                                 m_velocity.y * m_velocity.y);
+    float other_velocity_length = sqrt(
             otherObject->get_velocity().x * otherObject->get_velocity().x +
             otherObject->get_velocity().y * otherObject->get_velocity().y);
-    
+
     float velocity_angle = atan2(m_velocity.y, m_velocity.x);
     float other_velocity_angle = atan2(otherObject->get_velocity().y,
                                        otherObject->get_velocity().x);
-    
-    float velocity_length_norm = (float) cos(velocity_angle - angle) * velocity_length;
-    float velocity_length_tang = (float) sin(velocity_angle - angle) * velocity_length;
-    float other_velocity_length_norm = (float) cos(other_velocity_angle - angle) * other_velocity_length;
-    float other_velocity_length_tang = (float) sin(other_velocity_angle - angle) * other_velocity_length;
-    
-    float new_velocity_length_norm = (velocity_length_norm * (m_weight - otherObject->m_weight) +
-                                      2 * otherObject->m_weight * other_velocity_length_norm) /
-                                     (m_weight + otherObject->m_weight);
-    float new_other_velocity_length_norm = (other_velocity_length_norm * (otherObject->m_weight - m_weight) +
-                                            2 * m_weight * velocity_length_norm) /
-                                           (m_weight + otherObject->m_weight);
-    
+
+    float velocity_length_norm =
+            (float) cos(velocity_angle - angle) * velocity_length;
+    float velocity_length_tang =
+            (float) sin(velocity_angle - angle) * velocity_length;
+    float other_velocity_length_norm =
+            (float) cos(other_velocity_angle - angle) * other_velocity_length;
+    float other_velocity_length_tang =
+            (float) sin(other_velocity_angle - angle) * other_velocity_length;
+
+    float new_velocity_length_norm =
+            (velocity_length_norm * (m_weight - otherObject->m_weight) +
+             2 * otherObject->m_weight * other_velocity_length_norm) /
+            (m_weight + otherObject->m_weight);
+    float new_other_velocity_length_norm =
+            (other_velocity_length_norm * (otherObject->m_weight - m_weight) +
+             2 * m_weight * velocity_length_norm) /
+            (m_weight + otherObject->m_weight);
+
     m_velocity = {
-            (float) cos(angle) * new_velocity_length_norm + (float) cos(angle + PI / 2) * velocity_length_tang,
-            (float) sin(angle) * new_velocity_length_norm + (float) sin(angle + PI / 2) * velocity_length_tang
+            (float) cos(angle) * new_velocity_length_norm +
+            (float) cos(angle + PI / 2) * velocity_length_tang,
+            (float) sin(angle) * new_velocity_length_norm +
+            (float) sin(angle + PI / 2) * velocity_length_tang
     };
     otherObject->m_velocity = {
-            (float) cos(angle) * new_other_velocity_length_norm + (float) cos(angle + PI / 2) * other_velocity_length_tang,
-            (float) sin(angle) * new_other_velocity_length_norm + (float) sin(angle + PI / 2) * other_velocity_length_tang
+            (float) cos(angle) * new_other_velocity_length_norm +
+            (float) cos(angle + PI / 2) * other_velocity_length_tang,
+            (float) sin(angle) * new_other_velocity_length_norm +
+            (float) sin(angle + PI / 2) * other_velocity_length_tang
     };
-    
+
     otherObject->m_resting = false;
     m_resting = false;
-    
-    m_pos.x = otherObject->get_position().x - (float) cos(angle) * (m_radius + otherObject->m_radius);
-    m_pos.y = otherObject->get_position().y - (float) sin(angle) * (m_radius + otherObject->m_radius);
+
+    m_pos.x = otherObject->get_position().x -
+              (float) cos(angle) * (m_radius + otherObject->m_radius);
+    m_pos.y = otherObject->get_position().y -
+              (float) sin(angle) * (m_radius + otherObject->m_radius);
 }
 
 bool MovingMapObject::collide_dd(Ball *otherObject)
