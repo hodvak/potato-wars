@@ -1,21 +1,14 @@
-#include "object.h"
+#include "moving_map_object.h"
 
-class Ball : public sf::Drawable
+class Ball : public MovingMapObject
 {
 public:
-    explicit Ball(sf::Vector2f pos = {0,0}, float radius = 10);
-
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-
-    void update();
-
-    void move(sf::Vector2i moveTo);
-
-    void setRadius(int radius);
-
-    sf::Vector2f getPosition() const;
-
+    Ball(sf::Vector2f pos);
+    float collision_map(sf::Image &map) override;
+    void update(float deltaTime, sf::Image &map) override;
+    bool collide(MovingMapObject *otherObject) override;
+    bool collide_dd(Ball *otherObject) override;
+    void on_death() override;
 private:
-    sf::CircleShape m_shape;
-
+    int m_numOfBounces;
 };

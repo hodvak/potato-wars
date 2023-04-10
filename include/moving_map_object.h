@@ -13,6 +13,7 @@ const float GRAVITY = 35;
  */
 const float FRICTION = 0.2;
 
+class Ball;
 
 /**
  * all object in the game are derived from this class.
@@ -40,14 +41,15 @@ public:
      * @param target the window to draw on
      * @param cameraRect what the camera sees
      */
-    void draw(sf::RenderTarget &target, sf::Rect<float> cameraRect) const;
+    void draw(sf::RenderTarget &target, 
+              const sf::Rect<float> &cameraRect) const;
 
     /**
      * update the velocity and the position of the object according to the forces
      * if override, the derived class should call this function first
      * @param deltaTime the time since the last update
      */
-    virtual void update(float deltaTime);
+    virtual void update(float deltaTime, sf::Image &map);
 
     /**
      * update the object's velocity based on the collision with the map
@@ -86,6 +88,37 @@ public:
     float get_radius() const;
     
     /**
+     * is the object still alive
+     */
+    bool is_alive() const;
+
+    /**
+     * is the object still moving
+     */
+    bool is_rest() const;
+
+    /**
+     * kill the object
+     */
+    void kill();
+    
+    /**
+     * collide function for double dispatch
+     * mus be implemented in the derived class as follows:
+     * ```
+     * bool collide(ClassName *otherObject)
+     * {
+     *     return otherObject->collide_dd(this);
+     * }
+     */
+    virtual bool collide(MovingMapObject *otherObject) = 0;
+    
+    /**
+     * collide with double dispatch with the other objects
+     */
+    // with Ball
+    virtual bool collide_dd(Ball *otherObject);
+    /**
      * virtual destructor for the derived classes
      */
     virtual ~MovingMapObject() = default;
@@ -119,7 +152,12 @@ private:
     /**
      * is the object resting on the ground and not need to be updated
      */
-    bool resting;
+    bool m_resting;
+    
+    /**
+     * is the object is still alive
+     */
+    bool m_alive;
     
     
     
@@ -162,4 +200,18 @@ protected:
      * @param forces the new forces acting on the object
      */
     void set_forces(sf::Vector2f forces);
+    
+    /**
+     * override this function to do something when the object is killed (will
+     * only be called once)
+     */
+    virtual void on_death(){};
+
+    
+    /**
+     * handle the collision physically with the other object
+     */
+    void collide_generic(MovingMapObject *otherObject);
+
+
 };
