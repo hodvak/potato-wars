@@ -6,6 +6,7 @@ const double PI = 3.141592653589793;
 
 MovingMapObject::MovingMapObject(float weight,
                                  sf::Vector2f pos,
+                                 sf::Image *map,
                                  float radius,
                                  sf::Vector2f startVelocity)
         : m_weight(weight),
@@ -14,7 +15,8 @@ MovingMapObject::MovingMapObject(float weight,
           m_radius(radius),
           m_forces(0, m_weight * GRAVITY),
           m_resting(false),
-          m_alive(true)
+          m_alive(true),
+          m_map(map)
 {
 }
 
@@ -58,10 +60,9 @@ void MovingMapObject::update(float deltaTime, sf::Image &map)
         update_forces(deltaTime);
         update_velocity(deltaTime);
         update_position(deltaTime);
-        collision_map(map);
+        collision_map();
     }
 }
-
 
 void MovingMapObject::set_velocity(sf::Vector2f velocity)
 {
@@ -103,7 +104,7 @@ bool MovingMapObject::collision_object(MovingMapObject *otherObject)
     return true;
 }
 
-float MovingMapObject::collision_map(sf::Image &map)
+float MovingMapObject::collision_map()
 {
 
     sf::Vector2i closestPoint = {(int) -m_radius, (int) -m_radius};
@@ -119,12 +120,12 @@ float MovingMapObject::collision_map(sf::Image &map)
             {
 
                 sf::Vector2i pos = {(int) m_pos.x + i, (int) m_pos.y + j};
-                if (pos.x < 0 || pos.y < 0 || pos.x >= map.getSize().x ||
-                    pos.y >= map.getSize().y)
+                if (pos.x < 0 || pos.y < 0 || pos.x >= m_map->getSize().x ||
+                    pos.y >=  m_map->getSize().y)
                 {
                     continue;
                 }
-                if (map.getPixel(pos.x, pos.y) == sf::Color::White)
+                if ( m_map->getPixel(pos.x, pos.y) == sf::Color::White)
                 {
                     if (i * i + j * j < closestPoint.x * closestPoint.x +
                                         closestPoint.y * closestPoint.y)
@@ -274,4 +275,9 @@ void MovingMapObject::collide_generic(MovingMapObject *otherObject)
 bool MovingMapObject::collide_dd(Ball *otherObject)
 {
     return false;
+}
+
+sf::Image *MovingMapObject::get_map()
+{
+    return m_map;
 }

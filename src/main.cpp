@@ -1,22 +1,18 @@
 #include <iostream>
-#include "Map.h"
 #include <SFML\Graphics.hpp>
+#include "Map.h"
 #include "ball.h"
 #include "moving_map_object.h"
 
-//void drow_circle(sf::Image &i, sf::Vector2f pos,sf::Color c);
-//
-//bool check_collision(sf::Image &i, sf::Vector2i pos);
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
     window.setFramerateLimit(60);
-//    sf::Texture texture1;
-//    sf::Sprite sprite1(texture1);
 
 
-
+    float scale = 2;
+    sf::IntRect rect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
     sf::Image image;
     image.loadFromFile("resources/mmap.bmp");
     sf::Texture texture;
@@ -36,8 +32,20 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     balls.push_back(std::make_unique<Ball>(
-                            sf::Vector2f(event.mouseButton.x,
-                                         event.mouseButton.y)));
+                            sf::Vector2f(event.mouseButton.x / scale + rect.left, event.mouseButton.y / scale + rect.top), &image));
+                }
+                else if (event.mouseButton.button == sf::Mouse::Right)
+                {
+                    if(scale == 2)
+                    {
+                        scale = 1;
+                        rect = sf::IntRect(0, 0, 1080, 720);   
+                    }
+                    else
+                    {
+                        scale = 2;
+                        rect = sf::IntRect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
+                    }
                 }
             }
 
@@ -47,8 +55,10 @@ int main()
 
         // drow_circle(image, sf::Vector2i(1080 / 2, 720 / 2));
         float time = clock.restart().asSeconds();
-        texture.loadFromImage(image);
-        window.draw(sf::Sprite(texture));
+        texture.loadFromImage(image, rect);
+        sf::Sprite sprite(texture);
+        sprite.setScale(scale,scale);
+        window.draw(sprite);
 
         for (int i = 0; i < balls.size(); ++i)
         {
@@ -74,10 +84,8 @@ int main()
                         (ball1->get_position().y - ball2->get_position().y));
                 if (distance < ball1->get_radius() + ball2->get_radius())
                 {
-                    std::cout << "collision" << std::endl;
                     if (!ball1->collide(ball2.get()))
                     {
-                        std::cout << "collision2" << std::endl;
                         ball2->collide(ball1.get());
                     }
                 }
@@ -85,35 +93,9 @@ int main()
         }
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>(0, 0, 1080, 720));
+            ball->draw(window, sf::Rect<float>(rect.left, rect.top, rect.width, rect.height));
         }
         window.display();
     }
 
 }
-//
-//void drow_circle(sf::Image &i, sf::Vector2f pos,sf::Color c)
-//{
-//    for (int x = 0; x < 1080; x++)
-//    {
-//        for (int y = 0; y < 720; y++)
-//        {
-//            if ((x - pos.x) * (x - pos.x) + (y - pos.y) * (y - pos.y) < 1000)
-//            {
-//                i.setPixel(x, y, c);
-//            }
-//        }
-//    }
-//}
-//
-//bool check_collision(sf::Image &i, sf::Vector2i pos)
-//{
-//    if (i.getPixel(pos.x, pos.y) == sf::Color::White)
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}

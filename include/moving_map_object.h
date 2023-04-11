@@ -6,7 +6,7 @@
 /**
  * the acceleration of all object due to gravity on our potato planet
  */
-const float GRAVITY = 35;
+const float GRAVITY = 70;
 
 /**
  * the friction (static and dynamic) of the ground on our potato planet
@@ -32,6 +32,7 @@ public:
      */
     MovingMapObject(float weight,
                     sf::Vector2f pos,
+                    sf::Image *map,
                     float radius,
                     sf::Vector2f startVelocity = {0, 0});
 
@@ -50,14 +51,6 @@ public:
      * @param deltaTime the time since the last update
      */
     virtual void update(float deltaTime, sf::Image &map);
-
-    /**
-     * update the object's velocity based on the collision with the map
-     * @param angle angle of the collision with the map
-     * @return the hit angle of the collision if the object collide with the map
-     *         or -1 if the object is not colliding with the map
-     */
-    virtual float collision_map(sf::Image &map);
     
     /**
      * update the object's velocity based on the collision with another object
@@ -159,7 +152,10 @@ private:
      */
     bool m_alive;
     
-    
+    /**
+     * the map that the object is on
+     */
+    sf::Image *m_map;
     
 protected:
     
@@ -206,12 +202,23 @@ protected:
      * only be called once)
      */
     virtual void on_death(){};
-
+    
+    /**
+     * getter for the map
+     */
+    sf::Image *get_map();
     
     /**
      * handle the collision physically with the other object
      */
     void collide_generic(MovingMapObject *otherObject);
 
+    /**
+     * update the object's velocity based on the collision with the map
+     * @param angle angle of the collision with the map
+     * @return the hit angle of the collision if the object collide with the map
+     *         or -1 if the object is not colliding with the map
+     */
+    virtual float collision_map();
 
 };
