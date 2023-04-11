@@ -1,8 +1,8 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
-#include "Map.h"
 #include "ball.h"
 #include "moving_map_object.h"
+#include "BombHandler.h"
 
 
 int main()
@@ -12,12 +12,14 @@ int main()
 
 
     float scale = 2;
-    sf::IntRect rect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
+    sf::IntRect rect(0, (int) (720 / 2 - 720 / (2 * scale)),
+                     (int) (1080 / scale), int(720 / scale));
     sf::Image image;
     image.loadFromFile("resources/mmap.bmp");
     sf::Texture texture;
     std::vector<std::unique_ptr<MovingMapObject>> balls;
     sf::Clock clock;
+    BombHandler bombHandler;
     while (window.isOpen())
     {
         sf::Event event;
@@ -32,20 +34,27 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     balls.push_back(std::make_unique<Ball>(
-                            sf::Vector2f(event.mouseButton.x / scale + rect.left, event.mouseButton.y / scale + rect.top), &image));
+                            sf::Vector2f(
+                                    event.mouseButton.x / scale + rect.left,
+                                    event.mouseButton.y / scale + rect.top),
+                            &image));
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
-                    if(scale == 2)
-                    {
-                        scale = 1;
-                        rect = sf::IntRect(0, 0, 1080, 720);   
-                    }
-                    else
-                    {
-                        scale = 2;
-                        rect = sf::IntRect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
-                    }
+//                    if(scale == 2)
+//                    {
+//                        scale = 1;
+//                        rect = sf::IntRect(0, 0, 1080, 720);
+//                    }
+//                    else
+//                    {
+//                        scale = 2;
+//                        rect = sf::IntRect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
+//                    }
+//                }
+                    bombHandler.addBomb(Bomb{sf::Vector2f(
+                            event.mouseButton.x / scale + rect.left,
+                            event.mouseButton.y / scale + rect.top), 50, 70000});
                 }
             }
 
@@ -53,11 +62,10 @@ int main()
         window.clear();
 
 
-        // drow_circle(image, sf::Vector2i(1080 / 2, 720 / 2));
         float time = clock.restart().asSeconds();
         texture.loadFromImage(image, rect);
         sf::Sprite sprite(texture);
-        sprite.setScale(scale,scale);
+        sprite.setScale(scale, scale);
         window.draw(sprite);
 
         for (int i = 0; i < balls.size(); ++i)
@@ -91,9 +99,11 @@ int main()
                 }
             }
         }
+        bombHandler.update(image, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>(rect.left, rect.top, rect.width, rect.height));
+            ball->draw(window, sf::Rect<float>(rect.left, rect.top, rect.width,
+                                               rect.height));
         }
         window.display();
     }

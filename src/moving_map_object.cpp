@@ -8,7 +8,8 @@ MovingMapObject::MovingMapObject(float weight,
                                  sf::Vector2f pos,
                                  sf::Image *map,
                                  float radius,
-                                 sf::Vector2f startVelocity)
+                                 sf::Vector2f startVelocity,
+                                 BombHandler *bombHandler)
         : m_weight(weight),
           m_velocity(startVelocity),
           m_pos(pos),
@@ -16,7 +17,8 @@ MovingMapObject::MovingMapObject(float weight,
           m_forces(0, m_weight * GRAVITY),
           m_resting(false),
           m_alive(true),
-          m_map(map)
+          m_map(map),
+          m_bombHandler(bombHandler)
 {
 }
 
@@ -24,8 +26,8 @@ void MovingMapObject::draw(sf::RenderTarget &target,
                            const sf::Rect<float> &cameraRect) const
 {
     sf::Vector2f cameraOffset = {cameraRect.left, cameraRect.top};
-    sf::Vector2f cameraRatio = {cameraRect.width / (float) target.getSize().x,
-                                cameraRect.height / (float) target.getSize().y};
+    sf::Vector2f cameraRatio = {(float) target.getSize().x / cameraRect.width,
+                                (float) target.getSize().y / cameraRect.height};
 
     sf::CircleShape shape;
     shape.setRadius(m_radius * cameraRatio.x);
@@ -121,11 +123,11 @@ float MovingMapObject::collision_map()
 
                 sf::Vector2i pos = {(int) m_pos.x + i, (int) m_pos.y + j};
                 if (pos.x < 0 || pos.y < 0 || pos.x >= m_map->getSize().x ||
-                    pos.y >=  m_map->getSize().y)
+                    pos.y >= m_map->getSize().y)
                 {
                     continue;
                 }
-                if ( m_map->getPixel(pos.x, pos.y) == sf::Color::White)
+                if (m_map->getPixel(pos.x, pos.y) == sf::Color::White)
                 {
                     if (i * i + j * j < closestPoint.x * closestPoint.x +
                                         closestPoint.y * closestPoint.y)
@@ -280,4 +282,24 @@ bool MovingMapObject::collide_dd(Ball *otherObject)
 sf::Image *MovingMapObject::get_map()
 {
     return m_map;
+}
+
+void MovingMapObject::exploded(const Bomb &bomb)
+{
+    float distance = sqrt(
+            (m_pos.x - bomb.pos.x) * (m_pos.x - bomb.pos.x) +
+            (m_pos.y - bomb.pos.y) * (m_pos.y - bomb.pos.y));
+
+    if (distance < bomb.radius + m_radius)
+    {
+        float force =
+                (bomb.force * atan2(bomb.radius, distance) / PI) / m_weight;
+        float angle = atan2(m_pos.y - bomb.pos.y, m_pos.x - bomb.pos.x);
+        m_velocity.x += (float) cos(angle) * force;
+        m_velocity.y += (float) sin(angle) * force;
+        m_resting = false;
+
+
+    }
+
 }

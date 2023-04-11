@@ -2,11 +2,12 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include "BombHandler.h"
 
 /**
  * the acceleration of all object due to gravity on our potato planet
  */
-const float GRAVITY = 70;
+const float GRAVITY = 130;
 
 /**
  * the friction (static and dynamic) of the ground on our potato planet
@@ -34,15 +35,16 @@ public:
                     sf::Vector2f pos,
                     sf::Image *map,
                     float radius,
-                    sf::Vector2f startVelocity = {0, 0});
+                    sf::Vector2f startVelocity = {0, 0},
+                    BombHandler *bombHandler = nullptr);
 
-    
+
     /**
      * draw the object on the screen if it is visible
      * @param target the window to draw on
      * @param cameraRect what the camera sees
      */
-    void draw(sf::RenderTarget &target, 
+    void draw(sf::RenderTarget &target,
               const sf::Rect<float> &cameraRect) const;
 
     /**
@@ -51,7 +53,7 @@ public:
      * @param deltaTime the time since the last update
      */
     virtual void update(float deltaTime, sf::Image &map);
-    
+
     /**
      * update the object's velocity based on the collision with another object
      * @param otherObject the object that the object collided with
@@ -64,22 +66,22 @@ public:
      * get the velocity of the object
      */
     sf::Vector2f get_velocity() const;
-    
+
     /**
      * get the position of the object
      */
     sf::Vector2f get_position() const;
-    
+
     /**
      * get the forces acting on the object
      */
     sf::Vector2f get_forces() const;
-    
+
     /**
      * get the radius of the object
      */
     float get_radius() const;
-    
+
     /**
      * is the object still alive
      */
@@ -94,7 +96,7 @@ public:
      * kill the object
      */
     void kill();
-    
+
     /**
      * collide function for double dispatch
      * mus be implemented in the derived class as follows:
@@ -105,60 +107,67 @@ public:
      * }
      */
     virtual bool collide(MovingMapObject *otherObject) = 0;
-    
+
     /**
      * collide with double dispatch with the other objects
      */
     // with Ball
     virtual bool collide_dd(Ball *otherObject);
+
     /**
      * virtual destructor for the derived classes
      */
     virtual ~MovingMapObject() = default;
 
+    /**
+     * get the weight of the object
+     */
+    void exploded(const Bomb &bomb);
+
 private:
+    BombHandler *m_bombHandler;
     /**
      * the weight of the object
      */
     float m_weight;
-    
+
     /**
      * the forces acting on the object
      */
     sf::Vector2f m_forces;
-    
+
     /**
      * the current velocity of the object
      */
     sf::Vector2f m_velocity;
-    
+
     /**
      * the current position of the object
      */
     sf::Vector2f m_pos;
-    
+
     /**
      * the radius of the object
      */
     float m_radius;
-    
+
     /**
      * is the object resting on the ground and not need to be updated
      */
     bool m_resting;
-    
+
     /**
      * is the object is still alive
      */
     bool m_alive;
-    
+
     /**
      * the map that the object is on
      */
     sf::Image *m_map;
-    
+
 protected:
-    
+
     /**
      * set the forces according to the delta time.
      * by default, the forces are only the gravity
@@ -184,30 +193,31 @@ protected:
      * @param velocity the new velocity of the object
      */
     void set_velocity(sf::Vector2f velocity);
-    
+
     /**
      * set the position of the object
      * @param pos the new position of the object
      */
     void set_position(sf::Vector2f pos);
-    
+
     /**
      * set the forces acting on the object
      * @param forces the new forces acting on the object
      */
     void set_forces(sf::Vector2f forces);
-    
+
     /**
      * override this function to do something when the object is killed (will
      * only be called once)
      */
-    virtual void on_death(){};
-    
+    virtual void on_death()
+    {};
+
     /**
      * getter for the map
      */
     sf::Image *get_map();
-    
+
     /**
      * handle the collision physically with the other object
      */
