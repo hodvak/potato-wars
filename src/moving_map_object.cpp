@@ -24,8 +24,8 @@ void MovingMapObject::draw(sf::RenderTarget &target,
                            const sf::Rect<float> &cameraRect) const
 {
     sf::Vector2f cameraOffset = {cameraRect.left, cameraRect.top};
-    sf::Vector2f cameraRatio = {cameraRect.width / (float) target.getSize().x,
-                                cameraRect.height / (float) target.getSize().y};
+    sf::Vector2f cameraRatio = { (float) target.getSize().x/ cameraRect.width ,
+                                 (float) target.getSize().y/ cameraRect.height };
 
     sf::CircleShape shape;
     shape.setRadius(m_radius * cameraRatio.x);
