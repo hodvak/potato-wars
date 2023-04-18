@@ -3,7 +3,7 @@
 class Ball : public MovingMapObject
 {
 public:
-    Ball(sf::Vector2f pos, sf::Image *map);
+    Ball(sf::Vector2f pos, sf::Image *map, BombHandler *bombHandler);
     float collision_map() override;
     void update(float deltaTime, sf::Image &map) override;
     bool collide(MovingMapObject *otherObject) override;

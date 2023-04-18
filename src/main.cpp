@@ -9,7 +9,10 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
     window.setFramerateLimit(60);
-
+    float fps;
+    sf::Clock clock;
+    sf::Time previousTime = clock.getElapsedTime();
+    sf::Time currentTime;
 
     float scale = 2;
     sf::IntRect rect(0, (int) (720 / 2 - 720 / (2 * scale)),
@@ -18,7 +21,7 @@ int main()
     image.loadFromFile("resources/mmap.bmp");
     sf::Texture texture;
     std::vector<std::unique_ptr<MovingMapObject>> balls;
-    sf::Clock clock;
+
     BombHandler bombHandler;
     while (window.isOpen())
     {
@@ -37,7 +40,7 @@ int main()
                             sf::Vector2f(
                                     event.mouseButton.x / scale + rect.left,
                                     event.mouseButton.y / scale + rect.top),
-                            &image));
+                            &image,&bombHandler));
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
@@ -105,6 +108,11 @@ int main()
             ball->draw(window, sf::Rect<float>(rect.left, rect.top, rect.width,
                                                rect.height));
         }
+        currentTime = clock.getElapsedTime();
+fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds()); // the asSeconds returns a float
+std::cout << "fps =" << floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
+previousTime = currentTime;
+
         window.display();
     }
 

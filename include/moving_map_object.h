@@ -124,6 +124,8 @@ public:
      */
     void exploded(const Bomb &bomb);
 
+    void addBomb(const Bomb &bomb);
+
 private:
     BombHandler *m_bombHandler;
     /**

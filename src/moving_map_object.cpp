@@ -303,3 +303,7 @@ void MovingMapObject::exploded(const Bomb &bomb)
     }
 
 }
+void MovingMapObject::addBomb(const Bomb &bomb)
+{
+    m_bombHandler->addBomb(bomb);
+}
