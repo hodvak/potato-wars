@@ -7,7 +7,7 @@ class MovingMapObject;
 
 #include "Bomb.h"
 
-void drawBomb(sf::Image &map, Bomb &bomb);
+void drawBomb(sf::Image &map,const Bomb &bomb);
 
 class BombHandler
 {
@@ -16,7 +16,7 @@ public:
     BombHandler();
 
 
-    void addBomb(Bomb bomb);
+    void addBomb(const Bomb &bomb);
 
     void update(sf::Image &map,
                 std::vector<std::unique_ptr<MovingMapObject>> &objects);

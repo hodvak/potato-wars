@@ -5,7 +5,7 @@ BombHandler::BombHandler()
 
 }
 
-void BombHandler::addBomb(Bomb bomb)
+void BombHandler::addBomb(const Bomb &bomb)
 {
     m_bombs.push_back(bomb);
 }

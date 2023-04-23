@@ -40,6 +40,8 @@ bool Ball::collide_dd(Ball *otherObject)
         otherObject->kill();
     }
     collide_generic(otherObject);
+    MapVector center = (get_position() + otherObject->get_position()) / 2.0f;
+    addBomb({center, 20, 700});
 //    sf::Vector2f center = (get_position() + otherObject->get_position()) / 2.0f;
     
     //todo: fix the problem of unrest the objects in the circle!
