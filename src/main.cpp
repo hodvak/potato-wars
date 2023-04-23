@@ -38,8 +38,8 @@ int main()
                 {
                     balls.push_back(std::make_unique<Ball>(
                             sf::Vector2f(
-                                    event.mouseButton.x ,
-                                    event.mouseButton.y ),
+                                    event.mouseButton.x/scale + rect.left,
+                                    event.mouseButton.y/scale + rect.top),
                             &image, &bombHandler));
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
@@ -55,9 +55,10 @@ int main()
 //                        rect = sf::IntRect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
 //                    }
 //                }
-                    bombHandler.addBomb(Bomb{sf::Vector2f(
+                    bombHandler.addBomb(Bomb{MapVector(
                             event.mouseButton.x / scale + rect.left,
-                            event.mouseButton.y / scale + rect.top), 50,
+                            event.mouseButton.y / scale + rect.top),
+                                             50,
                                              70000});
                 }
             }
@@ -68,7 +69,8 @@ int main()
 
         float time = clock.restart().asSeconds();
         texture.loadFromImage(image);
-        sf::Sprite sprite(texture);
+        sf::Sprite sprite(texture, rect);
+        sprite.setScale(scale, scale);
 
         window.draw(sprite);
 
@@ -106,7 +108,7 @@ int main()
         bombHandler.update(image, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>(0, 0, 1080, 720));
+            ball->draw(window, {(float)rect.left, (float)rect.top, (float)rect.width, (float)rect.height});
         }
         currentTime = clock.getElapsedTime();
         fps = 1.0f / (currentTime.asSeconds() -

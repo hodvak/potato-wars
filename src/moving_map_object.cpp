@@ -249,22 +249,14 @@ sf::Image *MovingMapObject::get_map()
 
 void MovingMapObject::exploded(const Bomb &bomb)
 {
-    float distance = sqrt(
-            (m_pos.x - bomb.pos.x) * (m_pos.x - bomb.pos.x) +
-            (m_pos.y - bomb.pos.y) * (m_pos.y - bomb.pos.y));
-
+    MapVector diff = m_pos - bomb.pos;
+    float distance = diff.getMagnitude();
     if (distance < bomb.radius + m_radius)
     {
-        float force =
-                (bomb.force * atan2(bomb.radius, distance) / PI) / m_weight;
-        float angle = atan2(m_pos.y - bomb.pos.y, m_pos.x - bomb.pos.x);
-        m_velocity.x += (float) cos(angle) * force;
-        m_velocity.y += (float) sin(angle) * force;
+        float force = bomb.force * atan2(bomb.radius, distance) / (PI * m_weight);
+        m_velocity += MapVector::getVectorFromAngle(diff.getAngle(), force);
         m_resting = false;
-
-
     }
-
 }
 
 void MovingMapObject::addBomb(const Bomb &bomb)

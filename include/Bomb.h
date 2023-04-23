@@ -1,9 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "MapVector.h"
 
 struct Bomb
 {
-    sf::Vector2f pos;
+    MapVector pos;
     float radius;
     float force;
 };
