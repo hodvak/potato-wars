@@ -1,5 +1,5 @@
 #pragma once
-
+#include "MapVector.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "BombHandler.h"
@@ -32,10 +32,10 @@ public:
      * @param startVelocity the start velocity of the object
      */
     MovingMapObject(float weight,
-                    sf::Vector2f pos,
+                    MapVector pos,
                     sf::Image *map,
                     float radius,
-                    sf::Vector2f startVelocity = {0, 0},
+                    MapVector startVelocity = {0, 0},
                     BombHandler *bombHandler = nullptr);
 
 
@@ -65,17 +65,17 @@ public:
     /**
      * get the velocity of the object
      */
-    sf::Vector2f get_velocity() const;
+    MapVector get_velocity() const;
 
     /**
      * get the position of the object
      */
-    sf::Vector2f get_position() const;
+    MapVector get_position() const;
 
     /**
      * get the forces acting on the object
      */
-    sf::Vector2f get_forces() const;
+    MapVector get_forces() const;
 
     /**
      * get the radius of the object
@@ -136,17 +136,17 @@ private:
     /**
      * the forces acting on the object
      */
-    sf::Vector2f m_forces;
+     MapVector m_forces;
 
     /**
      * the current velocity of the object
      */
-    sf::Vector2f m_velocity;
+    MapVector m_velocity;
 
     /**
      * the current position of the object
      */
-    sf::Vector2f m_pos;
+    MapVector m_pos;
 
     /**
      * the radius of the object
@@ -194,19 +194,19 @@ protected:
      * set the velocity of the object
      * @param velocity the new velocity of the object
      */
-    void set_velocity(sf::Vector2f velocity);
+    void set_velocity(MapVector velocity);
 
     /**
      * set the position of the object
      * @param pos the new position of the object
      */
-    void set_position(sf::Vector2f pos);
+    void set_position(MapVector pos);
 
     /**
      * set the forces acting on the object
      * @param forces the new forces acting on the object
      */
-    void set_forces(sf::Vector2f forces);
+    void set_forces(MapVector forces);
 
     /**
      * override this function to do something when the object is killed (will

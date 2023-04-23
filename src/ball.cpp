@@ -44,6 +44,6 @@ bool Ball::collide_dd(Ball *otherObject)
     
     //todo: fix the problem of unrest the objects in the circle!
     //maybe to create another class for bombings?
-    addBomb({get_position(), 100, 7000});
+    addBomb({get_position(), 20, 7000});
     return true;
 }

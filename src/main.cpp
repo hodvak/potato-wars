@@ -38,9 +38,9 @@ int main()
                 {
                     balls.push_back(std::make_unique<Ball>(
                             sf::Vector2f(
-                                    event.mouseButton.x / scale + rect.left,
-                                    event.mouseButton.y / scale + rect.top),
-                            &image,&bombHandler));
+                                    event.mouseButton.x ,
+                                    event.mouseButton.y ),
+                            &image, &bombHandler));
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
@@ -57,7 +57,8 @@ int main()
 //                }
                     bombHandler.addBomb(Bomb{sf::Vector2f(
                             event.mouseButton.x / scale + rect.left,
-                            event.mouseButton.y / scale + rect.top), 50, 70000});
+                            event.mouseButton.y / scale + rect.top), 50,
+                                             70000});
                 }
             }
 
@@ -66,9 +67,9 @@ int main()
 
 
         float time = clock.restart().asSeconds();
-        texture.loadFromImage(image, rect);
+        texture.loadFromImage(image);
         sf::Sprite sprite(texture);
-        sprite.setScale(scale, scale);
+
         window.draw(sprite);
 
         for (int i = 0; i < balls.size(); ++i)
@@ -105,15 +106,17 @@ int main()
         bombHandler.update(image, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>(rect.left, rect.top, rect.width,
-                                               rect.height));
+            ball->draw(window, sf::Rect<float>(0, 0, 1080, 720));
         }
         currentTime = clock.getElapsedTime();
-fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds()); // the asSeconds returns a float
-std::cout << "fps =" << floor(fps) << std::endl; // flooring it will make the frame rate a rounded number
-previousTime = currentTime;
+        fps = 1.0f / (currentTime.asSeconds() -
+                      previousTime.asSeconds()); // the asSeconds returns a float
+//        std::cout << "fps =" << floor(fps)
+//                  << std::endl; // flooring it will make the frame rate a rounded number
+        previousTime = currentTime;
 
         window.display();
     }
+
 
 }
