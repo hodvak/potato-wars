@@ -150,58 +150,43 @@ float MovingMapObject::collision_map()
         return -1;
     }
 
+    //move to stand on the closest point
     float to_move = m_radius - closestPoint.getMagnitude();
     m_pos -= MapVector::getVectorFromAngle(closestPoint.getAngle(), to_move);
-//    m_pos.x -= to_move * (float) cos(atan2(closestPoint.y, closestPoint.x));
-//    m_pos.y -= to_move * (float) sin(atan2(closestPoint.y, closestPoint.x));
-//
+
+    //fix the hit angle (average hit angle)
     hit_angle /= (float) num_of_pixels;
 
-    float velocity_angle = m_velocity.getAngle();
-    float angle_diff = hit_angle - velocity_angle;
 
-    float velocity_norm_length = -m_velocity.getMagnitude() *
-                                 (float) cos(angle_diff);
-    //velocity_norm_length *= 0.8f;
+    auto [norm, tang] = m_velocity.getSplitVector(hit_angle);
+    
+    norm *= -1.0f; //bounce back
 
-
-    float velocity_tang_length = -m_velocity.getMagnitude() *
-                                 (float) sin(angle_diff);
-//
-//    if (abs(velocity_tang_length) < abs(FRICTION * velocity_norm_length))
-//    {
-//        velocity_tang_length = 0;
-//    }
-//    else if (velocity_tang_length > 0)
-//    {
-//        velocity_tang_length -= abs(FRICTION * velocity_norm_length);
-//    }
-//    else
-//    {
-//        velocity_tang_length += abs(FRICTION * velocity_norm_length);
-//    }
-    sf::Vector2f velocity_norm = {
-            (float) cos(hit_angle) * velocity_norm_length,
-            (float) sin(hit_angle) * velocity_norm_length};
-
-
-    sf::Vector2f velocity_tang = {
-            (float) cos(hit_angle + PI / 2) * velocity_tang_length,
-            (float) sin(hit_angle + PI / 2) * velocity_tang_length};
-
-auto [norm,tang] = m_velocity.getSplitVector(hit_angle);
-    m_velocity = -norm + tang;
-
+    norm *= 0.8f; // fraction (kind of) todo:fix consts
+    
+    if (tang.getMagnitude() < FRICTION * norm.getMagnitude())
+    {
+        tang = {0,0};
+    }
+    else
+    {
+        float ang = tang.getAngle();
+        float mag = tang.getMagnitude() - norm.getMagnitude() * FRICTION;
+        tang = MapVector::getVectorFromAngle(ang,mag);
+    }
+    
     if (hit_angle > PI / 2 - 0.001 && hit_angle < PI / 2 + 0.001 &&
-        abs(velocity_norm_length) + abs(velocity_tang_length) < GRAVITY / 2)
+        abs(norm.getMagnitude()) + abs(tang.getMagnitude()) < GRAVITY / 2)
     {
         m_resting = true;
     }
 
-    return hit_angle;
+    m_velocity = norm + tang;
 
     return hit_angle;
 }
+
+
 
 bool MovingMapObject::is_alive() const
 {
@@ -225,56 +210,31 @@ bool MovingMapObject::is_rest() const
 void MovingMapObject::collide_generic(MovingMapObject *otherObject)
 {
     // get the angle of the collision
-    float angle = otherObject->m_pos.getAngle();
-    // get the velocity_length in the collision direction
-    float velocity_length = sqrt(m_velocity.x * m_velocity.x +
-                                 m_velocity.y * m_velocity.y);
-    float other_velocity_length = sqrt(
-            otherObject->get_velocity().x * otherObject->get_velocity().x +
-            otherObject->get_velocity().y * otherObject->get_velocity().y);
+    float angle = (otherObject->m_pos - m_pos).getAngle();
 
-    float velocity_angle = atan2(m_velocity.y, m_velocity.x);
-    float other_velocity_angle = atan2(otherObject->get_velocity().y,
-                                       otherObject->get_velocity().x);
-
-    float velocity_length_norm =
-            (float) cos(velocity_angle - angle) * velocity_length;
-    float velocity_length_tang =
-            (float) sin(velocity_angle - angle) * velocity_length;
-    float other_velocity_length_norm =
-            (float) cos(other_velocity_angle - angle) * other_velocity_length;
-    float other_velocity_length_tang =
-            (float) sin(other_velocity_angle - angle) * other_velocity_length;
-
+    auto [my_norm, my_tang] = m_velocity.getSplitVector(angle);
+    auto [other_norm, other_tang] = otherObject->m_velocity.getSplitVector(angle);
+    
     float new_velocity_length_norm =
-            (velocity_length_norm * (m_weight - otherObject->m_weight) +
-             2 * otherObject->m_weight * other_velocity_length_norm) /
+            (my_norm.getMagnitude() * (m_weight - otherObject->m_weight) +
+             2 * otherObject->m_weight * other_norm.getMagnitude()) /
             (m_weight + otherObject->m_weight);
+    
     float new_other_velocity_length_norm =
-            (other_velocity_length_norm * (otherObject->m_weight - m_weight) +
-             2 * m_weight * velocity_length_norm) /
+            (other_norm.getMagnitude() * (otherObject->m_weight - m_weight) +
+             2 * m_weight * my_norm.getMagnitude()) /
             (m_weight + otherObject->m_weight);
-
-    m_velocity = {
-            (float) cos(angle) * new_velocity_length_norm +
-            (float) cos(angle + PI / 2) * velocity_length_tang,
-            (float) sin(angle) * new_velocity_length_norm +
-            (float) sin(angle + PI / 2) * velocity_length_tang
-    };
-    otherObject->m_velocity = {
-            (float) cos(angle) * new_other_velocity_length_norm +
-            (float) cos(angle + PI / 2) * other_velocity_length_tang,
-            (float) sin(angle) * new_other_velocity_length_norm +
-            (float) sin(angle + PI / 2) * other_velocity_length_tang
-    };
-
+    
+    my_norm = -MapVector::getVectorFromAngle(my_norm.getAngle(), new_velocity_length_norm);
+    other_norm = -MapVector::getVectorFromAngle(other_norm.getAngle(), new_other_velocity_length_norm);
+    
+    m_velocity = my_norm + my_tang;
+    otherObject->m_velocity = other_norm + other_tang;
+    
     otherObject->m_resting = false;
     m_resting = false;
 
-    m_pos.x = otherObject->get_position().x -
-              (float) cos(angle) * (m_radius + otherObject->m_radius);
-    m_pos.y = otherObject->get_position().y -
-              (float) sin(angle) * (m_radius + otherObject->m_radius);
+    m_pos = otherObject->m_pos+MapVector::getVectorFromAngle(PI + angle, m_radius+otherObject->m_radius);
 }
 
 bool MovingMapObject::collide_dd(Ball *otherObject)

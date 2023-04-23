@@ -95,3 +95,30 @@ std::ostream &operator<<(std::ostream &file, const MapVector &vector)
     file << "(" << vector.x << "," << vector.y << ")";
     return file;
 }
+
+MapVector operator+(const MapVector &vector1, const MapVector &vector2)
+{
+    MapVector result(vector1);
+    result += vector2;
+    return result;
+}
+
+MapVector &operator-=(MapVector &vector1, const MapVector &vector2)
+{
+    vector1.x -= vector2.x;
+    vector1.y -= vector2.y;
+    return vector1;
+}
+
+MapVector operator-(const MapVector &vector1, const MapVector &vector2)
+{
+    MapVector result(vector1);
+    result -= vector2;
+    return result;
+}
+
+MapVector operator-(const MapVector &vector)
+{
+    return MapVector(-vector.x, -vector.y);
+}
+

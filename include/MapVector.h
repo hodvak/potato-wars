@@ -55,10 +55,12 @@ MapVector operator+(float scalar, const MapVector &vector);
 
 MapVector operator+(const MapVector &vector, float scalar);
 
-//MapVector operator+(const MapVector &vector1, const MapVector &vector2);
+MapVector operator+(const MapVector &vector1, const MapVector &vector2);
 //
-//MapVector operator-(const MapVector &vector1, const MapVector &vector2);
-//
-//MapVector operator-(const MapVector &vector);
+MapVector &operator-=(MapVector &vector1, const MapVector &vector2);
+
+MapVector operator-(const MapVector &vector1, const MapVector &vector2);
+
+MapVector operator-(const MapVector &vector);
 
 std::ostream &operator<<(std::ostream &file, const MapVector &vector);
