@@ -24,15 +24,16 @@ void BombHandler::update(sf::Image &map,
     }
     m_bombs.clear();
 }
-void drawBomb(sf::Image &map, Bomb &bomb)
+void drawBomb(sf::Image &map,const Bomb &bomb)
 {
-    for (int i = 0; i < map.getSize().x; ++i)
+    float radius_2 = bomb.radius * bomb.radius;
+    for (int i = -(int)bomb.radius; i <= (int)bomb.radius; ++i)
     {
-        for (int j = 0; j < map.getSize().y; ++j)
+        for (int j = -(int)bomb.radius; j <= (int)bomb.radius; ++j)
         {
-            if (sqrt(pow(i - bomb.pos.x, 2) + pow(j - bomb.pos.y, 2)) < bomb.radius)
+            if (i*i+j*j < radius_2)
             {
-                map.setPixel(i, j, sf::Color::Black);
+                map.setPixel((int)bomb.pos.x+i,(int) bomb.pos.y+j, sf::Color::Black);
             }
         }
     }
