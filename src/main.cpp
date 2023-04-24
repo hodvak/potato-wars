@@ -3,7 +3,7 @@
 #include "ball.h"
 #include "moving_map_object.h"
 #include "BombHandler.h"
-
+#include "camera.h"
 
 int main()
 {
@@ -13,10 +13,9 @@ int main()
     sf::Clock clock;
     sf::Time previousTime = clock.getElapsedTime();
     sf::Time currentTime;
+    //sf::View view(sf::FloatRect(0, 0, 1080, 720));
+    Camera camera;
 
-    float scale = 2;
-    sf::IntRect rect(0, (int) (720 / 2 - 720 / (2 * scale)),
-                     (int) (1080 / scale), int(720 / scale));
     sf::Image image;
     image.loadFromFile("resources/mmap.bmp");
     sf::Texture texture;
@@ -38,26 +37,17 @@ int main()
                 {
                     balls.push_back(std::make_unique<Ball>(
                             sf::Vector2f(
-                                    event.mouseButton.x/scale + rect.left,
-                                    event.mouseButton.y/scale + rect.top),
+                                    event.mouseButton.x,
+                                    event.mouseButton.y),
                             &image, &bombHandler));
+                    camera.setToFolow(balls.back().get());
+
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
-//                    if(scale == 2)
-//                    {
-//                        scale = 1;
-//                        rect = sf::IntRect(0, 0, 1080, 720);
-//                    }
-//                    else
-//                    {
-//                        scale = 2;
-//                        rect = sf::IntRect(0, (int)(720/2 - 720/(2 * scale)),(int)(1080/scale), int(720/scale));
-//                    }
-//                }
                     bombHandler.addBomb(Bomb{MapVector(
-                            event.mouseButton.x / scale + rect.left,
-                            event.mouseButton.y / scale + rect.top),
+                            event.mouseButton.x,
+                            event.mouseButton.y),
                                              50,
                                              70000});
                 }
@@ -65,12 +55,12 @@ int main()
 
         }
         window.clear();
-
+        camera.update(&window);
 
         float time = clock.restart().asSeconds();
         texture.loadFromImage(image);
-        sf::Sprite sprite(texture, rect);
-        sprite.setScale(scale, scale);
+        sf::Sprite sprite(texture);
+
 
         window.draw(sprite);
 
@@ -108,15 +98,11 @@ int main()
         bombHandler.update(image, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, {(float)rect.left, (float)rect.top, (float)rect.width, (float)rect.height});
+            ball->draw(window, sf::Rect<float>{0, 0, 1080, 720});
         }
         currentTime = clock.getElapsedTime();
-        fps = 1.0f / (currentTime.asSeconds() -
-                      previousTime.asSeconds()); // the asSeconds returns a float
-//        std::cout << "fps =" << floor(fps)
-//                  << std::endl; // flooring it will make the frame rate a rounded number
         previousTime = currentTime;
-
+        camera.update(&window);
         window.display();
     }
 
