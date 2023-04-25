@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Map.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -7,7 +7,7 @@ class MovingMapObject;
 
 #include "Bomb.h"
 
-void drawBomb(sf::Image &map,const Bomb &bomb);
+void drawBomb(Map *map,const Bomb &bomb);
 
 class BombHandler
 {
@@ -18,7 +18,7 @@ public:
 
     void addBomb(const Bomb &bomb);
 
-    void update(sf::Image &map,
+    void update(Map *map,
                 std::vector<std::unique_ptr<MovingMapObject>> &objects);
 
 private:

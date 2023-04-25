@@ -2,11 +2,12 @@
 #include <cmath>
 #include <iostream>
 
+
 const double PI = acos(-1.0);
 
 MovingMapObject::MovingMapObject(float weight,
                                  MapVector pos,
-                                 sf::Image *map,
+                                 Map *map,
                                  float radius,
                                  MapVector startVelocity,
                                  BombHandler *bombHandler)
@@ -57,7 +58,7 @@ void MovingMapObject::update_position(float deltaTime)
     m_pos += m_velocity * deltaTime;
 }
 
-void MovingMapObject::update(float deltaTime, sf::Image &map)
+void MovingMapObject::update(float deltaTime, Map *map)
 {
     if (!m_resting)
     {
@@ -125,12 +126,12 @@ float MovingMapObject::collision_map()
             {
 
                 sf::Vector2i pos = {(int) m_pos.x + i, (int) m_pos.y + j};
-                if (pos.x < 0 || pos.y < 0 || pos.x >= m_map->getSize().x ||
-                    pos.y >= m_map->getSize().y)
+                if (pos.x < 0 || pos.y < 0 || pos.x >= m_map->getMask()->getSize().x ||
+                    pos.y >= m_map->getMask()->getSize().y)
                 {
                     continue;
                 }
-                if (m_map->getPixel(pos.x, pos.y) == sf::Color::White)
+                if (m_map->getMaskColor(pos.x, pos.y) == sf::Color::White)
                 {
                     if (i * i + j * j < closestPoint.x * closestPoint.x +
                                         closestPoint.y * closestPoint.y)
@@ -242,7 +243,7 @@ bool MovingMapObject::collide_dd(Ball *otherObject)
     return false;
 }
 
-sf::Image *MovingMapObject::get_map()
+Map *MovingMapObject::get_map()
 {
     return m_map;
 }

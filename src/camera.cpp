@@ -4,6 +4,7 @@
 void Camera::setToFolow(MovingMapObject *object)
 {
     m_object = object;
+    m_view.setSize(1080,720);
     m_view.zoom(0.5f);
 }
 

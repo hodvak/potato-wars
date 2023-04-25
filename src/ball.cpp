@@ -2,7 +2,7 @@
 #include "ball.h"
 
 
-Ball::Ball(sf::Vector2f pos, sf::Image *map, BombHandler *bombHandler) :
+Ball::Ball(sf::Vector2f pos, Map *map, BombHandler *bombHandler) :
     MovingMapObject(200, pos, map, 10,{0,0}, bombHandler),
     m_numOfBounces(0)
 {
@@ -14,7 +14,7 @@ float Ball::collision_map()
     return angle;
 }
 
-void Ball::update(float deltaTime, sf::Image &map)
+void Ball::update(float deltaTime, Map *map)
 {
     MovingMapObject::update(deltaTime, map);
 }
@@ -41,7 +41,7 @@ bool Ball::collide_dd(Ball *otherObject)
     }
     collide_generic(otherObject);
     MapVector center = (get_position() + otherObject->get_position()) / 2.0f;
-    addBomb({center, 20, 700});
+    addBomb({center, 100, 700});
 //    sf::Vector2f center = (get_position() + otherObject->get_position()) / 2.0f;
     
     //todo: fix the problem of unrest the objects in the circle!

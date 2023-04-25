@@ -1,11 +1,12 @@
 #include "moving_map_object.h"
+#include "Map.h"
 
 class Ball : public MovingMapObject
 {
 public:
-    Ball(sf::Vector2f pos, sf::Image *map, BombHandler *bombHandler);
+    Ball(sf::Vector2f pos, Map *map, BombHandler *bombHandler);
     float collision_map() override;
-    void update(float deltaTime, sf::Image &map) override;
+    void update(float deltaTime, Map *map) override;
     bool collide(MovingMapObject *otherObject) override;
     bool collide_dd(Ball *otherObject) override;
     void on_death() override;

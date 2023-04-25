@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "BombHandler.h"
+#include "Map.h"
 
 /**
  * the acceleration of all object due to gravity on our potato planet
@@ -33,7 +34,7 @@ public:
      */
     MovingMapObject(float weight,
                     MapVector pos,
-                    sf::Image *map,
+                    Map *map,
                     float radius,
                     MapVector startVelocity = {0, 0},
                     BombHandler *bombHandler = nullptr);
@@ -52,7 +53,7 @@ public:
      * if override, the derived class should call this function first
      * @param deltaTime the time since the last update
      */
-    virtual void update(float deltaTime, sf::Image &map);
+    virtual void update(float deltaTime, Map *map);
 
     /**
      * update the object's velocity based on the collision with another object
@@ -166,7 +167,7 @@ private:
     /**
      * the map that the object is on
      */
-    sf::Image *m_map;
+    Map *m_map;
 
 protected:
 
@@ -218,7 +219,7 @@ protected:
     /**
      * getter for the map
      */
-    sf::Image *get_map();
+    Map *get_map();
 
     /**
      * handle the collision physically with the other object

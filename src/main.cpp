@@ -4,23 +4,31 @@
 #include "moving_map_object.h"
 #include "BombHandler.h"
 #include "camera.h"
+#include "Map.h"
+#ifndef MAP
+#define MAP
+int const WIDTH = 1080;
+int const HiGHT = 720;
+#endif
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
     window.setFramerateLimit(60);
     float fps;
+    Camera camera;
+    sf::Image mask, sky, ground;
+    mask.loadFromFile("resources/map.bmp");
+    sky.loadFromFile("resources/sky.bmp");
+    ground.loadFromFile("resources/ground.bmp");
+    sf::Sprite sprite;
+    sf::Texture texture;
+    Map map(mask, sky, ground);
+
     sf::Clock clock;
     sf::Time previousTime = clock.getElapsedTime();
     sf::Time currentTime;
-    //sf::View view(sf::FloatRect(0, 0, 1080, 720));
-    Camera camera;
-
-    sf::Image image;
-    image.loadFromFile("resources/mmap.bmp");
-    sf::Texture texture;
     std::vector<std::unique_ptr<MovingMapObject>> balls;
-
     BombHandler bombHandler;
     while (window.isOpen())
     {
@@ -39,7 +47,7 @@ int main()
                             sf::Vector2f(
                                     event.mouseButton.x,
                                     event.mouseButton.y),
-                            &image, &bombHandler));
+                            &map, &bombHandler));
                     camera.setToFolow(balls.back().get());
 
                 }
@@ -57,16 +65,19 @@ int main()
         window.clear();
         camera.update(&window);
 
-        float time = clock.restart().asSeconds();
-        texture.loadFromImage(image);
-        sf::Sprite sprite(texture);
-
-
+        texture.loadFromImage(*map.getDisplay());
+        sprite.setTexture(texture);
         window.draw(sprite);
+
+
+        float time = clock.restart().asSeconds();
+
+
+
 
         for (int i = 0; i < balls.size(); ++i)
         {
-            balls[i]->update(time, image);
+            balls[i]->update(time, &map);
             if (!balls[i]->is_alive())
             {
                 balls.erase(balls.begin() + i);
@@ -95,16 +106,89 @@ int main()
                 }
             }
         }
-        bombHandler.update(image, balls);
+        bombHandler.update(&map, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>{0, 0, 1080, 720});
+            ball->draw(window, sf::Rect<float>{0, 0, WIDTH, HiGHT});
         }
         currentTime = clock.getElapsedTime();
         previousTime = currentTime;
-        camera.update(&window);
         window.display();
     }
 
 
 }
+sf::Image blendImages(sf::Image mask, sf::Image sky, sf::Image ground)
+{
+    // Get the dimensions of the images
+    unsigned int width = mask.getSize().x;
+    unsigned int height = mask.getSize().y;
+
+    // Create a new image to store the blended result
+    sf::Image blendedImage;
+    blendedImage.create(width, height);
+
+    // Loop through each pixel of the mask image
+    for(unsigned int x = 0; x < width; x++)
+    {
+        for(unsigned int y = 0; y < height; y++)
+        {
+            // Get the color of the pixel in the mask image
+            sf::Color maskColor = mask.getPixel(x, y);
+
+            // Get the color of the corresponding pixels in the sky and ground images
+            sf::Color skyColor = sky.getPixel(x, y);
+            sf::Color groundColor = ground.getPixel(x, y);
+
+            // Calculate the weight of each color based on the mask color
+            float weight = (float)maskColor.r / 255.0f;
+
+            // Interpolate the sky and ground colors based on the weight
+            sf::Color blendedColor = sf::Color(
+                    (1.0f - weight) * skyColor.r + weight * groundColor.r,
+                    (1.0f - weight) * skyColor.g + weight * groundColor.g,
+                    (1.0f - weight) * skyColor.b + weight * groundColor.b,
+                    255 // Set the alpha to 255 (fully opaque)
+            );
+
+            // Set the blended color for the pixel in the blended image
+            blendedImage.setPixel(x, y, blendedColor);
+        }
+    }
+
+    // Return the blended image
+    return blendedImage;
+}
+//
+//int main(){
+//    sf::Image map, ground, sky;
+//    map.loadFromFile("resources/mmap.bmp");
+//    ground.loadFromFile("resources/ground.bmp");
+//    sky.loadFromFile("resources/sky.bmp");
+//
+//    sf::Image blendedImage = blendImages(map, sky, ground);
+//
+//// Display the blended image using an sf::Texture and sf::Sprite
+//    sf::Texture blendedTexture;
+//    blendedTexture.loadFromImage(blendedImage);
+//
+//    sf::Sprite blendedSprite;
+//    blendedSprite.setTexture(blendedTexture);
+//
+//// Draw the sprite to an sf::RenderWindow object
+//    sf::RenderWindow window(sf::VideoMode(WIDTH,HiGHT), "Blended Image");
+//    window.draw(blendedSprite);
+//    window.display();
+//
+//// Wait for the window to close
+//    while (window.isOpen())
+//    {
+//        sf::Event event;
+//        while (window.pollEvent(event))
+//        {
+//            if (event.type == sf::Event::Closed)
+//                window.close();
+//        }
+//    }
+//
+//}
