@@ -14,6 +14,10 @@ float MapVector::getMagnitude() const
 {
     return sqrt(x*x+y*y);
 }
+float MapVector::getMagnitudeSquared() const
+{
+    return x*x+y*y;
+}
 
 float MapVector::getAngle() const
 {

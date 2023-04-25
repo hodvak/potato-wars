@@ -34,9 +34,8 @@ static MapVector getVectorFromAngle(float angle , float magnitude = 1);
     sf::Vector2<MapVector> getSplitVector(float angle) const;
 
     MapVector getRotatedVector(float angle) const;
-
-
-
+    
+    float getMagnitudeSquared() const;
 };
 
 MapVector operator*(const MapVector &vector1, const MapVector &vector2);
