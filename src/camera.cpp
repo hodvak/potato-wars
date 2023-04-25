@@ -1,10 +1,10 @@
 
 #include "camera.h"
 
-void Camera::setToFolow(MovingMapObject *object)
+void Camera::setToFollow(MovingMapObject *object)
 {
     m_object = object;
-    m_view.setSize(1080,720);
+    m_view.setSize(Map::WIDTH,Map::HEIGHT);
     m_view.zoom(0.5f);
 }
 
@@ -31,7 +31,7 @@ void Camera::update(sf::RenderWindow *window)
 }
 
 Camera::Camera():
-    m_view(sf::FloatRect(0, 0, 1080, 720))
+    m_view(sf::FloatRect(0, 0, Map::WIDTH, Map::HEIGHT))
 {
 
 }

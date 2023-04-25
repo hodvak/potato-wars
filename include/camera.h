@@ -4,7 +4,7 @@ class Camera
 {
 public:
     Camera();
-    void setToFolow(MovingMapObject *object);
+    void setToFollow(MovingMapObject *object);
     void update (sf::RenderWindow *window);
 private:
     MovingMapObject *m_object = nullptr;

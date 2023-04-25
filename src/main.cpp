@@ -5,15 +5,10 @@
 #include "BombHandler.h"
 #include "camera.h"
 #include "Map.h"
-#ifndef MAP
-#define MAP
-int const WIDTH = 1080;
-int const HiGHT = 720;
-#endif
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(Map::WIDTH, Map::HEIGHT), "SFML works!");
     window.setFramerateLimit(60);
     float fps;
     Camera camera;
@@ -48,7 +43,7 @@ int main()
                                     event.mouseButton.x,
                                     event.mouseButton.y),
                             &map, &bombHandler));
-                    camera.setToFolow(balls.back().get());
+                    camera.setToFollow(balls.back().get());
 
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
@@ -109,7 +104,7 @@ int main()
         bombHandler.update(&map, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>{0, 0, WIDTH, HiGHT});
+            ball->draw(window, sf::Rect<float>{0, 0, Map::WIDTH, Map::HEIGHT});
         }
         currentTime = clock.getElapsedTime();
         previousTime = currentTime;
