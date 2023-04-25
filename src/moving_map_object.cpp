@@ -126,15 +126,19 @@ float MovingMapObject::collision_map()
             {
 
                 sf::Vector2i pos = {(int) m_pos.x + i, (int) m_pos.y + j};
-                if (pos.x < 0 || pos.y < 0 || pos.x >= m_map->getMask()->getSize().x ||
+                if (pos.x < 0 ||
+                    pos.y < 0 ||
+                    pos.x >= m_map->getMask()->getSize().x ||
                     pos.y >= m_map->getMask()->getSize().y)
                 {
                     continue;
                 }
-                if (m_map->getMaskColor(pos.x, pos.y) == sf::Color::White)
+                if (m_map->getMask()->getPixel(pos.x, pos.y) ==
+                    sf::Color::White)
                 {
-                    if (i * i + j * j < closestPoint.x * closestPoint.x +
-                                        closestPoint.y * closestPoint.y)
+                    if (i * i + j * j <
+                        closestPoint.x * closestPoint.x +
+                        closestPoint.y * closestPoint.y)
                     {
                         closestPoint.x = i;
                         closestPoint.y = j;
@@ -160,22 +164,22 @@ float MovingMapObject::collision_map()
 
 
     auto [norm, tang] = m_velocity.getSplitVector(hit_angle);
-    
+
     norm *= -1.0f; //bounce back
 
     norm *= 0.8f; // fraction (kind of) todo:fix consts
-    
+
     if (tang.getMagnitude() < FRICTION * norm.getMagnitude())
     {
-        tang = {0,0};
+        tang = {0, 0};
     }
     else
     {
         float ang = tang.getAngle();
         float mag = tang.getMagnitude() - norm.getMagnitude() * FRICTION;
-        tang = MapVector::getVectorFromAngle(ang,mag);
+        tang = MapVector::getVectorFromAngle(ang, mag);
     }
-    
+
     if (hit_angle > PI / 2 - 0.001 && hit_angle < PI / 2 + 0.001 &&
         abs(norm.getMagnitude()) + abs(tang.getMagnitude()) < GRAVITY / 2)
     {
@@ -186,7 +190,6 @@ float MovingMapObject::collision_map()
 
     return hit_angle;
 }
-
 
 
 bool MovingMapObject::is_alive() const
@@ -214,28 +217,34 @@ void MovingMapObject::collide_generic(MovingMapObject *otherObject)
     float angle = (otherObject->m_pos - m_pos).getAngle();
 
     auto [my_norm, my_tang] = m_velocity.getSplitVector(angle);
-    auto [other_norm, other_tang] = otherObject->m_velocity.getSplitVector(angle);
-    
+    auto [other_norm, other_tang] = otherObject->m_velocity.getSplitVector(
+            angle);
+
     float new_velocity_length_norm =
             (my_norm.getMagnitude() * (m_weight - otherObject->m_weight) +
              2 * otherObject->m_weight * other_norm.getMagnitude()) /
             (m_weight + otherObject->m_weight);
-    
+
     float new_other_velocity_length_norm =
             (other_norm.getMagnitude() * (otherObject->m_weight - m_weight) +
              2 * m_weight * my_norm.getMagnitude()) /
             (m_weight + otherObject->m_weight);
-    
-    my_norm = -MapVector::getVectorFromAngle(my_norm.getAngle(), new_velocity_length_norm);
-    other_norm = -MapVector::getVectorFromAngle(other_norm.getAngle(), new_other_velocity_length_norm);
-    
+
+    my_norm = -MapVector::getVectorFromAngle(my_norm.getAngle(),
+                                             new_velocity_length_norm);
+    other_norm = -MapVector::getVectorFromAngle(other_norm.getAngle(),
+                                                new_other_velocity_length_norm);
+
     m_velocity = my_norm + my_tang;
     otherObject->m_velocity = other_norm + other_tang;
-    
+
     otherObject->m_resting = false;
     m_resting = false;
 
-    m_pos = otherObject->m_pos+MapVector::getVectorFromAngle(PI + angle, m_radius+otherObject->m_radius);
+    m_pos = otherObject->m_pos +
+            MapVector::getVectorFromAngle(PI + angle,
+                                          m_radius +
+                                          otherObject->m_radius);
 }
 
 bool MovingMapObject::collide_dd(Ball *otherObject)
@@ -250,14 +259,14 @@ Map *MovingMapObject::get_map()
 
 void MovingMapObject::exploded(const Bomb &bomb)
 {
-//    MapVector diff = m_pos - bomb.pos;
-//    float distance = diff.getMagnitude();
-//    if (distance < bomb.radius + m_radius)
-//    {
-//        float force = bomb.force * atan2(bomb.radius, distance) / (PI * m_weight);
-//        m_velocity += MapVector::getVectorFromAngle(diff.getAngle(), force);
-//        m_resting = false;
-//    }
+    MapVector diff = m_pos - bomb.pos;
+    float distance = diff.getMagnitude();
+    if (distance < bomb.radius + m_radius)
+    {
+        float force = bomb.force * atan2(bomb.radius, distance) / (PI * m_weight);
+        m_velocity += MapVector::getVectorFromAngle(diff.getAngle(), force);
+        m_resting = false;
+    }
 }
 
 void MovingMapObject::addBomb(const Bomb &bomb)
