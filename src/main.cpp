@@ -59,10 +59,7 @@ int main()
         }
         window.clear();
         camera.update(&window);
-
-        texture.loadFromImage(*map.getDisplay());
-        sprite.setTexture(texture);
-        window.draw(sprite);
+        window.draw(map);
 
 
         float time = clock.restart().asSeconds();
