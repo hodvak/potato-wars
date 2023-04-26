@@ -1,7 +1,5 @@
 #include "moving_map_object.h"
 #include <cmath>
-#include <iostream>
-
 
 const double PI = acos(-1.0);
 
@@ -59,7 +57,7 @@ void MovingMapObject::update_position(float deltaTime)
     m_pos += m_velocity * deltaTime;
 }
 
-void MovingMapObject::update(float deltaTime, Map *)
+void MovingMapObject::update(float deltaTime)
 {
     if (!m_resting)
     {

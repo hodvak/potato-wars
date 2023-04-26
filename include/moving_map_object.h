@@ -53,7 +53,7 @@ public:
      * if override, the derived class should call this function first
      * @param deltaTime the time since the last update
      */
-    virtual void update(float deltaTime, Map *map);
+    virtual void update(float deltaTime);
 
     /**
      * update the object's velocity based on the collision with another object

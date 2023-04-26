@@ -14,9 +14,9 @@ float Ball::collision_map()
     return angle;
 }
 
-void Ball::update(float deltaTime, Map *map)
+void Ball::update(float deltaTime)
 {
-    MovingMapObject::update(deltaTime, map);
+    MovingMapObject::update(deltaTime);
 }
 
 void Ball::on_death()
