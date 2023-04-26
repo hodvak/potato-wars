@@ -13,7 +13,7 @@ const float GRAVITY = 130;
 /**
  * the friction (static and dynamic) of the ground on our potato planet
  */
-const float FRICTION = 0.2;
+const float FRICTION = 0.2f;
 
 class Ball;
 
@@ -66,32 +66,32 @@ public:
     /**
      * get the velocity of the object
      */
-    MapVector get_velocity() const;
+    [[nodiscard]] MapVector get_velocity() const;
 
     /**
      * get the position of the object
      */
-    MapVector get_position() const;
+    [[nodiscard]] MapVector get_position() const;
 
     /**
      * get the forces acting on the object
      */
-    MapVector get_forces() const;
+    [[nodiscard]] MapVector get_forces() const;
 
     /**
      * get the radius of the object
      */
-    float get_radius() const;
+    [[nodiscard]] float get_radius() const;
 
     /**
      * is the object still alive
      */
-    bool is_alive() const;
+    [[nodiscard]] bool is_alive() const;
 
     /**
      * is the object still moving
      */
-    bool is_rest() const;
+    [[nodiscard]] bool is_rest() const;
 
     /**
      * kill the object

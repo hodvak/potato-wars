@@ -12,9 +12,8 @@ void Camera::update(sf::RenderWindow *window)
 {
     if(m_object == nullptr)
     {
-        m_view.setCenter(window->getSize().x / 2, window->getSize().y / 2);
-
-
+        m_view.setCenter((float)window->getSize().x / 2,
+                         (float)window->getSize().y / 2);
     }
     else
     {
