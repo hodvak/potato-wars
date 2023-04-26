@@ -23,26 +23,6 @@ MovingMapObject::MovingMapObject(float weight,
 {
 }
 
-void MovingMapObject::draw(sf::RenderTarget &target,
-                           const sf::Rect<float> &camera_rect) const
-{
-    MapVector cameraOffset = {camera_rect.left, camera_rect.top};
-    MapVector cameraRatio = {(float) target.getSize().x / camera_rect.width,
-                             (float) target.getSize().y / camera_rect.height};
-
-
-    sf::CircleShape shape;
-
-    shape.setRadius(m_radius * cameraRatio.x);
-    shape.setOrigin(shape.getRadius(), shape.getRadius());
-    shape.setPosition((m_pos.x - cameraOffset.x) * cameraRatio.x,
-                      (m_pos.y - cameraOffset.y) * cameraRatio.y);
-    shape.setFillColor(sf::Color::Yellow);
-    shape.setOutlineColor(sf::Color::Black);
-    shape.setOutlineThickness(1);
-    target.draw(shape);
-}
-
 void MovingMapObject::update_velocity(float delta_time)
 {
     m_velocity += m_forces / m_weight * delta_time;
@@ -273,4 +253,18 @@ void MovingMapObject::exploded(const Bomb &bomb)
 void MovingMapObject::add_bomb(const Bomb &bomb)
 {
     m_bomb_handler->add_bomb(bomb);
+}
+
+void
+MovingMapObject::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+    sf::CircleShape shape;
+
+    shape.setRadius(m_radius);
+    shape.setOrigin(shape.getRadius(), shape.getRadius());
+    shape.setPosition(m_pos.x, m_pos.y);
+    shape.setFillColor(sf::Color::Yellow);
+    shape.setOutlineColor(sf::Color::Black);
+    shape.setOutlineThickness(1);
+    target.draw(shape);
 }

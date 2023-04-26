@@ -4,7 +4,8 @@
 
 Ball::Ball(sf::Vector2f pos, Map *map, BombHandler *bomb_handler) :
     MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
-    m_num_of_bounces(0)
+    m_num_of_bounces(0),
+    m_texture(PlayerColor::RED, 10)
 {
 }
 
@@ -42,4 +43,10 @@ bool Ball::collide_dd(Ball *otherObject)
     //maybe to create another class for bombings?
 //    addBomb({get_position(), 20, 7000});
     return true;
+}
+
+void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+    states.transform.translate(get_position());
+    target.draw(m_texture, states);
 }

@@ -2,6 +2,7 @@
 
 #include "moving_map_object.h"
 #include "map.h"
+#include "player_texture.h"
 
 /**
  * a Ball is a test for MovingMapObject
@@ -40,10 +41,14 @@ public:
      * print the message "Ball died" to the console
      */
     void on_death() override;
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 private:
     
     /**
      * the number of bounces the Ball did
      */
     int m_num_of_bounces;
+    PlayerTexture m_texture;
 };

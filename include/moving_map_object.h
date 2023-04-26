@@ -13,7 +13,7 @@ class Ball;
  * this class know to draw the object, and to update it's position according to
  * the forces acting on it.
  */
-class MovingMapObject
+class MovingMapObject : public sf::Drawable
 {
 public:
     /**
@@ -32,13 +32,8 @@ public:
                     BombHandler *bomb_handler = nullptr);
 
 
-    /**
-     * draw the object on the screen if it is visible
-     * @param target the window to draw on
-     * @param camera_rect what the camera sees
-     */
-    void draw(sf::RenderTarget &target,
-              const sf::Rect<float> &camera_rect) const;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+     
 
     /**
      * update the velocity and the position of the object according to the forces

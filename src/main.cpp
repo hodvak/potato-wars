@@ -101,7 +101,7 @@ int main()
         bombHandler.update(&map, balls);
         for (auto &ball: balls)
         {
-            ball->draw(window, sf::Rect<float>{0, 0, Map::WIDTH, Map::HEIGHT});
+            window.draw(*ball);
         }
         currentTime = clock.getElapsedTime();
         previousTime = currentTime;
