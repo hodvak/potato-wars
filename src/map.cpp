@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "map.h"
 
 Map::Map(const sf::Image &mask, const sf::Image &sky, const sf::Image &ground) :
         m_mask(mask),
@@ -37,12 +37,12 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Map::drawCircle(MapVector pos, int radius)
 {
-    int radiusSquared = radius * radius;
+    int radius_squared = radius * radius;
     for (int i = -radius; i < radius; ++i)
     {
         for (int j = -radius; j < radius; ++j)
         {
-            if (i * i + j * j < radiusSquared)
+            if (i * i + j * j < radius_squared)
             {
                 int x = (int) pos.x + i;
                 int y = (int) pos.y + j;
@@ -56,7 +56,7 @@ void Map::drawCircle(MapVector pos, int radius)
     }
 }
 
-const sf::Image *Map::getMask() const
+const sf::Image *Map::get_mask() const
 {
     return &m_mask;
 }

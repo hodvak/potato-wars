@@ -2,9 +2,9 @@
 #include <SFML\Graphics.hpp>
 #include "ball.h"
 #include "moving_map_object.h"
-#include "BombHandler.h"
+#include "bomb_handler.h"
 #include "camera.h"
-#include "Map.h"
+#include "map.h"
 
 int main()
 {
@@ -43,16 +43,16 @@ int main()
                                     (float)event.mouseButton.x,
                                     (float)event.mouseButton.y),
                             &map, &bombHandler));
-                    camera.setToFollow(balls.back().get());
+                    camera.set_to_follow(balls.back().get());
 
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
-                    bombHandler.addBomb(Bomb{MapVector(
-                            (float)event.mouseButton.x,
-                            (float)event.mouseButton.y),
-                                             50,
-                                             70000});
+                    bombHandler.add_bomb(Bomb{MapVector(
+                            (float) event.mouseButton.x,
+                            (float) event.mouseButton.y),
+                                              50,
+                                              70000});
                 }
             }
 

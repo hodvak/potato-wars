@@ -1,33 +1,34 @@
 #include "moving_map_object.h"
 #include <cmath>
 
-const double PI = acos(-1.0);
-
+const float PI = acos(-1.0f);
+const float MovingMapObject::GRAVITY = 130;
+const float MovingMapObject::FRICTION = 0.2;
 
 MovingMapObject::MovingMapObject(float weight,
                                  MapVector pos,
                                  Map *map,
                                  float radius,
-                                 MapVector startVelocity,
-                                 BombHandler *bombHandler)
+                                 MapVector start_velocity,
+                                 BombHandler *bomb_handler)
         : m_weight(weight),
-          m_velocity(startVelocity),
+          m_velocity(start_velocity),
           m_pos(pos),
           m_radius(radius),
           m_forces(0, m_weight * GRAVITY),
           m_resting(false),
           m_alive(true),
           m_map(map),
-          m_bombHandler(bombHandler)
+          m_bomb_handler(bomb_handler)
 {
 }
 
 void MovingMapObject::draw(sf::RenderTarget &target,
-                           const sf::Rect<float> &cameraRect) const
+                           const sf::Rect<float> &camera_rect) const
 {
-    MapVector cameraOffset = {cameraRect.left, cameraRect.top};
-    MapVector cameraRatio = {(float) target.getSize().x / cameraRect.width,
-                             (float) target.getSize().y / cameraRect.height};
+    MapVector cameraOffset = {camera_rect.left, camera_rect.top};
+    MapVector cameraRatio = {(float) target.getSize().x / camera_rect.width,
+                             (float) target.getSize().y / camera_rect.height};
 
 
     sf::CircleShape shape;
@@ -42,9 +43,9 @@ void MovingMapObject::draw(sf::RenderTarget &target,
     target.draw(shape);
 }
 
-void MovingMapObject::update_velocity(float deltaTime)
+void MovingMapObject::update_velocity(float delta_time)
 {
-    m_velocity += m_forces / m_weight * deltaTime;
+    m_velocity += m_forces / m_weight * delta_time;
 }
 
 void MovingMapObject::update_forces(float)
@@ -52,18 +53,18 @@ void MovingMapObject::update_forces(float)
     m_forces = {0, m_weight * GRAVITY};
 }
 
-void MovingMapObject::update_position(float deltaTime)
+void MovingMapObject::update_position(float delta_time)
 {
-    m_pos += m_velocity * deltaTime;
+    m_pos += m_velocity * delta_time;
 }
 
-void MovingMapObject::update(float deltaTime)
+void MovingMapObject::update(float delta_time)
 {
     if (!m_resting)
     {
-        update_forces(deltaTime);
-        update_velocity(deltaTime);
-        update_position(deltaTime);
+        update_forces(delta_time);
+        update_velocity(delta_time);
+        update_position(delta_time);
         collision_map();
 
     }
@@ -128,12 +129,12 @@ float MovingMapObject::collision_map()
                                     (int)m_pos.y + j};
                 if (pos.x < 0 ||
                     pos.y < 0 ||
-                    pos.x >= (int) m_map->getMask()->getSize().x ||
-                    pos.y >= (int) m_map->getMask()->getSize().y)
+                    pos.x >= (int) m_map->get_mask()->getSize().x ||
+                    pos.y >= (int) m_map->get_mask()->getSize().y)
                 {
                     continue;
                 }
-                if (m_map->getMask()->getPixel(pos.x, pos.y) ==
+                if (m_map->get_mask()->getPixel(pos.x, pos.y) ==
                     sf::Color::White)
                 {
                     if (i * i + j * j <
@@ -156,32 +157,32 @@ float MovingMapObject::collision_map()
     }
 
     //move to stand on the closest point
-    float to_move = m_radius - closestPoint.getMagnitude();
-    m_pos -= MapVector::getVectorFromAngle(closestPoint.getAngle(), to_move);
+    float to_move = m_radius - closestPoint.get_magnitude();
+    m_pos -= MapVector::get_vector_from_angle(closestPoint.get_angle(), to_move);
 
     //fix the hit angle (average hit angle)
     hit_angle /= (float) num_of_pixels;
 
 
-    auto [norm, tang] = m_velocity.getSplitVector(hit_angle);
+    auto [norm, tang] = m_velocity.get_split_vector(hit_angle);
 
     norm *= -1.0f; //bounce back
 
     norm *= 0.8f; // fraction (kind of) todo:fix consts
 
-    if (tang.getMagnitude() < FRICTION * norm.getMagnitude())
+    if (tang.get_magnitude() < FRICTION * norm.get_magnitude())
     {
         tang = {0, 0};
     }
     else
     {
-        float ang = tang.getAngle();
-        float mag = tang.getMagnitude() - norm.getMagnitude() * FRICTION;
-        tang = MapVector::getVectorFromAngle(ang, mag);
+        float ang = tang.get_angle();
+        float mag = tang.get_magnitude() - norm.get_magnitude() * FRICTION;
+        tang = MapVector::get_vector_from_angle(ang, mag);
     }
 
     if (hit_angle > PI / 2 - 0.001 && hit_angle < PI / 2 + 0.001 &&
-        abs(norm.getMagnitude()) + abs(tang.getMagnitude()) < GRAVITY / 2)
+        abs(norm.get_magnitude()) + abs(tang.get_magnitude()) < GRAVITY / 2)
     {
         m_resting = true;
     }
@@ -214,26 +215,26 @@ bool MovingMapObject::is_rest() const
 void MovingMapObject::collide_generic(MovingMapObject *otherObject)
 {
     // get the angle of the collision
-    float angle = (otherObject->m_pos - m_pos).getAngle();
+    float angle = (otherObject->m_pos - m_pos).get_angle();
 
-    auto [my_norm, my_tang] = m_velocity.getSplitVector(angle);
-    auto [other_norm, other_tang] = otherObject->m_velocity.getSplitVector(
+    auto [my_norm, my_tang] = m_velocity.get_split_vector(angle);
+    auto [other_norm, other_tang] = otherObject->m_velocity.get_split_vector(
             angle);
 
     float new_velocity_length_norm =
-            (my_norm.getMagnitude() * (m_weight - otherObject->m_weight) +
-             2 * otherObject->m_weight * other_norm.getMagnitude()) /
+            (my_norm.get_magnitude() * (m_weight - otherObject->m_weight) +
+             2 * otherObject->m_weight * other_norm.get_magnitude()) /
             (m_weight + otherObject->m_weight);
 
     float new_other_velocity_length_norm =
-            (other_norm.getMagnitude() * (otherObject->m_weight - m_weight) +
-             2 * m_weight * my_norm.getMagnitude()) /
+            (other_norm.get_magnitude() * (otherObject->m_weight - m_weight) +
+             2 * m_weight * my_norm.get_magnitude()) /
             (m_weight + otherObject->m_weight);
 
-    my_norm = -MapVector::getVectorFromAngle(my_norm.getAngle(),
-                                             new_velocity_length_norm);
-    other_norm = -MapVector::getVectorFromAngle(other_norm.getAngle(),
-                                                new_other_velocity_length_norm);
+    my_norm = -MapVector::get_vector_from_angle(my_norm.get_angle(),
+                                                new_velocity_length_norm);
+    other_norm = -MapVector::get_vector_from_angle(other_norm.get_angle(),
+                                                   new_other_velocity_length_norm);
 
     m_velocity = my_norm + my_tang;
     otherObject->m_velocity = other_norm + other_tang;
@@ -242,9 +243,9 @@ void MovingMapObject::collide_generic(MovingMapObject *otherObject)
     m_resting = false;
 
     m_pos = otherObject->m_pos +
-            MapVector::getVectorFromAngle((float) PI + angle,
-                                          m_radius +
-                                          otherObject->m_radius);
+            MapVector::get_vector_from_angle(PI + angle,
+                                             m_radius +
+                                             otherObject->m_radius);
 }
 
 bool MovingMapObject::collide_dd(Ball *)
@@ -260,16 +261,16 @@ Map *MovingMapObject::get_map()
 void MovingMapObject::exploded(const Bomb &bomb)
 {
     MapVector diff = m_pos - bomb.pos;
-    float distance = diff.getMagnitude();
+    float distance = diff.get_magnitude();
     if (distance < (float)bomb.radius + m_radius)
     {
-        float force = bomb.force * (float)atan2(bomb.radius, distance) / ((float)PI * m_weight);
-        m_velocity += MapVector::getVectorFromAngle(diff.getAngle(), force);
+        float force = bomb.force * (float)atan2(bomb.radius, distance) / (PI * m_weight);
+        m_velocity += MapVector::get_vector_from_angle(diff.get_angle(), force);
         m_resting = false;
     }
 }
 
-void MovingMapObject::addBomb(const Bomb &bomb)
+void MovingMapObject::add_bomb(const Bomb &bomb)
 {
-    m_bombHandler->addBomb(bomb);
+    m_bomb_handler->add_bomb(bomb);
 }

@@ -2,21 +2,15 @@
 #include "ball.h"
 
 
-Ball::Ball(sf::Vector2f pos, Map *map, BombHandler *bombHandler) :
-    MovingMapObject(200, pos, map, 10,{0,0}, bombHandler),
-    m_numOfBounces(0)
+Ball::Ball(sf::Vector2f pos, Map *map, BombHandler *bomb_handler) :
+    MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
+    m_num_of_bounces(0)
 {
 }
 
-float Ball::collision_map()
+void Ball::update(float delta_time)
 {
-    float angle = MovingMapObject::collision_map();
-    return angle;
-}
-
-void Ball::update(float deltaTime)
-{
-    MovingMapObject::update(deltaTime);
+    MovingMapObject::update(delta_time);
 }
 
 void Ball::on_death()
@@ -31,17 +25,17 @@ bool Ball::collide(MovingMapObject *otherObject)
 
 bool Ball::collide_dd(Ball *otherObject)
 {
-    if(++m_numOfBounces > 5)
+    if(++m_num_of_bounces > 5)
     {
         kill();
     }
-    if(++(otherObject->m_numOfBounces) > 5)
+    if(++(otherObject->m_num_of_bounces) > 5)
     {
         otherObject->kill();
     }
     collide_generic(otherObject);
     MapVector center = (get_position() + otherObject->get_position()) / 2.0f;
-    addBomb({center, 100, 700});
+    add_bomb({center, 100, 700});
 //    sf::Vector2f center = (get_position() + otherObject->get_position()) / 2.0f;
     
     //todo: fix the problem of unrest the objects in the circle!

@@ -1,8 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "MapVector.h"
+#include "map_vector.h"
 
+/**
+ * a bomb class for the BombHandler
+ */
 struct Bomb
 {
     Bomb(MapVector pos, int radius, float force) :

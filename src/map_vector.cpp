@@ -1,45 +1,48 @@
-#include "MapVector.h"
-double PI = acos(-1.0);
+#include "map_vector.h"
+float PI = acos(-1.0f);
 MapVector::MapVector(float x, float y) : sf::Vector2f(x, y)
 {
 
 }
 
-MapVector::MapVector(const sf::Vector2f &vector) : Vector2(vector)
+MapVector::MapVector(const sf::Vector2f &vector) : sf::Vector2f(vector)
 {
 
 }
 
-float MapVector::getMagnitude() const
+float MapVector::get_magnitude() const
 {
     return sqrt(x*x+y*y);
 }
-float MapVector::getMagnitudeSquared() const
+float MapVector::get_magnitude_squared() const
 {
     return x*x+y*y;
 }
 
-float MapVector::getAngle() const
+float MapVector::get_angle() const
 {
     return atan2(y,x);
 }
 
-sf::Vector2<MapVector> MapVector::getSplitVector(float angle) const
+sf::Vector2<MapVector> MapVector::get_split_vector(float angle) const
 {
-    float thisAngle = getAngle();
+    float thisAngle = get_angle();
     MapVector angels =  MapVector(angle - thisAngle,-thisAngle + angle+PI/2 );
-    MapVector magnitudes = getMagnitude() * MapVector(cos(angels.x), cos(angels.y));
-    return sf::Vector2<MapVector>(getVectorFromAngle(angle,magnitudes.x),getVectorFromAngle(PI/2+angle,magnitudes.y));
+    MapVector magnitudes =
+            get_magnitude() * MapVector(cos(angels.x), cos(angels.y));
+    return sf::Vector2<MapVector>(get_vector_from_angle(angle, magnitudes.x),
+                                  get_vector_from_angle(PI / 2 + angle,
+                                                        magnitudes.y));
 }
 
-MapVector MapVector::getVectorFromAngle(float angle, float magnitude)
+MapVector MapVector::get_vector_from_angle(float angle, float magnitude)
 {
     return MapVector(cos(angle) * magnitude, sin(angle) * magnitude);
 }
 
-MapVector MapVector::getRotatedVector(float angle) const
+MapVector MapVector::get_rotated_vector(float angle) const
 {
-    return  getVectorFromAngle(getAngle() + angle, getMagnitude());
+    return get_vector_from_angle(get_angle() + angle, get_magnitude());
 }
 
 MapVector operator*(const MapVector &vector1, const MapVector &vector2)

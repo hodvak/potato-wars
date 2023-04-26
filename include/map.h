@@ -1,8 +1,15 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "MapVector.h"
+#include "map_vector.h"
 
+/**
+ * a class that represents the map of the game
+ * using for both:
+ * 
+ * 1. calculate the collision of the objects with the map
+ * 2. draw the map on the window
+ */
 class Map : public sf::Drawable
 {
 public:
@@ -12,7 +19,7 @@ public:
 
     Map(const sf::Image &mask, const sf::Image &sky, const sf::Image &ground);
 
-    const sf::Image *getMask() const;
+    [[nodiscard]] const sf::Image *get_mask() const;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 

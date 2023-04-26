@@ -1,19 +1,10 @@
 #pragma once
-#include "MapVector.h"
+
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "BombHandler.h"
-#include "Map.h"
-
-/**
- * the acceleration of all object due to gravity on our potato planet
- */
-const float GRAVITY = 130;
-
-/**
- * the friction (static and dynamic) of the ground on our potato planet
- */
-const float FRICTION = 0.2f;
+#include "bomb_handler.h"
+#include "map_vector.h"
+#include "map.h"
 
 class Ball;
 
@@ -30,38 +21,39 @@ public:
      * @param weight the weight of the object
      * @param pos the start position of the object
      * @param radius the radius of the object
-     * @param startVelocity the start velocity of the object
+     * @param start_velocity the start velocity of the object
+     * @param bomb_handler the bomb handler of the game
      */
     MovingMapObject(float weight,
                     MapVector pos,
                     Map *map,
                     float radius,
-                    MapVector startVelocity = {0, 0},
-                    BombHandler *bombHandler = nullptr);
+                    MapVector start_velocity = {0, 0},
+                    BombHandler *bomb_handler = nullptr);
 
 
     /**
      * draw the object on the screen if it is visible
      * @param target the window to draw on
-     * @param cameraRect what the camera sees
+     * @param camera_rect what the camera sees
      */
     void draw(sf::RenderTarget &target,
-              const sf::Rect<float> &cameraRect) const;
+              const sf::Rect<float> &camera_rect) const;
 
     /**
      * update the velocity and the position of the object according to the forces
      * if override, the derived class should call this function first
-     * @param deltaTime the time since the last update
+     * @param delta_time the time since the last update
      */
-    virtual void update(float deltaTime);
+    virtual void update(float delta_time);
 
     /**
      * update the object's velocity based on the collision with another object
-     * @param otherObject the object that the object collided with
+     * @param other_object the object that the object collided with
      * @return true if the function did something, false otherwise (and then
      *         the other object should handle the collision)
      */
-    virtual bool collision_object(MovingMapObject *otherObject);
+    virtual bool collision_object(MovingMapObject *other_object);
 
     /**
      * get the velocity of the object
@@ -102,18 +94,18 @@ public:
      * collide function for double dispatch
      * mus be implemented in the derived class as follows:
      * ```
-     * bool collide(ClassName *otherObject)
+     * bool collide(ClassName *other_object)
      * {
-     *     return otherObject->collide_dd(this);
+     *     return other_object->collide_dd(this);
      * }
      */
-    virtual bool collide(MovingMapObject *otherObject) = 0;
+    virtual bool collide(MovingMapObject *other_object) = 0;
 
     /**
      * collide with double dispatch with the other objects
      */
     // with Ball
-    virtual bool collide_dd(Ball *otherObject);
+    virtual bool collide_dd(Ball *other_object);
 
     /**
      * virtual destructor for the derived classes
@@ -125,10 +117,10 @@ public:
      */
     void exploded(const Bomb &bomb);
 
-    void addBomb(const Bomb &bomb);
+    void add_bomb(const Bomb &bomb);
 
 private:
-    BombHandler *m_bombHandler;
+    BombHandler *m_bomb_handler;
     /**
      * the weight of the object
      */
@@ -172,24 +164,34 @@ private:
 protected:
 
     /**
+     * the acceleration of all object due to gravity on our potato planet
+     */
+    static const float GRAVITY;// = 130;
+
+    /**
+     * the friction (static and dynamic) of the ground on our potato planet
+     */
+    static const float FRICTION;// = 0.2f;
+
+    /**
      * set the forces according to the delta time.
      * by default, the forces are only the gravity
-     * @param deltaTime the time since the last update
+     * @param delta_time the time since the last update
      */
-    virtual void update_forces(float deltaTime);
+    virtual void update_forces(float delta_time);
 
     /**
      * by default update the velocity of the object according to the forces
      * acting on it
-     * @param deltaTime the time since the last update
+     * @param delta_time the time since the last update
      */
-    virtual void update_velocity(float deltaTime);
+    virtual void update_velocity(float delta_time);
 
     /**
      * by default update the position of the object according to the velocity
-     * @param deltaTime the time since the last update
+     * @param delta_time the time since the last update
      */
-    virtual void update_position(float deltaTime);
+    virtual void update_position(float delta_time);
 
     /**
      * set the velocity of the object
@@ -224,7 +226,7 @@ protected:
     /**
      * handle the collision physically with the other object
      */
-    void collide_generic(MovingMapObject *otherObject);
+    void collide_generic(MovingMapObject *other_object);
 
     /**
      * update the object's velocity based on the collision with the map
