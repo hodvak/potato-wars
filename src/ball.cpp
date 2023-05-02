@@ -6,6 +6,7 @@ Ball::Ball(sf::Vector2f pos, Map *map, BombHandler *bomb_handler) :
     MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
     m_num_of_bounces(0)
 {
+
 }
 
 void Ball::update(float delta_time)
@@ -28,6 +29,7 @@ bool Ball::collide_dd(Ball *otherObject)
     if(++m_num_of_bounces > 5)
     {
         kill();
+
     }
     if(++(otherObject->m_num_of_bounces) > 5)
     {

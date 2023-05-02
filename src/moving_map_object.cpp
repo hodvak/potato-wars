@@ -19,8 +19,12 @@ MovingMapObject::MovingMapObject(float weight,
           m_resting(false),
           m_alive(true),
           m_map(map),
-          m_bomb_handler(bomb_handler)
+          m_bomb_handler(bomb_handler),
+          m_texture(new sf::Texture()),
+          m_rotation(0)
 {
+    m_texture->loadFromFile("resources/superPacman.png");
+
 }
 
 void MovingMapObject::draw(sf::RenderTarget &target,
@@ -32,14 +36,13 @@ void MovingMapObject::draw(sf::RenderTarget &target,
 
 
     sf::CircleShape shape;
-
     shape.setRadius(m_radius * cameraRatio.x);
+    shape.setTexture(m_texture.get());
     shape.setOrigin(shape.getRadius(), shape.getRadius());
     shape.setPosition((m_pos.x - cameraOffset.x) * cameraRatio.x,
                       (m_pos.y - cameraOffset.y) * cameraRatio.y);
-    shape.setFillColor(sf::Color::Yellow);
-    shape.setOutlineColor(sf::Color::Black);
-    shape.setOutlineThickness(1);
+
+    shape.setRotation(m_rotation * 180 / PI);
     target.draw(shape);
 }
 
@@ -65,6 +68,7 @@ void MovingMapObject::update(float delta_time)
         update_forces(delta_time);
         update_velocity(delta_time);
         update_position(delta_time);
+        update_rotation(delta_time);
         collision_map();
 
     }
@@ -125,8 +129,8 @@ float MovingMapObject::collision_map()
                 (i != 0 || j != 0))
             {
 
-                sf::Vector2i pos = {(int)m_pos.x + i,
-                                    (int)m_pos.y + j};
+                sf::Vector2i pos = {(int) m_pos.x + i,
+                                    (int) m_pos.y + j};
                 if (pos.x < 0 ||
                     pos.y < 0 ||
                     pos.x >= (int) m_map->get_mask()->getSize().x ||
@@ -141,8 +145,8 @@ float MovingMapObject::collision_map()
                         closestPoint.x * closestPoint.x +
                         closestPoint.y * closestPoint.y)
                     {
-                        closestPoint.x = (float)i;
-                        closestPoint.y = (float)j;
+                        closestPoint.x = (float) i;
+                        closestPoint.y = (float) j;
                     }
                     hit_angle += (float) atan2(j, i);
                     num_of_pixels++;
@@ -158,7 +162,8 @@ float MovingMapObject::collision_map()
 
     //move to stand on the closest point
     float to_move = m_radius - closestPoint.get_magnitude();
-    m_pos -= MapVector::get_vector_from_angle(closestPoint.get_angle(), to_move);
+    m_pos -= MapVector::get_vector_from_angle(closestPoint.get_angle(),
+                                              to_move);
 
     //fix the hit angle (average hit angle)
     hit_angle /= (float) num_of_pixels;
@@ -262,9 +267,10 @@ void MovingMapObject::exploded(const Bomb &bomb)
 {
     MapVector diff = m_pos - bomb.pos;
     float distance = diff.get_magnitude();
-    if (distance < (float)bomb.radius + m_radius)
+    if (distance < (float) bomb.radius + m_radius)
     {
-        float force = bomb.force * (float)atan2(bomb.radius, distance) / (PI * m_weight);
+        float force = bomb.force * (float) atan2(bomb.radius, distance) /
+                      (PI * m_weight);
         m_velocity += MapVector::get_vector_from_angle(diff.get_angle(), force);
         m_resting = false;
     }
@@ -274,3 +280,11 @@ void MovingMapObject::add_bomb(const Bomb &bomb)
 {
     m_bomb_handler->add_bomb(bomb);
 }
+
+void MovingMapObject::update_rotation(float delta_time)
+{
+    m_rotation += m_velocity.x * 0.11 * delta_time;
+    m_rotation = fmod(m_rotation, 2 * PI);
+}
+
+
