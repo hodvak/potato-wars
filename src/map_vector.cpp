@@ -1,5 +1,5 @@
 #include "map_vector.h"
-float PI = acos(-1.0f);
+float MapVector::PI = acos(-1.0f);
 MapVector::MapVector(float x, float y) : sf::Vector2f(x, y)
 {
 

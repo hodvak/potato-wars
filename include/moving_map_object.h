@@ -80,6 +80,9 @@ public:
      */
     [[nodiscard]] bool is_rest() const;
 
+    [[nodiscard]] float get_rotation() const;
+
+
     /**
      * kill the object
      */
@@ -114,7 +117,10 @@ public:
 
     void add_bomb(const Bomb &bomb);
 
+    float m_rotation;
+
 private:
+    
     BombHandler *m_bomb_handler;
     /**
      * the weight of the object
@@ -124,7 +130,7 @@ private:
     /**
      * the forces acting on the object
      */
-     MapVector m_forces;
+    MapVector m_forces;
 
     /**
      * the current velocity of the object
@@ -155,6 +161,8 @@ private:
      * the map that the object is on
      */
     Map *m_map;
+
+
 
 protected:
 
@@ -217,6 +225,7 @@ protected:
      * getter for the map
      */
     Map *get_map();
+    
 
     /**
      * handle the collision physically with the other object
@@ -230,5 +239,11 @@ protected:
      *         or -1 if the object is not colliding with the map
      */
     virtual float collision_map();
+
+    /***
+     * update the object rotation angle according to the velocity
+     */
+    void update_rotation(float delta_time);
+
 
 };

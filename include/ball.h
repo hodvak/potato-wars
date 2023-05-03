@@ -42,6 +42,9 @@ public:
      */
     void on_death() override;
 
+    /**
+     * draw the Ball to the target
+     */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
@@ -51,4 +54,5 @@ private:
      */
     int m_num_of_bounces;
     PlayerTexture m_texture;
+
 };

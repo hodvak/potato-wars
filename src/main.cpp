@@ -5,6 +5,7 @@
 #include "bomb_handler.h"
 #include "camera.h"
 #include "map.h"
+const float PI = acos(-1.0f);
 
 int main()
 {
@@ -16,6 +17,8 @@ int main()
     mask.loadFromFile("resources/map.bmp");
     sky.loadFromFile("resources/sky.bmp");
     ground.loadFromFile("resources/ground.bmp");
+    sf::Texture pac;
+    pac.loadFromFile("resources/superPacman.png");
     sf::Sprite sprite;
     sf::Texture texture;
     Map map(mask, sky, ground);
@@ -103,10 +106,6 @@ int main()
         {
             window.draw(*ball);
         }
-        currentTime = clock.getElapsedTime();
-        previousTime = currentTime;
         window.display();
     }
-
-
 }

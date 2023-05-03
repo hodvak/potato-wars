@@ -1,12 +1,12 @@
 #include <iostream>
 #include "ball.h"
 
-
 Ball::Ball(sf::Vector2f pos, Map *map, BombHandler *bomb_handler) :
     MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
     m_num_of_bounces(0),
     m_texture(PlayerColor::RED, 10)
 {
+
 }
 
 void Ball::update(float delta_time)
@@ -29,6 +29,7 @@ bool Ball::collide_dd(Ball *otherObject)
     if(++m_num_of_bounces > 5)
     {
         kill();
+
     }
     if(++(otherObject->m_num_of_bounces) > 5)
     {
@@ -48,5 +49,6 @@ bool Ball::collide_dd(Ball *otherObject)
 void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform.translate(get_position());
+    states.transform.rotate(get_rotation()*180/MapVector::PI);
     target.draw(m_texture, states);
 }
