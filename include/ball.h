@@ -40,10 +40,15 @@ public:
      * print the message "Ball died" to the console
      */
     void on_death() override;
+
+
 private:
     
     /**
      * the number of bounces the Ball did
      */
     int m_num_of_bounces;
+
+
+
 };

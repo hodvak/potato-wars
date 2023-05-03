@@ -5,7 +5,15 @@
 #include "bomb_handler.h"
 #include "camera.h"
 #include "map.h"
-
+const float PI = acos(-1.0f);
+float pointAtMovementDirction(MapVector velocity)
+{
+    return velocity.get_angle()*180/PI;
+}
+float rollAtMovementDirction(MapVector velocity,float courrentAngle)
+{
+    return courrentAngle+velocity.get_angle()*180/PI;
+}
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(Map::WIDTH, Map::HEIGHT), "SFML works!");
@@ -16,6 +24,8 @@ int main()
     mask.loadFromFile("resources/map.bmp");
     sky.loadFromFile("resources/sky.bmp");
     ground.loadFromFile("resources/ground.bmp");
+    sf::Texture pac;
+    pac.loadFromFile("resources/superPacman.png");
     sf::Sprite sprite;
     sf::Texture texture;
     Map map(mask, sky, ground);
@@ -101,6 +111,8 @@ int main()
         bombHandler.update(&map, balls);
         for (auto &ball: balls)
         {
+
+
             ball->draw(window, sf::Rect<float>{0, 0, Map::WIDTH, Map::HEIGHT});
         }
         currentTime = clock.getElapsedTime();
