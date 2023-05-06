@@ -15,5 +15,5 @@ namespace texture_manager
      * @param path the path to the texture
      * @return the texture
      */
-    const sf::Texture* get_texture(const std::string &path);
+    const sf::Texture* getTexture(const std::string &path);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "player_color.h"
+#include "PlayerColor.h"
 
 /**
  * a class that draws the player.

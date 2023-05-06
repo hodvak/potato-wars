@@ -31,19 +31,19 @@ public:
      * @param magnitude the magnitude of the vector
      * @return new MapVector object
      */
-    static MapVector get_vector_from_angle(float angle, float magnitude = 1);
+    static MapVector getVectorFromAngle(float angle, float magnitude = 1);
 
     /**
      * get the magnitude of the vector (the length of the vector)
      * @return the magnitude of the vector
      */
-    [[nodiscard]] float get_magnitude() const;
+    [[nodiscard]] float getMagnitude() const;
 
     /**
      * get the angle of the vector (from the x axis)
      * @return the angle of the vector
      */
-    [[nodiscard]] float get_angle() const;
+    [[nodiscard]] float getAngle() const;
 
     /**
      * split the vector to 2 vectors that are perpendicular to each other
@@ -55,21 +55,21 @@ public:
      * @param angle the angle to split the vector by
      * @return the 2 vectors
      */
-    [[nodiscard]] sf::Vector2<MapVector> get_split_vector(float angle) const;
+    [[nodiscard]] sf::Vector2<MapVector> getSplitVector(float angle) const;
 
     /**
      * rotate the vector by the given angle
      * @param angle the angle to rotate the vector by
      * @return the rotated vector
      */
-    [[nodiscard]] MapVector get_rotated_vector(float angle) const;
+    [[nodiscard]] MapVector getRotatedVector(float angle) const;
 
     /**
      * get the magnitude of the vector squared (the length of the vector squared)
-     * good for comparing magnitudes (more efficient than get_magnitude())
+     * good for comparing magnitudes (more efficient than getMagnitude())
      * @return the magnitude of the vector squared
      */
-    [[nodiscard]] float get_magnitude_squared() const;
+    [[nodiscard]] float getMagnitudeSquared() const;
 };
 
 /** all math operators for MapVector doing the operation on both x and y

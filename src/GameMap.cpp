@@ -1,6 +1,6 @@
-#include "map.h"
+#include "GameMap.h"
 
-Map::Map(const sf::Image &mask, const sf::Image &sky, const sf::Image &ground) :
+GameMap::GameMap(const sf::Image &mask, const sf::Image &sky, const sf::Image &ground) :
         m_mask(mask),
         m_sky(sky),
         m_ground(ground)
@@ -26,7 +26,7 @@ Map::Map(const sf::Image &mask, const sf::Image &sky, const sf::Image &ground) :
     }
 }
 
-void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void GameMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::Sprite sprite;
     sf::Texture texture;
@@ -35,7 +35,7 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(sprite, states);
 }
 
-void Map::drawCircle(MapVector pos, int radius)
+void GameMap::drawCircle(MapVector pos, int radius)
 {
     int radius_squared = radius * radius;
     for (int i = -radius; i < radius; ++i)
@@ -56,7 +56,7 @@ void Map::drawCircle(MapVector pos, int radius)
     }
 }
 
-const sf::Image *Map::get_mask() const
+const sf::Image *GameMap::getMask() const
 {
     return &m_mask;
 }

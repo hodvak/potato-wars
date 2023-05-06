@@ -1,24 +1,24 @@
-#include "bomb_handler.h"
-#include "moving_map_object.h"
+#include "BombHandler.h"
+#include "MovingMapObject.h"
 
 BombHandler::BombHandler() = default;
 
-void draw_bomb(Map *map, const Bomb &bomb)
+void drawBomb(GameMap *map, const Bomb &bomb)
 {
     map->drawCircle(bomb.pos, bomb.radius);
 }
 
-void BombHandler::add_bomb(const Bomb &bomb)
+void BombHandler::addBomb(const Bomb &bomb)
 {
     m_bombs.push_back(bomb);
 }
 
-void BombHandler::update(Map *map,
+void BombHandler::update(GameMap *map,
                          std::vector<std::unique_ptr<MovingMapObject>> &objects)
 {
     for (auto &bomb: m_bombs)
     {
-        draw_bomb(map, bomb);
+        drawBomb(map, bomb);
         for(const auto & object : objects)
         {
             object->exploded(bomb);

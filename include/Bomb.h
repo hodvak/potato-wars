@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "map_vector.h"
+#include "MapVector.h"
 
 /**
  * a bomb class for the BombHandler

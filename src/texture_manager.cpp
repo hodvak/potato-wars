@@ -2,7 +2,7 @@
 
 std::map<std::string, sf::Texture*> textures;
 
-const sf::Texture* texture_manager::get_texture(const std::string &path)
+const sf::Texture* texture_manager::getTexture(const std::string &path)
 {
     if (textures.find(path) == textures.end())
     {

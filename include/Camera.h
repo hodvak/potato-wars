@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "moving_map_object.h"
+#include "MovingMapObject.h"
 
 /**
  * a class that handle camera movement, focus and zoom
@@ -18,7 +18,7 @@ public:
      * set the camera to follow an object
      * @param object the object to follow or nullptr to stop following
      */
-    void set_to_follow(MovingMapObject *object);
+    void setToFollow(MovingMapObject *object);
 
     /**
      * update the camera position and zoom

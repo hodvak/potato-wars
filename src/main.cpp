@@ -1,15 +1,15 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
-#include "ball.h"
-#include "moving_map_object.h"
-#include "bomb_handler.h"
-#include "camera.h"
-#include "map.h"
+#include "Ball.h"
+#include "MovingMapObject.h"
+#include "BombHandler.h"
+#include "Camera.h"
+#include "GameMap.h"
 const float PI = acos(-1.0f);
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(Map::WIDTH, Map::HEIGHT), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(GameMap::WIDTH, GameMap::HEIGHT), "SFML works!");
     window.setFramerateLimit(60);
     
     Camera camera;
@@ -21,7 +21,7 @@ int main()
     pac.loadFromFile("resources/superPacman.png");
     sf::Sprite sprite;
     sf::Texture texture;
-    Map map(mask, sky, ground);
+    GameMap map(mask, sky, ground);
 
     sf::Clock clock;
     sf::Time previousTime = clock.getElapsedTime();
@@ -46,16 +46,16 @@ int main()
                                     (float)event.mouseButton.x,
                                     (float)event.mouseButton.y),
                             &map, &bombHandler));
-                    camera.set_to_follow(balls.back().get());
+                    camera.setToFollow(balls.back().get());
 
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
-                    bombHandler.add_bomb(Bomb{MapVector(
+                    bombHandler.addBomb(Bomb{MapVector(
                             (float) event.mouseButton.x,
                             (float) event.mouseButton.y),
-                                              50,
-                                              70000});
+                                             50,
+                                             70000});
                 }
             }
 
@@ -73,7 +73,7 @@ int main()
         for (int i = 0; i < balls.size(); ++i)
         {
             balls[i]->update(time);
-            if (!balls[i]->is_alive())
+            if (!balls[i]->isAlive())
             {
                 balls.erase(balls.begin() + i);
                 --i;
@@ -88,11 +88,11 @@ int main()
                     break;
                 }
                 float distance = sqrt(
-                        (ball1->get_position().x - ball2->get_position().x) *
-                        (ball1->get_position().x - ball2->get_position().x) +
-                        (ball1->get_position().y - ball2->get_position().y) *
-                        (ball1->get_position().y - ball2->get_position().y));
-                if (distance < ball1->get_radius() + ball2->get_radius())
+                        (ball1->getPosition().x - ball2->getPosition().x) *
+                        (ball1->getPosition().x - ball2->getPosition().x) +
+                                (ball1->getPosition().y - ball2->getPosition().y) *
+                                (ball1->getPosition().y - ball2->getPosition().y));
+                if (distance < ball1->getRadius() + ball2->getRadius())
                 {
                     if (!ball1->collide(ball2.get()))
                     {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "moving_map_object.h"
-#include "map.h"
+#include "MovingMapObject.h"
+#include "GameMap.h"
 #include "player_texture.h"
 
 /**
@@ -18,7 +18,7 @@ public:
      * @param map the map that the Ball is in
      * @param bomb_handler BombHandler to add bombs to
      */
-    Ball(sf::Vector2f pos, Map *map, BombHandler *bomb_handler);
+    Ball(sf::Vector2f pos, GameMap *map, BombHandler *bomb_handler);
     
     /**
      * update the Ball according to the time that passed
@@ -35,12 +35,12 @@ public:
     /**
      * collide with a Ball. add the counter and kill the Ball if needed
      */
-    bool collide_dd(Ball *other_object) override;
+    bool collideDD(Ball *other_object) override;
     
     /**
      * print the message "Ball died" to the console
      */
-    void on_death() override;
+    void onDeath() override;
 
     /**
      * draw the Ball to the target
@@ -52,7 +52,7 @@ private:
     /**
      * the number of bounces the Ball did
      */
-    int m_num_of_bounces;
+    int m_numOfBounces;
     PlayerTexture m_texture;
 
 };

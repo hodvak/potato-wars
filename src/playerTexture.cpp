@@ -3,7 +3,7 @@
 
 PlayerTexture::PlayerTexture(PlayerColor color, float radius)
 {
-    m_sprite.setTexture(*texture_manager::get_texture("resources/players.png"));
+    m_sprite.setTexture(*texture_manager::getTexture("resources/players.png"));
     m_sprite.setTextureRect(sf::IntRect(100*(int)color, 0, 
                                         100, 100));
     m_sprite.setScale(radius/50, radius/50);

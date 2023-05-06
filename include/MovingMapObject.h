@@ -2,9 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "bomb_handler.h"
-#include "map_vector.h"
-#include "map.h"
+#include "BombHandler.h"
+#include "MapVector.h"
+#include "GameMap.h"
 
 class Ball;
 
@@ -26,7 +26,7 @@ public:
      */
     MovingMapObject(float weight,
                     MapVector pos,
-                    Map *map,
+                    GameMap *map,
                     float radius,
                     MapVector start_velocity = {0, 0},
                     BombHandler *bomb_handler = nullptr);
@@ -48,39 +48,39 @@ public:
      * @return true if the function did something, false otherwise (and then
      *         the other object should handle the collision)
      */
-    virtual bool collision_object(MovingMapObject *other_object);
+    virtual bool collisionObject(MovingMapObject *other_object);
 
     /**
      * get the velocity of the object
      */
-    [[nodiscard]] MapVector get_velocity() const;
+    [[nodiscard]] MapVector getVelocity() const;
 
     /**
      * get the position of the object
      */
-    [[nodiscard]] MapVector get_position() const;
+    [[nodiscard]] MapVector getPosition() const;
 
     /**
      * get the forces acting on the object
      */
-    [[nodiscard]] MapVector get_forces() const;
+    [[nodiscard]] MapVector getForces() const;
 
     /**
      * get the radius of the object
      */
-    [[nodiscard]] float get_radius() const;
+    [[nodiscard]] float getRadius() const;
 
     /**
      * is the object still alive
      */
-    [[nodiscard]] bool is_alive() const;
+    [[nodiscard]] bool isAlive() const;
 
     /**
      * is the object still moving
      */
-    [[nodiscard]] bool is_rest() const;
+    [[nodiscard]] bool isRest() const;
 
-    [[nodiscard]] float get_rotation() const;
+    [[nodiscard]] float getRotation() const;
 
 
     /**
@@ -94,7 +94,7 @@ public:
      * ```
      * bool collide(ClassName *other_object)
      * {
-     *     return other_object->collide_dd(this);
+     *     return other_object->collideDD(this);
      * }
      */
     virtual bool collide(MovingMapObject *other_object) = 0;
@@ -103,25 +103,25 @@ public:
      * collide with double dispatch with the other objects
      */
     // with Ball
-    virtual bool collide_dd(Ball *other_object);
+    virtual bool collideDD(Ball *other_object);
 
     /**
      * virtual destructor for the derived classes
      */
-    virtual ~MovingMapObject() = default;
+    ~MovingMapObject() override = default;
 
     /**
      * get the weight of the object
      */
     void exploded(const Bomb &bomb);
 
-    void add_bomb(const Bomb &bomb);
+    void addBomb(const Bomb &bomb);
 
     float m_rotation;
 
 private:
     
-    BombHandler *m_bomb_handler;
+    BombHandler *m_bombHandler;
     /**
      * the weight of the object
      */
@@ -160,7 +160,7 @@ private:
     /**
      * the map that the object is on
      */
-    Map *m_map;
+    GameMap *m_map;
 
 
 
@@ -181,56 +181,56 @@ protected:
      * by default, the forces are only the gravity
      * @param delta_time the time since the last update
      */
-    virtual void update_forces(float delta_time);
+    virtual void updateForces(float delta_time);
 
     /**
      * by default update the velocity of the object according to the forces
      * acting on it
      * @param delta_time the time since the last update
      */
-    virtual void update_velocity(float delta_time);
+    virtual void updateVelocity(float delta_time);
 
     /**
      * by default update the position of the object according to the velocity
      * @param delta_time the time since the last update
      */
-    virtual void update_position(float delta_time);
+    virtual void updatePosition(float delta_time);
 
     /**
      * set the velocity of the object
      * @param velocity the new velocity of the object
      */
-    void set_velocity(MapVector velocity);
+    void setVelocity(MapVector velocity);
 
     /**
      * set the position of the object
      * @param pos the new position of the object
      */
-    void set_position(MapVector pos);
+    void setPosition(MapVector pos);
 
     /**
      * set the forces acting on the object
      * @param forces the new forces acting on the object
      */
-    void set_forces(MapVector forces);
+    void setForces(MapVector forces);
 
     /**
      * override this function to do something when the object is killed (will
      * only be called once)
      */
-    virtual void on_death()
+    virtual void onDeath()
     {};
 
     /**
      * getter for the map
      */
-    Map *get_map();
+    GameMap *getMap();
     
 
     /**
      * handle the collision physically with the other object
      */
-    void collide_generic(MovingMapObject *other_object);
+    void collideGeneric(MovingMapObject *other_object);
 
     /**
      * update the object's velocity based on the collision with the map
@@ -238,12 +238,12 @@ protected:
      * @return the hit angle of the collision if the object collide with the map
      *         or -1 if the object is not colliding with the map
      */
-    virtual float collision_map();
+    virtual float collisionMap();
 
     /***
      * update the object rotation angle according to the velocity
      */
-    void update_rotation(float delta_time);
+    void updateRotation(float delta_time);
 
 
 };
