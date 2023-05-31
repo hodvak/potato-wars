@@ -276,3 +276,8 @@ float MovingMapObject::getRotation() const
 {
     return m_rotation;
 }
+
+void MovingMapObject::setRotation(float rotation)
+{
+    m_rotation = rotation;
+}

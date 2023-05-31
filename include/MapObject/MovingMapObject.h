@@ -246,4 +246,5 @@ protected:
     void updateRotation(float delta_time);
 
 
+    void setRotation(float rotation);
 };

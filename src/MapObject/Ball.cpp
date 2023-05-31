@@ -12,7 +12,10 @@ Ball::Ball(sf::Vector2f pos, GameMap *map, BombHandler *bomb_handler) :
 void Ball::update(float delta_time)
 {
     MovingMapObject::update(delta_time);
-    std::cout << "rotation: " << getRotation() << std::endl;  
+    if(isRest())
+    {
+        setRotation(0);
+    }
     m_texture.setAngle(getRotation() * 180/ MapVector::PI);
 }
 
