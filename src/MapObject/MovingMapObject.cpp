@@ -268,7 +268,7 @@ MovingMapObject::draw(sf::RenderTarget &target, sf::RenderStates states) const
 }
 void MovingMapObject::updateRotation(float delta_time)
 {
-    m_rotation += m_velocity.x * 0.11 * delta_time;
+    m_rotation += m_velocity.x * 0.11f * delta_time;
     m_rotation = fmod(m_rotation, 2 * PI);
 }
 
