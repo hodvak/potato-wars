@@ -13,7 +13,7 @@ void Ball::update(float delta_time)
 {
     MovingMapObject::update(delta_time);
     std::cout << "rotation: " << getRotation() << std::endl;  
-    m_texture.setAngle(getRotation());
+    m_texture.setAngle(getRotation() * 180/ MapVector::PI);
 }
 
 void Ball::onDeath()
@@ -37,6 +37,9 @@ bool Ball::collideDD(Ball *other_object)
     {
         other_object->kill();
     }
+    m_texture.setLife((5.0f - m_numOfBounces)/5.0f);
+    other_object->m_texture.setLife((5.0f - other_object->m_numOfBounces)/5.0f);
+    
     collideGeneric(other_object);
     MapVector center = (getPosition() + other_object->getPosition()) / 2.0f;
     addBomb({center, 100, 700});
@@ -51,6 +54,5 @@ bool Ball::collideDD(Ball *other_object)
 void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform.translate(getPosition());
-    states.transform.rotate(getRotation());
     target.draw(m_texture, states);
 }

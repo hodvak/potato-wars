@@ -25,6 +25,7 @@ public:
 private:
     sf::Sprite m_sprite;
     sf::RectangleShape m_lifeBar;
+    sf::RectangleShape m_fullLifeBar;
     float m_angle;
     float m_radius;
 };
