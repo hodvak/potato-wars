@@ -1,4 +1,4 @@
-#include "ColorButton.h"
+#include "Button/ColorButton.h"
 #include "texture_manager.h"
 
 ColorButton::ColorButton(const sf::Vector2f &pos,

@@ -1,6 +1,6 @@
-#include "MainScreen.h"
-#include "ColorButton.h"
-#include "GameScreen.h"
+#include "Screen/MainScreen.h"
+#include "Button/ColorButton.h"
+#include "Screen/GameScreen.h"
 #include <iostream>
 
 void nothing()

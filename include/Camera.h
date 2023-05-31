@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "MovingMapObject.h"
+#include "MapObject/MovingMapObject.h"
 
 /**
  * a class that handle camera movement, focus and zoom

@@ -1,5 +1,5 @@
-#include "ScreenManager.h"
-#include "MainScreen.h"
+#include "Screen/ScreenManager.h"
+#include "Screen/MainScreen.h"
 #include <memory>
 #include <SFML/Graphics.hpp>
 

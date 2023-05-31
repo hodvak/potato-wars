@@ -1,5 +1,5 @@
 #include "BombHandler.h"
-#include "MovingMapObject.h"
+#include "MapObject/MovingMapObject.h"
 
 BombHandler::BombHandler() = default;
 

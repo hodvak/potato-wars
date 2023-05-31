@@ -1,19 +1,19 @@
-#include "GameScreen.h"
+#include "Screen/GameScreen.h"
 #include "GameMap.h"
 #include "Camera.h"
-#include "Ball.h"
+#include "MapObject/Ball.h"
 #include <vector>
 #include <memory>
 
 static const float PI = acos(-1.0f);
 
-GameScreen::GameScreen()
-{
-}
+GameScreen::GameScreen() = default;
 
 std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
 {
-    window.create(sf::VideoMode(GameMap::WIDTH, GameMap::HEIGHT), "SFML works!");
+    window.create(sf::VideoMode(GameMap::WIDTH, GameMap::HEIGHT),
+                  "SFML works!");
+    
     window.setFramerateLimit(60);
 
     Camera camera;
@@ -34,7 +34,7 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
     BombHandler bombHandler;
     while (window.isOpen())
     {
-        sf::Event event;
+        sf::Event event{};
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)

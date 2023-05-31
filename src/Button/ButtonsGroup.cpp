@@ -1,4 +1,4 @@
-#include "ButtonsGroup.h"
+#include "Button/ButtonsGroup.h"
 
 ButtonsGroup::ButtonsGroup(
         std::vector<std::unique_ptr<Button>> buttons) :

@@ -1,4 +1,4 @@
-#include "MovingMapObject.h"
+#include "MapObject/MovingMapObject.h"
 #include <cmath>
 
 const float PI = acos(-1.0f);

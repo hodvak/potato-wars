@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Ball.h"
+#include "MapObject/Ball.h"
 
 Ball::Ball(sf::Vector2f pos, GameMap *map, BombHandler *bomb_handler) :
         MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
