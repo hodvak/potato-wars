@@ -17,8 +17,12 @@ public:
      * @param pos the position of the Ball
      * @param map the map that the Ball is in
      * @param bomb_handler BombHandler to add bombs to
+     * @param color the color of the Ball (Player)
      */
-    Ball(sf::Vector2f pos, GameMap *map, BombHandler *bomb_handler);
+    Ball(sf::Vector2f pos,
+         GameMap *map,
+         BombHandler *bomb_handler,
+         PlayerColor color);
     
     /**
      * update the Ball according to the time that passed

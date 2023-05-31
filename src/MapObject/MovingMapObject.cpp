@@ -113,12 +113,12 @@ float MovingMapObject::collisionMap()
                                     (int) m_pos.y + j};
                 if (pos.x < 0 ||
                     pos.y < 0 ||
-                    pos.x >= (int) m_map->getMask()->getSize().x ||
-                    pos.y >= (int) m_map->getMask()->getSize().y)
+                    pos.x >= (int) m_map->getMask().getSize().x ||
+                    pos.y >= (int) m_map->getMask().getSize().y)
                 {
                     continue;
                 }
-                if (m_map->getMask()->getPixel(pos.x, pos.y) ==
+                if (m_map->getMask().getPixel(pos.x, pos.y) ==
                     sf::Color::White)
                 {
                     if (i * i + j * j <

@@ -5,7 +5,7 @@ BombHandler::BombHandler() = default;
 
 void drawBomb(GameMap *map, const Bomb &bomb)
 {
-    map->drawCircle(bomb.pos, bomb.radius);
+    map->bomb(bomb.pos, bomb.radius);
 }
 
 void BombHandler::addBomb(const Bomb &bomb)

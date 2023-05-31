@@ -1,10 +1,14 @@
 #include <iostream>
 #include "MapObject/Ball.h"
 
-Ball::Ball(sf::Vector2f pos, GameMap *map, BombHandler *bomb_handler) :
+Ball::Ball(sf::Vector2f pos,
+           GameMap *map,
+           BombHandler *bomb_handler,
+          PlayerColor color
+           ) :
         MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
         m_numOfBounces(0),
-        m_texture(PlayerColor::RED, 10)
+        m_texture(color, 10)
 {
 
 }
@@ -49,7 +53,7 @@ bool Ball::collideDD(Ball *other_object)
 //    sf::Vector2f center = (get_position() + otherObject->get_position()) / 2.0f;
     
     //todo: fix the problem of unrest the objects in the circle!
-    //maybe to create another class for bombings?
+    //maybce to create another class for bombings?
 //    addBomb({get_position(), 20, 7000});
     return true;
 }

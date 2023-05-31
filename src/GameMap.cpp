@@ -1,26 +1,33 @@
 #include "GameMap.h"
+#include "resources_manager.h"
 
-GameMap::GameMap(const sf::Image &mask, const sf::Image &sky, const sf::Image &ground) :
-        m_mask(mask),
-        m_sky(sky),
-        m_ground(ground)
+GameMap::GameMap(const std::string &levelName)
 {
+    m_mask = *resources_manager::getImage(
+            "resources/Levels/" + levelName + "/map.bmp");
+    m_sky = resources_manager::getImage(
+            "resources/Images/MapImages/sky.bmp");
+    m_ground = resources_manager::getImage(
+            "resources/Images/MapImages/ground.bmp");
 
-    m_display.create(WIDTH, HEIGHT);
-    for (int i = 0; i < WIDTH; ++i)
+    m_width = m_mask.getSize().x;
+    m_height = m_mask.getSize().y;
+
+    m_display.create(m_width, m_height);
+    for (int x = 0; x < m_width; ++x)
     {
-        for (int j = 0; j < HEIGHT; ++j)
+        for (int y = 0; y < m_height; ++y)
         {
-            sf::Color maskColor = mask.getPixel(i, j);
-            if (maskColor == sf::Color::Black)
+            sf::Color maskColor = m_mask.getPixel(x, y);
+            if (maskColor == sf::Color::White)
             {
-                sf::Color skyColor = sky.getPixel(i, j);
-                m_display.setPixel(i, j, skyColor);
+                sf::Color groundColor = m_ground->getPixel(x, y);
+                m_display.setPixel(x, y, groundColor);
             }
             else
             {
-                sf::Color groundColor = ground.getPixel(i, j);
-                m_display.setPixel(i, j, groundColor);
+                sf::Color skyColor = m_sky->getPixel(x, y);
+                m_display.setPixel(x, y, skyColor);
             }
         }
     }
@@ -35,28 +42,29 @@ void GameMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(sprite, states);
 }
 
-void GameMap::drawCircle(MapVector pos, int radius)
+void GameMap::bomb(MapVector pos, int radius)
 {
-    int radius_squared = radius * radius;
-    for (int i = -radius; i < radius; ++i)
+    int radius_squared = radius * radius; // to avoid sqrt
+
+    for (int i = -radius; i <= radius; ++i)
     {
-        for (int j = -radius; j < radius; ++j)
+        for (int j = -radius; j <= radius; ++j)
         {
-            if (i * i + j * j < radius_squared)
+            if (i * i + j * j <= radius_squared)
             {
-                int x = (int) pos.x + i;
-                int y = (int) pos.y + j;
-                if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+                int x = (int)(pos.x + (float)i);
+                int y = (int)(pos.y + (float)j);
+                if (x >= 0 && x < m_width && y >= 0 && y < m_height)
                 {
                     m_mask.setPixel(x, y, sf::Color::Black);
-                    m_display.setPixel(x, y, m_sky.getPixel(x, y));
+                    m_display.setPixel(x, y, m_sky->getPixel(x, y));
                 }
             }
         }
     }
 }
 
-const sf::Image *GameMap::getMask() const
+const sf::Image &GameMap::getMask() const
 {
-    return &m_mask;
+    return m_mask;
 }

@@ -80,5 +80,5 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 
 void MainScreen::startGame()
 {
-    m_nextScreen = std::make_unique<GameScreen>();
+    m_nextScreen = std::make_unique<GameScreen>("lvl1");
 }

@@ -2,6 +2,7 @@
 
 std::map<std::string, sf::Texture*> textures;
 std::map<std::string, sf::Font*> fonts;
+std::map<std::string, sf::Image*> images;
 
 const sf::Texture* resources_manager::getTexture(const std::string &path)
 {
@@ -21,5 +22,15 @@ const sf::Font* resources_manager::getFont(const std::string &path)
         fonts[path]->loadFromFile(path);
     }
     return fonts[path];
+}
+
+const sf::Image* resources_manager::getImage(const std::string &path)
+{
+    if (images.find(path) == images.end())
+    {
+        images[path] = new sf::Image();
+        images[path]->loadFromFile(path);
+    }
+    return images[path];
 }
     

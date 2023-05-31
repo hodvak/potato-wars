@@ -24,4 +24,6 @@ namespace resources_manager
      * @return the font
      */
     const sf::Font* getFont(const std::string &path);
+
+    const sf::Image *getImage(const std::string &path);
 }
