@@ -1,9 +1,9 @@
-#include "texture_manager.h"
+#include "resources_manager.h"
 
 std::map<std::string, sf::Texture*> textures;
 std::map<std::string, sf::Font*> fonts;
 
-const sf::Texture* texture_manager::getTexture(const std::string &path)
+const sf::Texture* resources_manager::getTexture(const std::string &path)
 {
     if (textures.find(path) == textures.end())
     {
@@ -13,7 +13,7 @@ const sf::Texture* texture_manager::getTexture(const std::string &path)
     return textures[path];
 }
 
-const sf::Font* texture_manager::getFont(const std::string &path)
+const sf::Font* resources_manager::getFont(const std::string &path)
 {
     if (fonts.find(path) == fonts.end())
     {

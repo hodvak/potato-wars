@@ -12,6 +12,8 @@ Ball::Ball(sf::Vector2f pos, GameMap *map, BombHandler *bomb_handler) :
 void Ball::update(float delta_time)
 {
     MovingMapObject::update(delta_time);
+    std::cout << "rotation: " << getRotation() << std::endl;  
+    m_texture.setAngle(getRotation());
 }
 
 void Ball::onDeath()
@@ -49,6 +51,6 @@ bool Ball::collideDD(Ball *other_object)
 void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform.translate(getPosition());
-    states.transform.rotate(getRotation() * 180 / MapVector::PI);
+    states.transform.rotate(getRotation());
     target.draw(m_texture, states);
 }

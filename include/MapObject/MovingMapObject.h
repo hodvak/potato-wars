@@ -117,9 +117,9 @@ public:
 
     void addBomb(const Bomb &bomb);
 
-    float m_rotation;
-
 private:
+
+    float m_rotation;
     
     BombHandler *m_bombHandler;
     /**

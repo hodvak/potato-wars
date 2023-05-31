@@ -7,7 +7,7 @@
  * a class that manages the textures in the game.
  * load the textures when needed and return them when asked.
  */
-namespace texture_manager
+namespace resources_manager
 {
     /**
      * get a texture from the manager.

@@ -16,8 +16,15 @@ public:
      */
     PlayerTexture(PlayerColor color, float radius);
     
+    void setLife(float life);
+    
+    void setAngle(float angle);
+    
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
 private:
     sf::Sprite m_sprite;
+    sf::RectangleShape m_lifeBar;
+    float m_angle;
+    float m_radius;
 };
