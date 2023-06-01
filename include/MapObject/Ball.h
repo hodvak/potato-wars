@@ -45,6 +45,14 @@ public:
      * print the message "Ball died" to the console
      */
     void onDeath() override;
+    
+    /**
+     * decrease the life of the Player
+     * @param damage the amount of life to decrease
+     */
+    void damage(float damage);
+    
+     
 
     /**
      * draw the Ball to the target
@@ -54,9 +62,13 @@ public:
 private:
     
     /**
-     * the number of bounces the Ball did
+     * texture of the Player
      */
-    int m_numOfBounces;
     PlayerTexture m_texture;
+    
+    /**
+     * life of the player (between 0 and 1)
+     */
+    float m_life;
 
 };

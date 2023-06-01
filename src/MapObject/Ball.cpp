@@ -7,7 +7,7 @@ Ball::Ball(sf::Vector2f pos,
           PlayerColor color
            ) :
         MovingMapObject(200, pos, map, 10,{0,0}, bomb_handler),
-        m_numOfBounces(0),
+        m_life(1),
         m_texture(color, 10)
 {
 
@@ -35,26 +35,12 @@ bool Ball::collide(MovingMapObject *otherObject)
 
 bool Ball::collideDD(Ball *other_object)
 {
-    if(++m_numOfBounces > 5)
-    {
-        kill();
-
-    }
-    if(++(other_object->m_numOfBounces) > 5)
-    {
-        other_object->kill();
-    }
-    m_texture.setLife((5.0f - m_numOfBounces)/5.0f);
-    other_object->m_texture.setLife((5.0f - other_object->m_numOfBounces)/5.0f);
+    damage(0.1f);
+    other_object->damage(0.1f);
     
     collideGeneric(other_object);
     MapVector center = (getPosition() + other_object->getPosition()) / 2.0f;
     addBomb({center, 100, 700});
-//    sf::Vector2f center = (get_position() + otherObject->get_position()) / 2.0f;
-    
-    //todo: fix the problem of unrest the objects in the circle!
-    //maybce to create another class for bombings?
-//    addBomb({get_position(), 20, 7000});
     return true;
 }
 
@@ -62,4 +48,14 @@ void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform.translate(getPosition());
     target.draw(m_texture, states);
+}
+
+void Ball::damage(float damage)
+{
+    m_life -= damage;
+    if(m_life <= 0)
+    {
+        kill();
+    }
+    m_texture.setLife(m_life);
 }
