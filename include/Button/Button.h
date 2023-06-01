@@ -18,7 +18,7 @@ public:
      */
     Button(sf::Vector2f pos,
            sf::Vector2f size,
-           std::function<void()> function);
+           const std::function<void()> &function);
 
     /**
      * check if the button was clicked, and if so, call the function

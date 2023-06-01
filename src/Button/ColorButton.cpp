@@ -8,7 +8,7 @@ ColorButton::ColorButton(const sf::Vector2f &pos,
                          const std::string &text,
                          const std::optional<sf::Color> &colorHover)
         :
-        Button(pos, size, std::move(function)),
+        Button(pos, size, function),
         m_isHover(false),
         m_colorRegular(colorRegular)
 {

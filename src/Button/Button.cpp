@@ -2,8 +2,8 @@
 
 Button::Button(sf::Vector2f pos, 
                sf::Vector2f size, 
-               std::function<void()> function) :
-        m_function(std::move(function)),
+               const std::function<void()> &function) :
+        m_function(function),
         m_rect(pos, size)
 {
     
