@@ -1,4 +1,4 @@
-#include "playerTexture.h"
+#include "MapObject/Textures/playerTexture.h"
 #include "resources_manager.h"
 
 PlayerTexture::PlayerTexture(PlayerColor color, float radius):

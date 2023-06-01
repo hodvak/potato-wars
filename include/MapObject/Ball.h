@@ -2,7 +2,7 @@
 
 #include "MovingMapObject.h"
 #include "GameMap.h"
-#include "playerTexture.h"
+#include "MapObject/Textures/playerTexture.h"
 
 /**
  * a Ball is a test for MovingMapObject

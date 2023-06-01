@@ -7,6 +7,7 @@
 #include "GameMap.h"
 
 class Ball;
+class Projectile;
 
 /**
  * all object in the game are derived from this class.
@@ -104,6 +105,9 @@ public:
      */
     // with Ball
     virtual bool collideDD(Ball *other_object);
+    
+    // with Projectile
+    virtual bool collideDD(Projectile *other_object);
 
     /**
      * virtual destructor for the derived classes
@@ -246,5 +250,9 @@ protected:
     void updateRotation(float delta_time);
 
 
+    /**
+     * set the rotation of the object
+     * @param rotation the new rotation of the object
+     */
     void setRotation(float rotation);
 };

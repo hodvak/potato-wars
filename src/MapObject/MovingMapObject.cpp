@@ -50,7 +50,6 @@ void MovingMapObject::update(float delta_time)
         updatePosition(delta_time);
         updateRotation(delta_time);
         collisionMap();
-
     }
 }
 
@@ -199,6 +198,8 @@ bool MovingMapObject::isRest() const
 
 void MovingMapObject::collideGeneric(MovingMapObject *other_object)
 {
+    // todo: fix physics
+    //       look trouble with projectiles 
     // get the angle of the collision
     float angle = (other_object->m_pos - m_pos).getAngle();
 
@@ -233,10 +234,6 @@ void MovingMapObject::collideGeneric(MovingMapObject *other_object)
                                           other_object->m_radius);
 }
 
-bool MovingMapObject::collideDD(Ball *)
-{
-    return false;
-}
 
 GameMap *MovingMapObject::getMap()
 {
@@ -264,8 +261,9 @@ void MovingMapObject::addBomb(const Bomb &bomb)
 void
 MovingMapObject::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    
+
 }
+
 void MovingMapObject::updateRotation(float delta_time)
 {
     m_rotation += m_velocity.x * 0.11f * delta_time;
@@ -280,4 +278,14 @@ float MovingMapObject::getRotation() const
 void MovingMapObject::setRotation(float rotation)
 {
     m_rotation = rotation;
+}
+
+bool MovingMapObject::collideDD(Projectile *)
+{
+    return false;
+}
+
+bool MovingMapObject::collideDD(Ball *)
+{
+    return false;
 }
