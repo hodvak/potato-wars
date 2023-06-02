@@ -97,9 +97,9 @@ public:
      * {
      *     return other_object->collideDD(this);
      * }
-     */
+     */     
     virtual bool collide(MovingMapObject *other_object) = 0;
-
+    
     /**
      * collide with double dispatch with the other objects
      */
@@ -118,6 +118,8 @@ public:
      * get the weight of the object
      */
     void exploded(const Bomb &bomb);
+    
+    [[nodiscard]] bool intersect(const MovingMapObject &other_object) const;
 
     void addBomb(const Bomb &bomb);
 

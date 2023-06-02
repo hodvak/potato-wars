@@ -5,6 +5,7 @@
 #include "MapObject/Ball.h"
 #include "BombHandler.h"
 
+//todo: add documentation
 
 class Game: public sf::Drawable
 {
@@ -18,4 +19,11 @@ private:
     GameMap m_map;
     std::vector<std::unique_ptr<MovingMapObject>> m_movingObjects;
     BombHandler m_bombHandler;
+
+    void
+    updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval);
+
+    void updateObjects(sf::Time time);
+
+    void updateCollision();
 };

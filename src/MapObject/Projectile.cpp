@@ -31,10 +31,10 @@ bool Projectile::collide(MovingMapObject *other_object)
 
 bool Projectile::collideDD(Ball *other_object)
 {
-    other_object->damage(m_damage);
-    kill();
     collideGeneric(other_object);
     addBomb({getPosition(),3*(int)getRadius(),0});
+    other_object->damage(m_damage);
+    kill();
     return true;
 }
 

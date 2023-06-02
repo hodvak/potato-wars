@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "resources_manager.h"
 #include "MapObject/Projectile.h"
+#include "Physics.h"
 
 Game::Game(const std::string &levelName) :
         m_map(levelName)
@@ -49,12 +50,7 @@ Game::Game(const std::string &levelName) :
 void Game::update(const sf::Time &deltaTime)
 {
 
-    // update objects
-    for (auto &movingObject: m_movingObjects)
-    {
-        movingObject->update(deltaTime.asSeconds());
-    }
-
+    updateObjectsInterval(deltaTime, sf::seconds(0.001f));
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
 
@@ -68,34 +64,25 @@ void Game::update(const sf::Time &deltaTime)
             m_movingObjects.end()
     );
 
-    // double dispatch
-    for (int i = 0; i < m_movingObjects.size(); ++i)
-    {
-        for (int j = i + 1; j < m_movingObjects.size(); ++j)
-        {
-            // calculate distance between objects
-            float distance_square =
-                    std::pow(m_movingObjects[i]->getPosition().x -
-                             m_movingObjects[j]->getPosition().x,
-                             2) +
-                    std::pow(m_movingObjects[i]->getPosition().y -
-                             m_movingObjects[j]->getPosition().y,
-                             2);
-            if (distance_square > std::pow(m_movingObjects[i]->getRadius() +
-                                           m_movingObjects[j]->getRadius(),
-                                           2))
-            {
-                continue;
-            }
-            if (!m_movingObjects[i]->collide(m_movingObjects[j].get()))
-            {
-                m_movingObjects[j]->collide(m_movingObjects[i].get());
-            }
-        }
-    }
 
 }
-
+void Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
+{
+    sf::Time time = sf::Time::Zero;
+    while (time < deltaTime)
+    {
+        if (time + interval > deltaTime)
+        {
+            updateObjects(deltaTime - time);
+        }
+        else
+        {
+            updateObjects(interval);
+        }
+        updateCollision();
+        time += interval;
+    }
+}
 void Game::handleEvent(const sf::Event &event)
 {
     switch (event.type)
@@ -110,7 +97,7 @@ void Game::handleEvent(const sf::Event &event)
                                              (float) event.mouseButton.y),
                                 3,
                                 0.3,
-                                MapVector(300, 300),
+                                MapVector(600, 300),
                                 &m_map,
                                 &m_bombHandler)
                 );
@@ -138,5 +125,32 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     for (const auto &movingObject: m_movingObjects)
     {
         target.draw(*movingObject, states);
+    }
+}
+
+void Game::updateObjects(sf::Time time)
+{
+    for (auto &movingObject: m_movingObjects)
+    {
+        // todo: change to update(time) when refactor the code
+        movingObject->update(time.asSeconds());
+    }
+
+}
+
+void Game::updateCollision()
+{
+    for (int i = 0; i < m_movingObjects.size(); ++i)
+    {
+        for (int j = i + 1; j < m_movingObjects.size(); ++j)
+        {
+            if (m_movingObjects[i]->intersect(*m_movingObjects[j]))
+            {
+                if(!m_movingObjects[i]->collide(m_movingObjects[j].get()))
+                {
+                    m_movingObjects[j]->collide(m_movingObjects[i].get());
+                }
+            }
+        }
     }
 }

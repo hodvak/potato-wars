@@ -1,5 +1,6 @@
 #include "MapObject/MovingMapObject.h"
 #include <cmath>
+#include "Physics.h"
 
 const float PI = acos(-1.0f);
 const float MovingMapObject::GRAVITY = 130.0f;
@@ -201,35 +202,32 @@ void MovingMapObject::collideGeneric(MovingMapObject *other_object)
     // todo: fix physics
     //       look trouble with projectiles 
     // get the angle of the collision
+    if(!other_object->isAlive() || !isAlive())
+    {
+        return;
+    }
+    std::cout << "=========collide generic=======" << std::endl
+              << "Player pos: " << m_pos << std::endl
+              << "Bullet pos: " << other_object->m_pos << std::endl
+              << "Player vel: " << m_velocity << std::endl
+              << "Bullet vel: " << other_object->m_velocity << std::endl;
+
+
     float angle = (other_object->m_pos - m_pos).getAngle();
 
-    auto [my_norm, my_tang] = m_velocity.getSplitVector(angle);
-    auto [other_norm, other_tang] = other_object->m_velocity.getSplitVector(
-            angle);
-
-    float new_velocity_length_norm =
-            (my_norm.getMagnitude() * (m_weight - other_object->m_weight) +
-             2 * other_object->m_weight * other_norm.getMagnitude()) /
-            (m_weight + other_object->m_weight);
-
-    float new_other_velocity_length_norm =
-            (other_norm.getMagnitude() * (other_object->m_weight - m_weight) +
-             2 * m_weight * my_norm.getMagnitude()) /
-            (m_weight + other_object->m_weight);
-
-    my_norm = -MapVector::getVectorFromAngle(my_norm.getAngle(),
-                                             new_velocity_length_norm);
-    other_norm = -MapVector::getVectorFromAngle(other_norm.getAngle(),
-                                                new_other_velocity_length_norm);
-
-    m_velocity = my_norm + my_tang;
-    other_object->m_velocity = other_norm + other_tang;
+    auto [v1f, v2f] = Physics::elasticCollision(m_weight,
+                                                other_object->m_weight,
+                                                m_velocity,
+                                                other_object->m_velocity,
+                                                angle);
+    m_velocity = v1f;
+    other_object->m_velocity = v2f;
 
     other_object->m_resting = false;
     m_resting = false;
 
     m_pos = other_object->m_pos +
-            MapVector::getVectorFromAngle(PI + angle,
+            MapVector::getVectorFromAngle(angle + PI,
                                           m_radius +
                                           other_object->m_radius);
 }
@@ -288,4 +286,10 @@ bool MovingMapObject::collideDD(Projectile *)
 bool MovingMapObject::collideDD(Ball *)
 {
     return false;
+}
+
+bool MovingMapObject::intersect(const MovingMapObject &other_object) const
+{
+    return (m_pos - other_object.m_pos).getMagnitude() <
+           m_radius + other_object.m_radius;
 }

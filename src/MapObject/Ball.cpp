@@ -37,7 +37,6 @@ bool Ball::collideDD(Ball *other_object)
 {
     damage(0.1f);
     other_object->damage(0.1f);
-    
     collideGeneric(other_object);
     MapVector center = (getPosition() + other_object->getPosition()) / 2.0f;
     addBomb({center, 100, 700});
