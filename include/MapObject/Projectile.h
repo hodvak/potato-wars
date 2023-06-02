@@ -14,7 +14,7 @@ public:
 
     void update(float deltaTime) override;
     bool collide(MovingMapObject *other_object) override;
-    bool collideDD(Ball *other_object) override;
+    bool collideDD(Character *other_object) override;
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:

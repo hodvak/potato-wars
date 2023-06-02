@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "GameMap.h"
-#include "MapObject/Ball.h"
+#include "MapObject/Character.h"
 #include "BombHandler.h"
 
 //todo: add documentation

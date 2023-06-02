@@ -6,7 +6,7 @@
 #include "MapVector.h"
 #include "GameMap.h"
 
-class Ball;
+class Character;
 class Projectile;
 
 /**
@@ -81,7 +81,22 @@ public:
      */
     [[nodiscard]] bool isRest() const;
 
+    /**
+     * get the rotation of the object (in radians)
+     */
     [[nodiscard]] float getRotation() const;
+
+    /**
+     * getter for the map
+     */
+    [[nodiscard]] const GameMap *getMap() const;
+
+    /**
+     * check if 2 objects intersect
+     * @param other_object the other object
+     * @return is there an intersection
+     */
+    [[nodiscard]] bool intersect(const MovingMapObject &other_object) const;
 
 
     /**
@@ -97,14 +112,15 @@ public:
      * {
      *     return other_object->collideDD(this);
      * }
+     * ```
      */     
     virtual bool collide(MovingMapObject *other_object) = 0;
     
     /**
      * collide with double dispatch with the other objects
      */
-    // with Ball
-    virtual bool collideDD(Ball *other_object);
+    // with Character
+    virtual bool collideDD(Character *other_object);
     
     // with Projectile
     virtual bool collideDD(Projectile *other_object);
@@ -115,19 +131,23 @@ public:
     ~MovingMapObject() override = default;
 
     /**
-     * get the weight of the object
+     * explode the object with the bomb
+     * @param bomb the bomb that exploded
      */
-    void exploded(const Bomb &bomb);
-    
-    [[nodiscard]] bool intersect(const MovingMapObject &other_object) const;
-
-    void addBomb(const Bomb &bomb);
+    virtual void exploded(const Bomb &bomb);
 
 private:
 
+    /**
+     * the rotation of the object (in radians)
+     */
     float m_rotation;
     
+    /**
+     * the bomb handler of the game
+     */
     BombHandler *m_bombHandler;
+    
     /**
      * the weight of the object
      */
@@ -227,12 +247,7 @@ protected:
     virtual void onDeath()
     {};
 
-    /**
-     * getter for the map
-     */
-    GameMap *getMap();
     
-
     /**
      * handle the collision physically with the other object
      */
@@ -257,4 +272,10 @@ protected:
      * @param rotation the new rotation of the object
      */
     void setRotation(float rotation);
+    
+    /**
+     * add a bomb to the bomb handler
+     * @param bomb the bomb to add
+     */
+    void addBomb(const Bomb &bomb);
 };

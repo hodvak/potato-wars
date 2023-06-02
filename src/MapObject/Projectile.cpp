@@ -1,5 +1,5 @@
 #include "MapObject/Projectile.h"
-#include "MapObject/Ball.h"
+#include "MapObject/Character.h"
 
 Projectile::Projectile(float weight,
                        const MapVector &pos,
@@ -29,7 +29,7 @@ bool Projectile::collide(MovingMapObject *other_object)
     return other_object->collideDD(this);
 }
 
-bool Projectile::collideDD(Ball *other_object)
+bool Projectile::collideDD(Character *other_object)
 {
     collideGeneric(other_object);
     addBomb({getPosition(),3*(int)getRadius(),0});

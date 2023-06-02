@@ -2,6 +2,9 @@
 #include <cmath>
 #include "Physics.h"
 
+// todo: chose where the PI,GRAVITY,FRICTION constants should be (not 
+//       necessarily all in the same place)
+
 const float PI = acos(-1.0f);
 const float MovingMapObject::GRAVITY = 130.0f;
 const float MovingMapObject::FRICTION = 0.2f;
@@ -199,20 +202,10 @@ bool MovingMapObject::isRest() const
 
 void MovingMapObject::collideGeneric(MovingMapObject *other_object)
 {
-    // todo: fix physics
-    //       look trouble with projectiles 
-    // get the angle of the collision
     if(!other_object->isAlive() || !isAlive())
     {
         return;
     }
-    std::cout << "=========collide generic=======" << std::endl
-              << "Player pos: " << m_pos << std::endl
-              << "Bullet pos: " << other_object->m_pos << std::endl
-              << "Player vel: " << m_velocity << std::endl
-              << "Bullet vel: " << other_object->m_velocity << std::endl;
-
-
     float angle = (other_object->m_pos - m_pos).getAngle();
 
     auto [v1f, v2f] = Physics::elasticCollision(m_weight,
@@ -233,7 +226,7 @@ void MovingMapObject::collideGeneric(MovingMapObject *other_object)
 }
 
 
-GameMap *MovingMapObject::getMap()
+const GameMap *MovingMapObject::getMap() const
 {
     return m_map;
 }
@@ -283,7 +276,7 @@ bool MovingMapObject::collideDD(Projectile *)
     return false;
 }
 
-bool MovingMapObject::collideDD(Ball *)
+bool MovingMapObject::collideDD(Character *)
 {
     return false;
 }

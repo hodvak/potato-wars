@@ -16,7 +16,7 @@ Game::Game(const std::string &levelName) :
             if (mask.getPixel(x, y) == sf::Color(255, 0, 0))
             {
                 m_movingObjects.emplace_back(
-                        std::make_unique<Ball>(
+                        std::make_unique<Character>(
                                 sf::Vector2f((float) x, (float) y),
                                 &m_map,
                                 &m_bombHandler,
@@ -26,7 +26,7 @@ Game::Game(const std::string &levelName) :
             else if (mask.getPixel(x, y) == sf::Color(0, 255, 0))
             {
                 m_movingObjects.emplace_back(
-                        std::make_unique<Ball>(
+                        std::make_unique<Character>(
                                 sf::Vector2f((float) x, (float) y),
                                 &m_map,
                                 &m_bombHandler,
@@ -36,7 +36,7 @@ Game::Game(const std::string &levelName) :
             else if (mask.getPixel(x, y) == sf::Color(0, 0, 255))
             {
                 m_movingObjects.emplace_back(
-                        std::make_unique<Ball>(
+                        std::make_unique<Character>(
                                 sf::Vector2f((float) x, (float) y),
                                 &m_map,
                                 &m_bombHandler,
@@ -105,7 +105,7 @@ void Game::handleEvent(const sf::Event &event)
             else if (event.mouseButton.button == sf::Mouse::Right)
             {
                 m_movingObjects.emplace_back(
-                        std::make_unique<Ball>(
+                        std::make_unique<Character>(
                                 sf::Vector2f((float) event.mouseButton.x,
                                              (float) event.mouseButton.y),
                                 &m_map,
