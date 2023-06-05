@@ -9,7 +9,6 @@
 class MapVector : public sf::Vector2f
 {
 public:
-    static float PI;
     /**
      * @brief Construct a new MapVector object form 2 floats
      * @param x the x value

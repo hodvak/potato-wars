@@ -1,5 +1,6 @@
 #include "MapVector.h"
-float MapVector::PI = acos(-1.0f);
+#include "Const.h"
+
 MapVector::MapVector(float x, float y) : sf::Vector2f(x, y)
 {
 
@@ -12,26 +13,28 @@ MapVector::MapVector(const sf::Vector2f &vector) : sf::Vector2f(vector)
 
 float MapVector::getMagnitude() const
 {
-    return sqrt(x*x+y*y);
+    return sqrt(x * x + y * y);
 }
+
 float MapVector::getMagnitudeSquared() const
 {
-    return x*x+y*y;
+    return x * x + y * y;
 }
 
 float MapVector::getAngle() const
 {
-    return atan2(y,x);
+    return atan2(y, x);
 }
 
 sf::Vector2<MapVector> MapVector::getSplitVector(float angle) const
 {
     float thisAngle = getAngle();
-    MapVector angels =  MapVector(angle - thisAngle,-thisAngle + angle+PI/2 );
+    MapVector angels = MapVector(angle - thisAngle,
+                                 -thisAngle + angle + Consts::PI / 2);
     MapVector magnitudes =
             getMagnitude() * MapVector(cos(angels.x), cos(angels.y));
     return sf::Vector2<MapVector>(getVectorFromAngle(angle, magnitudes.x),
-                                  getVectorFromAngle(PI / 2 + angle,
+                                  getVectorFromAngle(Consts::PI / 2 + angle,
                                                      magnitudes.y));
 }
 

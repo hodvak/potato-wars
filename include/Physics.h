@@ -5,8 +5,9 @@
 
 namespace Physics
 {
-    const int GRAVITY = 10;
-
+    const float GRAVITY = 130.0f;
+    const float FRICTION = 0.2f;
+    
     /**
      * regular elastic collision between two objects in 1D
      * @param m1 mass of first object

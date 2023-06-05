@@ -191,17 +191,7 @@ private:
 
 
 protected:
-
-    /**
-     * the acceleration of all object due to gravity on our potato planet
-     */
-    static const float GRAVITY;// = 130;
-
-    /**
-     * the friction (static and dynamic) of the ground on our potato planet
-     */
-    static const float FRICTION;// = 0.2f;
-
+    
     /**
      * set the forces according to the delta time.
      * by default, the forces are only the gravity

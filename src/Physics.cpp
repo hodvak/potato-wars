@@ -1,16 +1,17 @@
 #include "Physics.h"
 #include "MapVector.h"
+#include "Const.h"
 
 float getDiffAngle(float a1, float a2)
 {
     float diff = a1 - a2;
-    while (diff > MapVector::PI)
+    while (diff > Consts::PI)
     {
-        diff -= 2 * MapVector::PI;
+        diff -= 2 * Consts::PI;
     }
-    while (diff < -MapVector::PI)
+    while (diff < -Consts::PI)
     {
-        diff += 2 * MapVector::PI;
+        diff += 2 * Consts::PI;
     }
     return std::abs(diff);
 }
@@ -37,11 +38,11 @@ Physics::elasticCollision(float m1,
     float v1PerpendicularSpeed = v1Perpendicular.getMagnitude();
     float v2PerpendicularSpeed = v2Perpendicular.getMagnitude();
 
-    if (getDiffAngle(v1Perpendicular.getAngle(), hitAngle) > MapVector::PI / 2)
+    if (getDiffAngle(v1Perpendicular.getAngle(), hitAngle) > Consts::PI / 2)
     {
         v1PerpendicularSpeed *= -1.0f;
     }
-    if (getDiffAngle(v2Perpendicular.getAngle(), hitAngle) > MapVector::PI / 2)
+    if (getDiffAngle(v2Perpendicular.getAngle(), hitAngle) > Consts::PI / 2)
     {
         v2PerpendicularSpeed *= -1.0f;
     }

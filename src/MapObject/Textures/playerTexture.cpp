@@ -1,6 +1,6 @@
 #include "MapObject/Textures/playerTexture.h"
 #include "resources_manager.h"
-#include "MapVector.h"
+#include "Const.h"
 
 PlayerTexture::PlayerTexture(PlayerColor color, float radius) :
         m_angle(0),
@@ -43,5 +43,5 @@ void PlayerTexture::setLife(float life)
 void PlayerTexture::setAngle(float angle)
 {
     // see `draw` function for why we use degrees instead of radians
-    m_angle = angle * 180 / MapVector::PI;
+    m_angle = angle * 180 / Consts::PI;
 }
