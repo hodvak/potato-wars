@@ -12,7 +12,7 @@ public:
                GameMap *map,
                BombHandler *bomb_handler);
 
-    void update(float deltaTime) override;
+    void update(const sf::Time &deltaTime) override;
     bool collide(MovingMapObject *other_object) override;
     bool collideDD(Character *other_object) override;
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

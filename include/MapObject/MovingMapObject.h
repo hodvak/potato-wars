@@ -39,9 +39,9 @@ public:
     /**
      * update the velocity and the position of the object according to the forces
      * if override, the derived class should call this function first
-     * @param delta_time the time since the last update
+     * @param deltaTime the time since the last update
      */
-    virtual void update(float delta_time);
+    virtual void update(const sf::Time &deltaTime);
 
     /**
      * update the object's velocity based on the collision with another object
@@ -205,22 +205,22 @@ protected:
     /**
      * set the forces according to the delta time.
      * by default, the forces are only the gravity
-     * @param delta_time the time since the last update
+     * @param deltaTime the time since the last update
      */
-    virtual void updateForces(float delta_time);
+    virtual void updateForces(const sf::Time &deltaTime);
 
     /**
      * by default update the velocity of the object according to the forces
      * acting on it
-     * @param delta_time the time since the last update
+     * @param deltaTime the time since the last update
      */
-    virtual void updateVelocity(float delta_time);
+    virtual void updateVelocity(const sf::Time &deltaTime);
 
     /**
      * by default update the position of the object according to the velocity
-     * @param delta_time the time since the last update
+     * @param deltaTime the time since the last update
      */
-    virtual void updatePosition(float delta_time);
+    virtual void updatePosition(const sf::Time &deltaTime);
 
     /**
      * set the velocity of the object
@@ -264,7 +264,7 @@ protected:
     /***
      * update the object rotation angle according to the velocity
      */
-    void updateRotation(float delta_time);
+    void updateRotation(const sf::Time &deltaTime);
 
 
     /**

@@ -14,7 +14,7 @@ Projectile::Projectile(float weight,
 
 }
 
-void Projectile::update(float deltaTime)
+void Projectile::update(const sf::Time &deltaTime)
 {
     updatePosition(deltaTime);
     if(collisionMap() != -1)

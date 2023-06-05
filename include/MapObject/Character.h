@@ -31,7 +31,7 @@ public:
      * update the Character according to the time that passed
      * @param deltaTime the time that passed since the last update
      */
-    void update(float delta_time) override;
+    void update(const sf::Time &deltaTime) override;
     
     /**
      * function for double dispatch. need to be the same in all the 

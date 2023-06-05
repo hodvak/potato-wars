@@ -30,29 +30,29 @@ MovingMapObject::MovingMapObject(float weight,
 }
 
 
-void MovingMapObject::updateVelocity(float delta_time)
+void MovingMapObject::updateVelocity(const sf::Time &deltaTime)
 {
-    m_velocity += m_forces / m_weight * delta_time;
+    m_velocity += m_forces / m_weight * deltaTime.asSeconds();
 }
 
-void MovingMapObject::updateForces(float)
+void MovingMapObject::updateForces(const sf::Time &deltaTime)
 {
     m_forces = {0, m_weight * GRAVITY};
 }
 
-void MovingMapObject::updatePosition(float delta_time)
+void MovingMapObject::updatePosition(const sf::Time &deltaTime)
 {
-    m_pos += m_velocity * delta_time;
+    m_pos += m_velocity * deltaTime.asSeconds();
 }
 
-void MovingMapObject::update(float delta_time)
+void MovingMapObject::update(const sf::Time &deltaTime)
 {
     if (!m_resting)
     {
-        updateForces(delta_time);
-        updateVelocity(delta_time);
-        updatePosition(delta_time);
-        updateRotation(delta_time);
+        updateForces(deltaTime);
+        updateVelocity(deltaTime);
+        updatePosition(deltaTime);
+        updateRotation(deltaTime);
         collisionMap();
     }
 }
@@ -255,9 +255,9 @@ MovingMapObject::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 }
 
-void MovingMapObject::updateRotation(float delta_time)
+void MovingMapObject::updateRotation(const sf::Time &deltaTime)
 {
-    m_rotation += m_velocity.x * 0.11f * delta_time;
+    m_rotation += m_velocity.x * 0.11f * deltaTime.asSeconds();
     m_rotation = fmod(m_rotation, 2 * PI);
 }
 

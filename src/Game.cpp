@@ -132,8 +132,7 @@ void Game::updateObjects(sf::Time time)
 {
     for (auto &movingObject: m_movingObjects)
     {
-        // todo: change to update(time) when refactor the code
-        movingObject->update(time.asSeconds());
+        movingObject->update(time);
     }
 
 }

@@ -21,7 +21,7 @@ Character::Character(sf::Vector2f pos,
 
 }
 
-void Character::update(float delta_time)
+void Character::update(const sf::Time &delta_time)
 {
     MovingMapObject::update(delta_time);
     if(isRest())
