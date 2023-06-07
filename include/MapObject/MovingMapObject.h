@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <optional>
 #include "BombHandler.h"
 #include "MapVector.h"
 #include "GameMap.h"
@@ -247,9 +248,8 @@ protected:
      * update the object's velocity based on the collision with the map
      * @param angle angle of the collision with the map
      * @return the hit angle of the collision if the object collide with the map
-     *         or -1 if the object is not colliding with the map
      */
-    virtual float collisionMap();
+    virtual std::optional<float> collisionMap();
 
     /***
      * update the object rotation angle according to the velocity

@@ -91,7 +91,7 @@ bool MovingMapObject::collisionObject(MovingMapObject *other_object)
     return true;
 }
 
-float MovingMapObject::collisionMap()
+std::optional<float> MovingMapObject::collisionMap()
 {
 
     MapVector closestPoint = {-m_radius, -m_radius};
@@ -134,7 +134,7 @@ float MovingMapObject::collisionMap()
 
     if (num_of_pixels == 0)
     {
-        return -1;
+        return std::nullopt;
     }
 
     //move to stand on the closest point

@@ -17,7 +17,7 @@ Projectile::Projectile(float weight,
 void Projectile::update(const sf::Time &deltaTime)
 {
     updatePosition(deltaTime);
-    if(collisionMap() != -1)
+    if(collisionMap())
     {
         kill();
         addBomb({getPosition(),3*(int)getRadius(),100});
