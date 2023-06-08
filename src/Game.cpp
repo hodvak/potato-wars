@@ -4,7 +4,8 @@
 #include "Physics.h"
 
 Game::Game(const std::string &levelName) :
-        m_map(levelName)
+        m_map(levelName), m_camera(m_map.getMask().getSize().x,
+                                   m_map.getMask().getSize().y)
 {
     const sf::Image &mask = *resources_manager::getImage(
             "resources/Levels/" + levelName + "/map.bmp"
@@ -22,8 +23,7 @@ Game::Game(const std::string &levelName) :
                                 &m_bombHandler,
                                 PlayerColor::RED)
                 );
-            }
-            else if (mask.getPixel(x, y) == sf::Color(0, 255, 0))
+            } else if (mask.getPixel(x, y) == sf::Color(0, 255, 0))
             {
                 m_movingObjects.emplace_back(
                         std::make_unique<Character>(
@@ -32,8 +32,7 @@ Game::Game(const std::string &levelName) :
                                 &m_bombHandler,
                                 PlayerColor::GREEN)
                 );
-            }
-            else if (mask.getPixel(x, y) == sf::Color(0, 0, 255))
+            } else if (mask.getPixel(x, y) == sf::Color(0, 0, 255))
             {
                 m_movingObjects.emplace_back(
                         std::make_unique<Character>(
@@ -63,10 +62,17 @@ void Game::update(const sf::Time &deltaTime)
                            }),
             m_movingObjects.end()
     );
-
+    std::vector<MovingMapObject *> objectsToWatch;
+    for (const auto &object: m_movingObjects)
+    {
+        if (!object->isRest()) objectsToWatch.push_back(object.get());
+    }
+    m_camera.setToFollow(objectsToWatch);
 
 }
-void Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
+
+void
+Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 {
     sf::Time time = sf::Time::Zero;
     while (time < deltaTime)
@@ -74,8 +80,7 @@ void Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &inte
         if (time + interval > deltaTime)
         {
             updateObjects(deltaTime - time);
-        }
-        else
+        } else
         {
             updateObjects(interval);
         }
@@ -83,6 +88,7 @@ void Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &inte
         time += interval;
     }
 }
+
 void Game::handleEvent(const sf::Event &event)
 {
     switch (event.type)
@@ -101,8 +107,7 @@ void Game::handleEvent(const sf::Event &event)
                                 &m_map,
                                 &m_bombHandler)
                 );
-            }
-            else if (event.mouseButton.button == sf::Mouse::Right)
+            } else if (event.mouseButton.button == sf::Mouse::Right)
             {
                 m_movingObjects.emplace_back(
                         std::make_unique<Character>(
@@ -121,6 +126,7 @@ void Game::handleEvent(const sf::Event &event)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+
     target.draw(m_map, states);
     for (const auto &movingObject: m_movingObjects)
     {
@@ -145,7 +151,7 @@ void Game::updateCollision()
         {
             if (m_movingObjects[i]->intersect(*m_movingObjects[j]))
             {
-                if(!m_movingObjects[i]->collide(m_movingObjects[j].get()))
+                if (!m_movingObjects[i]->collide(m_movingObjects[j].get()))
                 {
                     m_movingObjects[j]->collide(m_movingObjects[i].get());
                 }

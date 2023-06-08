@@ -4,7 +4,7 @@
 #include "MapVector.h"
 
 /**
- * a bomb class for the BombHandler
+ * a struct class for the BombHandler
  */
 struct Bomb
 {

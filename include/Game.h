@@ -4,6 +4,7 @@
 #include "GameMap.h"
 #include "MapObject/Character.h"
 #include "BombHandler.h"
+#include "Camera.h"
 
 //todo: add documentation
 
@@ -19,6 +20,7 @@ private:
     GameMap m_map;
     std::vector<std::unique_ptr<MovingMapObject>> m_movingObjects;
     BombHandler m_bombHandler;
+    Camera m_camera;
 
     void
     updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval);

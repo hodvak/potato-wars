@@ -12,13 +12,13 @@ public:
     /**
      * regular constructor
      */
-    Camera();
+    Camera(float width,float hight);
 
     /**
      * set the camera to follow an object
      * @param object the object to follow or nullptr to stop following
      */
-    void setToFollow(MovingMapObject *object);
+    void setToFollow(std::vector<MovingMapObject *> objectToWatch);
 
     /**
      * update the camera position and zoom
@@ -31,7 +31,7 @@ private:
     /**
      * the object that the camera is following
      */
-    MovingMapObject *m_object = nullptr;
+    std::vector<MovingMapObject *> m_objectsToWatch;
 
     /**
      * the view of the camera
