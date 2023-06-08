@@ -68,6 +68,7 @@ void Game::update(const sf::Time &deltaTime)
         if (!object->isRest()) objectsToWatch.push_back(object.get());
     }
     m_camera.setToFollow(objectsToWatch);
+    m_camera.update(deltaTime);
 
 }
 
@@ -126,7 +127,7 @@ void Game::handleEvent(const sf::Event &event)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-
+    target.setView(m_camera.getView());
     target.draw(m_map, states);
     for (const auto &movingObject: m_movingObjects)
     {

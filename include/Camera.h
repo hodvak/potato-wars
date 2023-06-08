@@ -24,7 +24,9 @@ public:
      * update the camera position and zoom
      * @param window the window to update
      */
-    void update(sf::RenderWindow *window);
+    void update(sf::Time deltaTime);
+
+   const sf::View &getView() const;
 
 private:
 
@@ -37,5 +39,6 @@ private:
      * the view of the camera
      */
     sf::View m_view;
+    sf::Vector2f screenSize;
 
 };
