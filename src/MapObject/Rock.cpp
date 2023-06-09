@@ -53,6 +53,10 @@ void Rock::update(const sf::Time &deltaTime)
 {
     MovingMapObject::update(deltaTime);
     m_texture.setAngle(getRotation());
+    if(isRest())
+    {
+        kill();
+    }
 }
 
 bool Rock::collide(MovingMapObject *other_object)
