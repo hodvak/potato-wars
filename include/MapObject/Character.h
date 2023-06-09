@@ -54,6 +54,11 @@ public:
      * draw the Character to the target
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    
+    /**
+     * get the color of the Character
+     */
+    PlayerColor getColor() const;
 
 private:
     
@@ -66,6 +71,11 @@ private:
      * life of the Character (in [0, 1])
      */
     float m_life;
+    
+    /**
+     * the color of the Character
+     */
+    PlayerColor m_color;
     
     
 

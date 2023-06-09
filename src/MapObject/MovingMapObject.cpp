@@ -274,6 +274,10 @@ bool MovingMapObject::collideDD(Character *)
 {
     return false;
 }
+bool MovingMapObject::collideDD(Rock *)
+{
+    return false;
+}
 
 bool MovingMapObject::intersect(const MovingMapObject &other_object) const
 {

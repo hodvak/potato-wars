@@ -9,6 +9,7 @@
 
 class Character;
 class Projectile;
+class Rock;
 
 /**
  * all object in the game are derived from this class.
@@ -126,6 +127,9 @@ public:
     // with Projectile
     virtual bool collideDD(Projectile *other_object);
 
+    // with Rock
+    virtual bool collideDD(Rock *other_object);
+
     /**
      * virtual destructor for the derived classes
      */
@@ -136,6 +140,18 @@ public:
      * @param bomb the bomb that exploded
      */
     virtual void exploded(const Bomb &bomb);
+
+/**
+ * set the position of the object
+ * @param pos the new position of the object
+ */
+void setPosition(MapVector pos);
+
+/**
+ * set the velocity of the object
+ * @param velocity the new velocity of the object
+ */
+void setVelocity(MapVector velocity);
 
 private:
 
@@ -212,18 +228,6 @@ protected:
      * @param deltaTime the time since the last update
      */
     virtual void updatePosition(const sf::Time &deltaTime);
-
-    /**
-     * set the velocity of the object
-     * @param velocity the new velocity of the object
-     */
-    void setVelocity(MapVector velocity);
-
-    /**
-     * set the position of the object
-     * @param pos the new position of the object
-     */
-    void setPosition(MapVector pos);
 
     /**
      * set the forces acting on the object

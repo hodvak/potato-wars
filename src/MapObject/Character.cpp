@@ -16,7 +16,8 @@ Character::Character(sf::Vector2f pos,
                         {0,0}, // no speed at start
                         bomb_handler),
         m_life(1), // start with full life
-        m_texture(color, Character::RADIUS)
+        m_texture(color, Character::RADIUS),
+        m_color(color)
 {
 
 }
@@ -56,4 +57,9 @@ void Character::damage(float damage)
         kill();
     }
     m_texture.setLife(m_life);
+}
+
+PlayerColor Character::getColor() const
+{
+    return m_color;
 }
