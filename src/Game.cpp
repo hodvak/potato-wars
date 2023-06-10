@@ -6,6 +6,7 @@
 #include "MapObject/BombObject.h"
 #include "Weapon/ThrowWeapon.h"
 #include "Physics.h"
+#include "Weapon/Rifle.h"
 
 Game::Game(const std::string &levelName) :
         m_map(levelName)
@@ -65,13 +66,30 @@ Game::Game(const std::string &levelName) :
 //                                                         &m);
 //                                             });
 
-     m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
-                                              *(new BombObject({0,0},&m_map, &m_bombHandler)),
-                                              [&](MovingMapObject &m)
-                                              {
-                                                  m_movingObjects.emplace_back(
-                                                          &m);
-                                              });
+//     m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
+//                                              *(new BombObject({0,0},&m_map, &m_bombHandler)),
+//                                              [&](MovingMapObject &m)
+//                                              {
+//                                                  m_movingObjects.emplace_back(
+//                                                          &m);
+//                                              });
+    Rifle a(*m_characters[0],
+            [&](MovingMapObject &m)
+            {
+                m_movingObjects.emplace_back(
+                        &m);
+            },
+            m_map,
+            m_bombHandler);
+    
+    m_weapon = std::make_unique<Rifle>(*m_characters[0],
+                                       [&](MovingMapObject &m)
+                                       {
+                                           m_movingObjects.emplace_back(
+                                                   &m);
+                                       },
+                                       m_map,
+                                       m_bombHandler);
 }
 
 void Game::update(const sf::Time &deltaTime)
