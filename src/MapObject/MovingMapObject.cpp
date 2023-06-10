@@ -305,3 +305,8 @@ bool MovingMapObject::intersect(const MovingMapObject &other_object) const
     return (m_pos - other_object.m_pos).getMagnitude() <
            m_radius + other_object.m_radius;
 }
+
+bool MovingMapObject::collideDD2(BombObject *other_object)
+{
+    return false;
+}

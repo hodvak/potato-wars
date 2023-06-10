@@ -3,6 +3,7 @@
 #include "MapObject/Projectile.h"
 #include "MapObject/Character.h"
 #include "MapObject/Rock.h"
+#include "MapObject/BombObject.h"
 #include "Weapon/ThrowWeapon.h"
 #include "Physics.h"
 
@@ -53,16 +54,24 @@ Game::Game(const std::string &levelName) :
             }
         }
     }
-    m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
-                                             *(new Rock(sf::Vector2f(0, 0),
-                                                         sf::Vector2f (0, 0),
-                                                             &m_map,
-                                                             PlayerColor::RED)),
-                                             [&](MovingMapObject &m)
-                                             {
-                                                 m_movingObjects.emplace_back(
-                                                         &m);
-                                             });
+//    m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
+//                                             *(new Rock(sf::Vector2f(0, 0),
+//                                                         sf::Vector2f (0, 0),
+//                                                             &m_map,
+//                                                             PlayerColor::RED)),
+//                                             [&](MovingMapObject &m)
+//                                             {
+//                                                 m_movingObjects.emplace_back(
+//                                                         &m);
+//                                             });
+
+     m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
+                                              *(new BombObject({0,0},&m_map, &m_bombHandler)),
+                                              [&](MovingMapObject &m)
+                                              {
+                                                  m_movingObjects.emplace_back(
+                                                          &m);
+                                              });
 }
 
 void Game::update(const sf::Time &deltaTime)

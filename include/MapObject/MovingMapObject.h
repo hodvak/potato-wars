@@ -10,6 +10,7 @@
 class Character;
 class Projectile;
 class Rock;
+class BombObject;
 
 /**
  * all object in the game are derived from this class.
@@ -138,6 +139,9 @@ public:
 
     // with Rock
     virtual bool collideDD2(Rock *other_object);
+    
+    // with BombObject
+    virtual bool collideDD2(BombObject *other_object);
 
     /**
      * handle the collision physically with the other object
