@@ -6,7 +6,7 @@ const float Rock::RADIUS = 7;
 const float Rock::WEIGHT = 60;
 
 
-bool Rock::collideDD(Character *other_object)
+bool Rock::collideDD2(Character *other_object)
 {
     collideGeneric(other_object);
     if (!m_color ||  other_object->getColor() != *m_color)
@@ -19,18 +19,6 @@ bool Rock::collideDD(Character *other_object)
         }
         m_texture.setLife(m_life);
     }
-    return true;
-}
-
-bool Rock::collideDD(Projectile *other_object)
-{
-    collideGeneric(other_object);
-    return true;
-}
-
-bool Rock::collideDD(Rock *other_object)
-{
-    collideGeneric(other_object);
     return true;
 }
 
@@ -59,9 +47,9 @@ void Rock::update(const sf::Time &deltaTime)
     }
 }
 
-bool Rock::collide(MovingMapObject *other_object)
+bool Rock::collideDD1(MovingMapObject *other_object)
 {
-    return other_object->collideDD(this);
+    return other_object->collideDD2(this);
 }
 
 void Rock::draw(sf::RenderTarget &target, sf::RenderStates states) const

@@ -105,30 +105,46 @@ public:
      * kill the object
      */
     void kill();
-
+    
+    // ==================== collision functions ====================
+    
     /**
-     * collide function for double dispatch
+     * collide function test for collision with other object and react 
+     * accordingly using double dispatch, if both object didn't react, the
+     * default reaction is to do generic collision
+     * @param other_object 
+     */
+    void collide(MovingMapObject *other_object);
+    /**
+     * collideDD1 function for double dispatch
      * mus be implemented in the derived class as follows:
      * ```
-     * bool collide(ClassName *other_object)
+     * bool collideDD1(ClassName *other_object)
      * {
-     *     return other_object->collideDD(this);
+     *     return other_object->collideDD2(this);
      * }
      * ```
      */     
-    virtual bool collide(MovingMapObject *other_object) = 0;
+    virtual bool collideDD1(MovingMapObject *other_object) = 0;
     
     /**
-     * collide with double dispatch with the other objects
+     * collideDD1 with double dispatch with the other objects
      */
     // with Character
-    virtual bool collideDD(Character *other_object);
+    virtual bool collideDD2(Character *other_object);
     
     // with Projectile
-    virtual bool collideDD(Projectile *other_object);
+    virtual bool collideDD2(Projectile *other_object);
 
     // with Rock
-    virtual bool collideDD(Rock *other_object);
+    virtual bool collideDD2(Rock *other_object);
+
+    /**
+     * handle the collision physically with the other object
+     */
+    void collideGeneric(MovingMapObject *other_object);
+    
+    // ==================== end of collision functions ====================
 
     /**
      * virtual destructor for the derived classes
@@ -241,17 +257,12 @@ protected:
      */
     virtual void onDeath()
     {};
-
     
-    /**
-     * handle the collision physically with the other object
-     */
-    void collideGeneric(MovingMapObject *other_object);
 
     /**
      * update the object's velocity based on the collision with the map
      * @param angle angle of the collision with the map
-     * @return the hit angle of the collision if the object collide with the map
+     * @return the hit angle of the collision if the object collideDD1 with the map
      */
     virtual std::optional<float> collisionMap();
 

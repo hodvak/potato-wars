@@ -37,12 +37,12 @@ public:
      * function for double dispatch. need to be the same in all the 
      * MovingMapObject derived classes
      */
-    bool collide(MovingMapObject *other_object) override;
+    bool collideDD1(MovingMapObject *other_object) override;
     
     /**
-     * collide with a Character.
+     * collideDD1 with a Character.
      */
-    bool collideDD(Character *other_object) override;
+    bool collideDD2(Character *other_object) override;
     
     /**
      * decrease the life of the Character

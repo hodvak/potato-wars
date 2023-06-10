@@ -265,18 +265,39 @@ void MovingMapObject::setRotation(float rotation)
     m_rotation = rotation;
 }
 
-bool MovingMapObject::collideDD(Projectile *)
+bool MovingMapObject::collideDD2(Projectile *other_object)
 {
     return false;
 }
 
-bool MovingMapObject::collideDD(Character *)
+bool MovingMapObject::collideDD2(Character *other_object)
 {
     return false;
 }
-bool MovingMapObject::collideDD(Rock *)
+bool MovingMapObject::collideDD2(Rock *other_object)
 {
     return false;
+}
+
+void MovingMapObject::collide(MovingMapObject *other_object)
+{
+    // no collision if one of the objects is dead
+    if(!other_object->isAlive() || !isAlive() || !intersect(*other_object))
+    {
+        return;
+    }
+    // if this object implements DD2
+    if (collideDD1(other_object)) 
+    {
+        return;
+    }
+    // if other object implements DD2
+    if (other_object->collideDD1(this))
+    {
+        return;
+    }
+    // generic collision by default
+    collideGeneric(other_object); 
 }
 
 bool MovingMapObject::intersect(const MovingMapObject &other_object) const

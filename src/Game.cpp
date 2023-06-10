@@ -137,13 +137,7 @@ void Game::updateCollision()
     {
         for (int j = i + 1; j < m_movingObjects.size(); ++j)
         {
-            if (m_movingObjects[i]->intersect(*m_movingObjects[j]))
-            {
-                if (!m_movingObjects[i]->collide(m_movingObjects[j].get()))
-                {
-                    m_movingObjects[j]->collide(m_movingObjects[i].get());
-                }
-            }
+            m_movingObjects[i]->collide(m_movingObjects[j].get());
         }
     }
 }

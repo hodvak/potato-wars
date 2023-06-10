@@ -24,12 +24,12 @@ void Projectile::update(const sf::Time &deltaTime)
     }
 }
 
-bool Projectile::collide(MovingMapObject *other_object)
+bool Projectile::collideDD1(MovingMapObject *other_object)
 {
-    return other_object->collideDD(this);
+    return other_object->collideDD2(this);
 }
 
-bool Projectile::collideDD(Character *other_object)
+bool Projectile::collideDD2(Character *other_object)
 {
     collideGeneric(other_object);
     addBomb({getPosition(),3*(int)getRadius(),0});

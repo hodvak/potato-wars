@@ -32,12 +32,12 @@ void Character::update(const sf::Time &delta_time)
     m_texture.setAngle(getRotation());
 }
 
-bool Character::collide(MovingMapObject *otherObject)
+bool Character::collideDD1(MovingMapObject *otherObject)
 {
-    return otherObject->collideDD(this);
+    return otherObject->collideDD2(this);
 }
 
-bool Character::collideDD(Character *other_object)
+bool Character::collideDD2(Character *other_object)
 {
     collideGeneric(other_object);
     return true;
