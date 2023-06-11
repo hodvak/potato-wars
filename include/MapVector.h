@@ -69,6 +69,12 @@ public:
      * @return the magnitude of the vector squared
      */
     [[nodiscard]] float getMagnitudeSquared() const;
+    
+    /**
+     * change the magnitude of the vector to the given magnitude (keep the angle)
+     * @param magnitude the new magnitude of the vector
+     */
+    void normalize(float magnitude = 1);
 };
 
 /** all math operators for MapVector doing the operation on both x and y

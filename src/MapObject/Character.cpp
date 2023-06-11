@@ -16,7 +16,8 @@ Character::Character(sf::Vector2f pos,
                         {0,0}, // no speed at start
                         bomb_handler),
         m_life(1), // start with full life
-        m_texture(color, Character::RADIUS)
+        m_texture(color, Character::RADIUS),
+        m_color(color)
 {
 
 }
@@ -31,12 +32,12 @@ void Character::update(const sf::Time &delta_time)
     m_texture.setAngle(getRotation());
 }
 
-bool Character::collide(MovingMapObject *otherObject)
+bool Character::collideDD1(MovingMapObject *otherObject)
 {
-    return otherObject->collideDD(this);
+    return otherObject->collideDD2(this);
 }
 
-bool Character::collideDD(Character *other_object)
+bool Character::collideDD2(Character *other_object)
 {
     collideGeneric(other_object);
     return true;
@@ -56,4 +57,9 @@ void Character::damage(float damage)
         kill();
     }
     m_texture.setLife(m_life);
+}
+
+PlayerColor Character::getColor() const
+{
+    return m_color;
 }

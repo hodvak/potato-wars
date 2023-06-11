@@ -48,6 +48,18 @@ MapVector MapVector::getRotatedVector(float angle) const
     return getVectorFromAngle(getAngle() + angle, getMagnitude());
 }
 
+void MapVector::normalize(float magnitude)
+{
+    float currentMagnitude = getMagnitude();
+    if (currentMagnitude == 0)
+    {
+        return;
+    }
+    x *= magnitude / currentMagnitude;
+    y *= magnitude / currentMagnitude;
+
+}
+
 MapVector operator*(const MapVector &vector1, const MapVector &vector2)
 {
     MapVector result(vector1);

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <SFML/Graphics.hpp>
 /**
  * an enum for the player color
  * arrange as the players.png file

@@ -29,7 +29,14 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
             }
             else
             {
-                m_game.handleEvent(event);
+                if (event.type == sf::Event::MouseMoved)
+                {
+                    m_game.handleMouseMoved(window.mapPixelToCoords(sf::Vector2i(event.mouseMove.x, event.mouseMove.y)));
+                }
+                else if (event.type == sf::Event::MouseButtonPressed)
+                {
+                    m_game.handleMousePressed(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y)));
+                }
             }
 
         }
