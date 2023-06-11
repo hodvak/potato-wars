@@ -1,14 +1,15 @@
 #pragma once
+#include <functional>
+#include <memory>
 #include "MapObject/Character.h"
 #include "Weapon/Weapon.h"
 #include "Weapon/Textures/RifleTexture.h"
-#include <functional>
 
 class Rifle : public Weapon
 {
 public:
     Rifle(Character &owner, 
-          const std::function<void(MovingMapObject &)> &addMapObjectFunc,
+          const std::function<void(std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
           GameMap &map,
           BombHandler &bombHandler);
 
@@ -21,7 +22,7 @@ private:
     MapVector m_aimPosition;
     Character &m_character;
     RifleTexture m_texture;
-    std::function<void(MovingMapObject &)> m_addMapObjectFunc;
+    std::function<void(std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
     GameMap &m_map;
     BombHandler &m_bombHandler;
 };

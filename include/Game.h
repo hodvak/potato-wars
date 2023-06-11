@@ -30,4 +30,6 @@ private:
     void updateObjects(sf::Time time);
 
     void updateCollision();
+    
+    void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
 };

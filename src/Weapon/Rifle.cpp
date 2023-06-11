@@ -2,7 +2,7 @@
 #include "MapObject/Projectile.h"
 
 Rifle::Rifle(Character &character,
-             const std::function<void(MovingMapObject &)> &addMapObjectFunc,
+             const std::function<void(std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
              GameMap &map,
              BombHandler &bombHandler):
         Weapon(),
@@ -36,7 +36,7 @@ void Rifle::handleMousePressed(const MapVector &mousePosition)
     startPosition.normalize(m_character.getRadius()+6);
     startPosition = m_character.getPosition() + startPosition;
     
-    m_addMapObjectFunc(*(new Projectile(30,startPosition, 3, 0.6, power, &m_map, &m_bombHandler)));
+    m_addMapObjectFunc(std::make_unique<Projectile>(30,startPosition, 3, 0.6, power, &m_map, &m_bombHandler));
     die();
 }
 

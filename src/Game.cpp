@@ -55,41 +55,46 @@ Game::Game(const std::string &levelName) :
             }
         }
     }
-//    m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
-//                                             *(new Rock(sf::Vector2f(0, 0),
-//                                                         sf::Vector2f (0, 0),
-//                                                             &m_map,
-//                                                             PlayerColor::RED)),
-//                                             [&](MovingMapObject &m)
-//                                             {
-//                                                 m_movingObjects.emplace_back(
-//                                                         &m);
-//                                             });
 
-//     m_weapon = std::make_unique<ThrowWeapon>(*m_characters[0],
-//                                              *(new BombObject({0,0},&m_map, &m_bombHandler)),
-//                                              [&](MovingMapObject &m)
-//                                              {
-//                                                  m_movingObjects.emplace_back(
-//                                                          &m);
-//                                              });
-    Rifle a(*m_characters[0],
-            [&](MovingMapObject &m)
+//    m_weapon = std::make_unique<ThrowWeapon>(
+//            *m_characters[1],
+//
+//            std::make_unique<Rock>(MapVector(0, 0),
+//                                   MapVector(0, 0),
+//                                   &m_map,
+//                                   PlayerColor::RED),
+//
+//            [&](std::unique_ptr<MovingMapObject> &&m)
+//            {
+//                addMovingObject(std::move(m));
+//            }
+//    );
+
+//    m_weapon = std::make_unique<ThrowWeapon>(
+//            *m_characters[1],
+//
+//            std::make_unique<BombObject>(MapVector(0, 0),
+//                                         &m_map,
+//                                         &m_bombHandler),
+//
+//            [&](std::unique_ptr<MovingMapObject> &&m)
+//            {
+//                addMovingObject(std::move(m));
+//            }
+//    );
+
+
+    m_weapon = std::make_unique<Rifle>(
+            *m_characters[1],
+
+            [&](std::unique_ptr<MovingMapObject> &&m)
             {
-                m_movingObjects.emplace_back(
-                        &m);
+                addMovingObject(std::move(m));
             },
+
             m_map,
-            m_bombHandler);
-    
-    m_weapon = std::make_unique<Rifle>(*m_characters[0],
-                                       [&](MovingMapObject &m)
-                                       {
-                                           m_movingObjects.emplace_back(
-                                                   &m);
-                                       },
-                                       m_map,
-                                       m_bombHandler);
+            m_bombHandler
+    );
 }
 
 void Game::update(const sf::Time &deltaTime)
@@ -183,4 +188,9 @@ void Game::handleMousePressed(const MapVector &mousePosition)
     {
         m_weapon->handleMousePressed(mousePosition);
     }
+}
+
+void Game::addMovingObject(std::unique_ptr<MovingMapObject> &&object)
+{
+    m_movingObjects.emplace_back(std::move(object));
 }

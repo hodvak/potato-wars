@@ -2,13 +2,13 @@
 #include "MapObject/Character.h"
 
 ThrowWeapon::ThrowWeapon(const Character &character,
-                         MovingMapObject &weapon,
-                         const std::function<void(MovingMapObject &)> &
+                         std::unique_ptr<MovingMapObject> &&weapon,
+                         const std::function<void(std::unique_ptr<MovingMapObject> &&)> &
                          addMapObjectFunc)
         :
         m_addMapObjectFunc(addMapObjectFunc),
-        m_weapon(weapon),
-        m_StartVelocity(1, 0),
+        m_weapon(std::move(weapon)),
+        m_startVelocity(1, 0),
         m_character(character),
         m_texture(character, {1,0}, m_maxDistance)
 {
@@ -18,26 +18,26 @@ ThrowWeapon::ThrowWeapon(const Character &character,
 
 void ThrowWeapon::handleMouseMoved(const MapVector &mousePosition)
 {
-    m_StartVelocity = m_character.getPosition() - mousePosition;
-    if(m_StartVelocity.getMagnitude() > m_maxDistance)
+    m_startVelocity = m_character.getPosition() - mousePosition;
+    if(m_startVelocity.getMagnitude() > m_maxDistance)
     {
-        m_StartVelocity.normalize(m_maxDistance);
+        m_startVelocity.normalize(m_maxDistance);
     }
-    m_texture.setDirection(m_StartVelocity);
+    m_texture.setDirection(m_startVelocity);
     fixPosition();
 }
 
 void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
 {
-    m_StartVelocity = m_character.getPosition() - mousePosition;
-    if(m_StartVelocity.getMagnitude() > m_maxDistance)
+    m_startVelocity = m_character.getPosition() - mousePosition;
+    if(m_startVelocity.getMagnitude() > m_maxDistance)
     {
-        m_StartVelocity.normalize(m_maxDistance);
+        m_startVelocity.normalize(m_maxDistance);
     }
-    m_texture.setDirection(m_StartVelocity);
+    m_texture.setDirection(m_startVelocity);
     fixPosition();
-    m_weapon.setVelocity(m_StartVelocity*3);
-    m_addMapObjectFunc(m_weapon);
+    m_weapon->setVelocity(m_startVelocity * 3);
+    m_addMapObjectFunc(std::move(m_weapon));
     die();
 }
 
@@ -49,17 +49,17 @@ void ThrowWeapon::update(const sf::Time &deltaTime)
 
 void ThrowWeapon::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(m_weapon, states);
+    target.draw(*m_weapon, states);
     target.draw(m_texture, states);
 }
 
 void ThrowWeapon::fixPosition()
 {
     MapVector startPosition = m_character.getPosition();
-    MapVector diffPosition = m_StartVelocity;
-    diffPosition.normalize(m_weapon.getRadius() + m_character.getRadius());
+    MapVector diffPosition = m_startVelocity;
+    diffPosition.normalize(m_weapon->getRadius() + m_character.getRadius());
     startPosition += diffPosition;
 
-    m_weapon.setPosition(startPosition);
+    m_weapon->setPosition(startPosition);
 
 }
