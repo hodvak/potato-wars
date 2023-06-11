@@ -39,7 +39,8 @@ public:
     [[nodiscard]] float getMagnitude() const;
 
     /**
-     * get the angle of the vector (from the x axis)
+     * get the angle of the vector (from the with x axis) in radians
+     * the angle is in the range (-PI, PI]
      * @return the angle of the vector
      */
     [[nodiscard]] float getAngle() const;
