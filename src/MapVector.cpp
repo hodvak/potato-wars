@@ -60,6 +60,13 @@ void MapVector::normalize(float magnitude)
 
 }
 
+MapVector MapVector::getNormalized(float magnitude) const
+{
+    MapVector result(*this);
+    result.normalize(magnitude);
+    return result;
+}
+
 MapVector operator*(const MapVector &vector1, const MapVector &vector2)
 {
     MapVector result(vector1);

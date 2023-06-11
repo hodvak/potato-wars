@@ -106,6 +106,10 @@ public:
      * kill the object
      */
     void kill();
+    /**
+     * stop the object
+     */
+    void stop();
     
     // ==================== collision functions ====================
     
@@ -173,6 +177,11 @@ void setPosition(MapVector pos);
  */
 void setVelocity(MapVector velocity);
 
+/**
+ * get movement time
+ */
+[[nodiscard]] sf::Time getMovementTime() const;
+
 private:
 
     /**
@@ -224,7 +233,15 @@ private:
      * the map that the object is on
      */
     GameMap *m_map;
-
+    /**
+     * a point that followes the object
+     * and stops it when it get stucks
+     */
+    MapVector m_stuckPoint;
+    /**
+     * the time the stuck point is in the object radius
+     */
+    sf::Time m_movementTime;
 
 
 protected:
@@ -287,4 +304,9 @@ protected:
      * @param bomb the bomb to add
      */
     void addBomb(const Bomb &bomb);
+    /**
+     * get the stuck point of the object
+     * @return
+     */
+    void unstuck();
 };

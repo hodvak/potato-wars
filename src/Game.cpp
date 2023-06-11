@@ -177,7 +177,6 @@ void Game::updateObjects(sf::Time time)
            movingObject->kill();
         }
 
-
     }
 
 
@@ -208,6 +207,13 @@ void Game::handleMousePressed(const MapVector &mousePosition)
     {
         m_weapon->handleMousePressed(mousePosition);
     }
+    m_movingObjects.emplace_back(std::make_unique<Character>(
+            mousePosition,
+            &m_map,
+            &m_bombHandler,
+            PlayerColor::RED));
+    m_characters.push_back(dynamic_cast<Character *>(m_movingObjects.back().get()));
+
 }
 
 void Game::addMovingObject(std::unique_ptr<MovingMapObject> &&object)

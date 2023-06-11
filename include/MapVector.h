@@ -76,6 +76,8 @@ public:
      * @param magnitude the new magnitude of the vector
      */
     void normalize(float magnitude = 1);
+
+    MapVector getNormalized(float magnitude = 1) const;
 };
 
 /** all math operators for MapVector doing the operation on both x and y
