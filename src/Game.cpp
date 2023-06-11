@@ -148,40 +148,6 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 }
 
 
-void Game::handleEvent(const sf::Event &event)
-{
-    switch (event.type)
-    {
-        case sf::Event::MouseButtonPressed:
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
-                m_movingObjects.emplace_back(
-                        std::make_unique<Projectile>(
-                                50,
-                                sf::Vector2f((float) event.mouseButton.x,
-                                             (float) event.mouseButton.y),
-                                3,
-                                0.3,
-                                MapVector(600, 300),
-                                &m_map,
-                                &m_bombHandler)
-                );
-            } else if (event.mouseButton.button == sf::Mouse::Right)
-            {
-                m_movingObjects.emplace_back(
-                        std::make_unique<Character>(
-                                sf::Vector2f((float) event.mouseButton.x,
-                                             (float) event.mouseButton.y),
-                                &m_map,
-                                &m_bombHandler,
-                                PlayerColor::RED)
-                );
-            }
-            break;
-        default:
-            break;
-    }
-}
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
@@ -199,10 +165,21 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Game::updateObjects(sf::Time time)
 {
+    sf::RectangleShape bounds({(float)m_map.getMask().getSize().x,
+                               (float)m_map.getMask().getSize().y});
+
     for (auto &movingObject: m_movingObjects)
     {
         movingObject->update(time);
+        //check if the object is inside the map
+        if (!bounds.getGlobalBounds().contains(movingObject->getPosition()))
+        {
+           movingObject->kill();
+        }
+
+
     }
+
 
 }
 
