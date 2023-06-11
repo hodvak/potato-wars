@@ -26,6 +26,7 @@ private:
     Camera m_camera;
 
     std::unique_ptr<Weapon> m_weapon;
+
     std::vector<Character *> m_characters; // todo: make player or 3 vectors
     void
     updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval);

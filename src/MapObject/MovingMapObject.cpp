@@ -19,7 +19,9 @@ MovingMapObject::MovingMapObject(float weight,
           m_alive(true),
           m_map(map),
           m_bombHandler(bomb_handler),
-          m_rotation(0)
+          m_rotation(0),
+          m_stuckPoint(pos),
+          m_movementTime(sf::Time::Zero)
 {
 }
 
@@ -36,7 +38,34 @@ void MovingMapObject::updateForces(const sf::Time &deltaTime)
 
 void MovingMapObject::updatePosition(const sf::Time &deltaTime)
 {
-    m_pos += m_velocity * deltaTime.asSeconds();
+    MapVector direction = m_pos; //save the old position
+
+    m_pos += m_velocity * deltaTime.asSeconds(); //update the position
+
+
+
+    direction = m_pos - direction; //get the direction of the movement
+
+    //check if the object is stuck
+    float maxDistance = 50 * deltaTime.asSeconds();
+    if (direction.getMagnitude() * deltaTime.asSeconds() > maxDistance)
+    {
+        direction.normalize(maxDistance);
+        m_stuckPoint += direction;
+    }
+    else
+    {
+        m_stuckPoint += direction;
+    }
+
+    if((m_pos - m_stuckPoint).getMagnitude() >= m_radius)
+    {
+        m_movementTime += deltaTime;
+    }
+    else
+    {
+        m_movementTime = sf::Time::Zero;
+    }
 }
 
 void MovingMapObject::update(const sf::Time &deltaTime)
@@ -48,7 +77,10 @@ void MovingMapObject::update(const sf::Time &deltaTime)
         updatePosition(deltaTime);
         updateRotation(deltaTime);
         collisionMap();
+        unstuck();
+
     }
+
 }
 
 void MovingMapObject::setVelocity(MapVector velocity)
@@ -159,12 +191,15 @@ std::optional<float> MovingMapObject::collisionMap()
     else
     {
         float ang = tang.getAngle();
-        float mag = tang.getMagnitude() - norm.getMagnitude() * Physics::FRICTION;
+        float mag =
+                tang.getMagnitude() - norm.getMagnitude() * Physics::FRICTION;
         tang = MapVector::getVectorFromAngle(ang, mag);
     }
 
-    if (hit_angle > Consts::PI / 2 - 0.001 && hit_angle < Consts::PI / 2 + 0.001 &&
-        abs(norm.getMagnitude()) + abs(tang.getMagnitude()) < Physics::GRAVITY / 2)
+    if (hit_angle > Consts::PI / 2 - 0.001 &&
+        hit_angle < Consts::PI / 2 + 0.001 &&
+        abs(norm.getMagnitude()) + abs(tang.getMagnitude()) <
+        Physics::GRAVITY / 2)
     {
         m_resting = true;
     }
@@ -196,7 +231,7 @@ bool MovingMapObject::isRest() const
 
 void MovingMapObject::collideGeneric(MovingMapObject *other_object)
 {
-    if(!other_object->isAlive() || !isAlive())
+    if (!other_object->isAlive() || !isAlive())
     {
         return;
     }
@@ -274,6 +309,7 @@ bool MovingMapObject::collideDD2(Character *other_object)
 {
     return false;
 }
+
 bool MovingMapObject::collideDD2(Rock *other_object)
 {
     return false;
@@ -282,12 +318,12 @@ bool MovingMapObject::collideDD2(Rock *other_object)
 void MovingMapObject::collide(MovingMapObject *other_object)
 {
     // no collision if one of the objects is dead
-    if(!other_object->isAlive() || !isAlive() || !intersect(*other_object))
+    if (!other_object->isAlive() || !isAlive() || !intersect(*other_object))
     {
         return;
     }
     // if this object implements DD2
-    if (collideDD1(other_object)) 
+    if (collideDD1(other_object))
     {
         return;
     }
@@ -297,7 +333,7 @@ void MovingMapObject::collide(MovingMapObject *other_object)
         return;
     }
     // generic collision by default
-    collideGeneric(other_object); 
+    collideGeneric(other_object);
 }
 
 bool MovingMapObject::intersect(const MovingMapObject &other_object) const
@@ -309,4 +345,23 @@ bool MovingMapObject::intersect(const MovingMapObject &other_object) const
 bool MovingMapObject::collideDD2(BombObject *other_object)
 {
     return false;
+}
+
+sf::Time MovingMapObject::getMovementTime() const
+{
+    return m_movementTime;
+}
+
+void MovingMapObject::stop()
+{
+   m_resting = true;
+}
+
+void MovingMapObject::unstuck()
+{
+    if (m_movementTime.asSeconds()>2)
+    {
+        stop();
+    }
+
 }
