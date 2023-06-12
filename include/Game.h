@@ -18,6 +18,7 @@ public:
     void handleMousePressed(const MapVector &mousePosition);
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
     
 private:
     GameMap m_map;
@@ -36,4 +37,8 @@ private:
     void updateCollision();
 
     void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
+
+    void stopMovingObjects();
+
+
 };

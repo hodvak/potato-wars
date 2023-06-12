@@ -113,14 +113,18 @@ void Game::update(const sf::Time &deltaTime)
                            }),
             m_movingObjects.end()
     );
+
+    //update camera
     std::vector<MovingMapObject *> objectsToWatch;
     for (const auto &object: m_movingObjects)
     {
-        if (!object->isRest()) objectsToWatch.push_back(object.get());
+        if (!object->isRest())
+        { objectsToWatch.push_back(object.get()); }
     }
     m_camera.setToFollow(objectsToWatch);
     m_camera.update(deltaTime);
 
+    //update weapon
     if (m_weapon->isAlive())
     {
         m_weapon->update(deltaTime);
@@ -138,7 +142,8 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
         if (time + interval > deltaTime)
         {
             updateObjects(deltaTime - time);
-        } else
+        }
+        else
         {
             updateObjects(interval);
         }
@@ -146,7 +151,6 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
         time += interval;
     }
 }
-
 
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -165,19 +169,23 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Game::updateObjects(sf::Time time)
 {
-    sf::RectangleShape bounds({(float)m_map.getMask().getSize().x,
-                               (float)m_map.getMask().getSize().y});
+    sf::RectangleShape bounds({(float) m_map.getMask().getSize().x,
+                               (float) m_map.getMask().getSize().y});
 
     for (auto &movingObject: m_movingObjects)
     {
+        //update the object`s position and animation
         movingObject->update(time);
+
         //check if the object is inside the map
         if (!bounds.getGlobalBounds().contains(movingObject->getPosition()))
         {
-           movingObject->kill();
+            movingObject->kill();
         }
 
     }
+
+    stopMovingObjects();
 
 
 }
@@ -212,11 +220,28 @@ void Game::handleMousePressed(const MapVector &mousePosition)
             &m_map,
             &m_bombHandler,
             PlayerColor::RED));
-    m_characters.push_back(dynamic_cast<Character *>(m_movingObjects.back().get()));
+    m_characters.push_back(
+            dynamic_cast<Character *>(m_movingObjects.back().get()));
 
 }
 
 void Game::addMovingObject(std::unique_ptr<MovingMapObject> &&object)
 {
     m_movingObjects.emplace_back(std::move(object));
+}
+
+void Game::stopMovingObjects()
+{
+    bool toStop = std::all_of(m_movingObjects.begin(), m_movingObjects.end(),
+                              [](const std::unique_ptr<MovingMapObject> &object)
+                              {
+                                  return object->isRest() || object->getMovementTime().asSeconds() > 2;
+                              });
+    if (toStop)
+    {
+        for (auto &object: m_movingObjects)
+        {
+            object->stop();
+        }
+    }
 }

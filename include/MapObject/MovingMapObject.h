@@ -304,9 +304,5 @@ protected:
      * @param bomb the bomb to add
      */
     void addBomb(const Bomb &bomb);
-    /**
-     * get the stuck point of the object
-     * @return
-     */
-    void unstuck();
+
 };

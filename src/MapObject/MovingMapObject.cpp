@@ -58,7 +58,7 @@ void MovingMapObject::updatePosition(const sf::Time &deltaTime)
         m_stuckPoint += direction;
     }
 
-    if((m_pos - m_stuckPoint).getMagnitude() >= m_radius)
+    if ((m_pos - m_stuckPoint).getMagnitude() >= m_radius)
     {
         m_movementTime += deltaTime;
     }
@@ -77,7 +77,7 @@ void MovingMapObject::update(const sf::Time &deltaTime)
         updatePosition(deltaTime);
         updateRotation(deltaTime);
         collisionMap();
-        unstuck();
+
 
     }
 
@@ -354,14 +354,6 @@ sf::Time MovingMapObject::getMovementTime() const
 
 void MovingMapObject::stop()
 {
-   m_resting = true;
+    m_resting = true;
 }
 
-void MovingMapObject::unstuck()
-{
-    if (m_movementTime.asSeconds()>2)
-    {
-        stop();
-    }
-
-}
