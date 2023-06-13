@@ -1,13 +1,15 @@
 #include <numbers>
-#include "MapObject/Crate.h"
+#include "MapObject/Crates/Crate.h"
 #include "resources_manager.h"
-#include "Const.h"
+
 #include "Physics.h"
 
-Crate::Crate(MapVector pos, GameMap *map,
-             std::unique_ptr<WeaponCreator> &&weapon_creator) :
-        MovingMapObject(100, pos, map, 20),
-        m_weapon_creator(std::move(weapon_creator))
+
+Crate::Crate(MapVector pos, GameMap *map,const sf::Texture *texture,
+             sf::IntRect overShape) :
+        MovingMapObject(100, pos, map, 10),
+        m_overTexture(texture),
+        m_overShape(overShape)
 {
 
 }
@@ -16,16 +18,16 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform.translate(getPosition());
     sf::Sprite sprite;
-    sf::Sprite weaponSprite;;
+    sf::Sprite overTexture;
 
-    weaponSprite.setTexture(*m_weapon_creator->getTexture());
-    weaponSprite.setScale(
-            getRadius() * 2 / m_weapon_creator->getTextureRect().width,
-            getRadius() * 2 / m_weapon_creator->getTextureRect().height);
-    weaponSprite.setTextureRect(m_weapon_creator->getTextureRect());
-    weaponSprite.setOrigin(m_weapon_creator->getTextureRect().width / 2,
-                           m_weapon_creator->getTextureRect().height / 2);
-    weaponSprite.setRotation(getRotation());
+    overTexture.setTexture(*m_overTexture);
+    overTexture.setScale(
+            getRadius() * 2 / m_overShape.width,
+            getRadius() * 2 / m_overShape.height);
+    overTexture.setTextureRect(m_overShape);
+    overTexture.setOrigin(m_overShape.width / 2,
+                          m_overShape.height / 2);
+    overTexture.setRotation(getRotation());
     const sf::Texture *texture = resources_manager::getTexture(
             "resources/images/Textures/CrateTextureNP.png");
     sf::Vector2f scale = {
@@ -50,19 +52,18 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
                 "resources/images/Textures/CrateTexture.png"));
         sprite.setOrigin(sprite.getTexture()->getSize().x / 2,
                          sprite.getTexture()->getSize().y - getRadius());
-        weaponSprite.setPosition(0, -getRadius());
+        overTexture.setPosition(0, -getRadius());
 
     }
 
     sprite.setScale(scale);
 
     sprite.setRotation(getRotation() * 180 / std::numbers::pi_v<float>);
-    weaponSprite.setRotation(getRotation() * 180 / std::numbers::pi_v<float>);
-
+    overTexture.setRotation(getRotation() * 180 / std::numbers::pi_v<float>);
 
 
     target.draw(sprite, states);
-    target.draw(weaponSprite, states);
+    target.draw(overTexture, states);
 
 
 }

@@ -12,7 +12,7 @@ RifleWeaponCreator::RifleWeaponCreator(int amount,
         WeaponCreator(amount),
         m_map(map),
         m_addMapObjectFunc(addMapObjectFunc),
-        bombHandler(bombHandler)
+        m_bombHandler(bombHandler)
 {
 
 }
@@ -21,7 +21,7 @@ std::unique_ptr<Weapon>
 RifleWeaponCreator::createWeaponImpl(Character &character)
 {
     return std::make_unique<Rifle>(character, m_addMapObjectFunc, *m_map,
-                                   bombHandler);
+                                   m_bombHandler);
 }
 
 const sf::Texture *RifleWeaponCreator::getTexture() const
@@ -32,4 +32,15 @@ const sf::Texture *RifleWeaponCreator::getTexture() const
 sf::IntRect RifleWeaponCreator::getTextureRect() const
 {
     return {0,0,100,100};
+}
+
+std::unique_ptr<WeaponCreator> RifleWeaponCreator::copy() const
+{
+    return std::make_unique<RifleWeaponCreator>(*this);
+}
+
+RifleWeaponCreator::RifleWeaponCreator(const RifleWeaponCreator &other):
+        WeaponCreator(other.getAmount()),m_map(other.m_map),m_bombHandler(other.m_bombHandler)
+{
+
 }

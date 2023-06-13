@@ -7,7 +7,9 @@
 #include "Weapon/Rifle.h"
 #include "Weapon/Creators/RifleWeaponCreator.h"
 #include "Weapon/ThrowWeapon.h"
-#include "MapObject/Crate.h"
+#include "MapObject/Crates/Crate.h"
+#include "MapObject/Crates/WeaponCrate.h"
+#include "MapObject/Crates/HealthCrate.h"
 
 Game::Game(const std::string &levelName) :
         m_map(levelName), m_camera(m_map.getMask().getSize().x,
@@ -256,16 +258,19 @@ void Game::handleMousePressed(const MapVector &mousePosition)
 //            m_weapon = creator->createWeapon(*m_characters[1]);
 //        }
 //    }
-    m_movingObjects.emplace_back(std::make_unique<Crate>(mousePosition, &m_map,
-                                                         std::make_unique<RifleWeaponCreator>(
-                                                                 10, &m_map,
-                                                                 [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                 {
-                                                                     addMovingObject(
-                                                                             std::move(
-                                                                                     m));
-                                                                 },
-                                                                 m_bombHandler)));
+    std::unique_ptr<RifleWeaponCreator> wep = std::make_unique<RifleWeaponCreator>(
+            10, &m_map,
+            [&](std::unique_ptr<MovingMapObject> &&m)
+            {
+                addMovingObject(
+                        std::move(
+                                m));
+            },
+            m_bombHandler);
+
+    m_movingObjects.emplace_back(
+            std::make_unique<HealthCrate>(mousePosition, &m_map));
+
 //    m_movingObjects.emplace_back(std::make_unique<Character>(
 //            mousePosition,
 //            &m_map,

@@ -1,12 +1,11 @@
 #pragma once
-#include "MovingMapObject.h"
+#include "MapObject/MovingMapObject.h"
 #include "Weapon/Creators/WeaponCreator.h"
 
 class Crate : public MovingMapObject
 {
 public:
-    Crate(MapVector pos, GameMap *map, std::unique_ptr<WeaponCreator> &&weapon_creator);
-
+    Crate(MapVector pos,GameMap *map,const sf::Texture *texture,sf::IntRect overShape);
     void update(const sf::Time &deltaTime) override;
     bool collideDD1(MovingMapObject *other_object) override;
     bool collideDD2(Character *other_object) override;
@@ -16,5 +15,7 @@ public:
     void updateVelocity(const sf::Time &deltaTime) override;
 private:
     bool onGround = false;
-    std::unique_ptr<WeaponCreator> m_weapon_creator;
+    const sf::Texture *m_overTexture;
+    sf::IntRect m_overShape;
+
 };
