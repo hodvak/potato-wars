@@ -357,3 +357,8 @@ void MovingMapObject::stop()
     m_resting = true;
 }
 
+bool MovingMapObject::collideDD2(Crate *other_object)
+{
+    return false;
+}
+

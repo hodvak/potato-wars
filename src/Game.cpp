@@ -7,32 +7,39 @@
 #include "Weapon/Rifle.h"
 #include "Weapon/Creators/RifleWeaponCreator.h"
 #include "Weapon/ThrowWeapon.h"
+#include "MapObject/Crate.h"
 
 Game::Game(const std::string &levelName) :
         m_map(levelName), m_camera(m_map.getMask().getSize().x,
                                    m_map.getMask().getSize().y),
-m_weaponCreatorContainer({600,300},{100,100})
+        m_weaponCreatorContainer({600, 300}, {100, 100})
 {
-    m_weaponCreatorContainer.AddWeaponCreator(std::make_unique<RifleWeaponCreator>(10,&m_map,
-                                                                                  [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                                  {
-                                                                                      addMovingObject(std::move(m));
-                                                                                  },
-                                                                                  m_bombHandler));
+    m_weaponCreatorContainer.AddWeaponCreator(
+            std::make_unique<RifleWeaponCreator>(10, &m_map,
+                                                 [&](std::unique_ptr<MovingMapObject> &&m)
+                                                 {
+                                                     addMovingObject(
+                                                             std::move(m));
+                                                 },
+                                                 m_bombHandler));
 
-    m_weaponCreatorContainer.AddWeaponCreator(std::make_unique<RifleWeaponCreator>(3,&m_map,
-                                                                                   [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                                   {
-                                                                                       addMovingObject(std::move(m));
-                                                                                   },
-                                                                                   m_bombHandler));
+    m_weaponCreatorContainer.AddWeaponCreator(
+            std::make_unique<RifleWeaponCreator>(3, &m_map,
+                                                 [&](std::unique_ptr<MovingMapObject> &&m)
+                                                 {
+                                                     addMovingObject(
+                                                             std::move(m));
+                                                 },
+                                                 m_bombHandler));
 
-    m_weaponCreatorContainer.AddWeaponCreator(std::make_unique<RifleWeaponCreator>(-1,&m_map,
-                                                                                   [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                                   {
-                                                                                       addMovingObject(std::move(m));
-                                                                                   },
-                                                                                   m_bombHandler));
+    m_weaponCreatorContainer.AddWeaponCreator(
+            std::make_unique<RifleWeaponCreator>(-1, &m_map,
+                                                 [&](std::unique_ptr<MovingMapObject> &&m)
+                                                 {
+                                                     addMovingObject(
+                                                             std::move(m));
+                                                 },
+                                                 m_bombHandler));
     const sf::Image &mask = *resources_manager::getImage(
             "resources/Levels/" + levelName + "/map.bmp"
     );
@@ -105,7 +112,7 @@ m_weaponCreatorContainer({600,300},{100,100})
 //            }
 //    );
 
-    
+
 //    m_weapon = std::make_unique<Rifle>(
 //            *m_characters[1],
 //
@@ -121,7 +128,7 @@ m_weaponCreatorContainer({600,300},{100,100})
 
 void Game::update(const sf::Time &deltaTime)
 {
-    updateObjectsInterval(deltaTime, sf::seconds(0.001f));
+    updateObjectsInterval(deltaTime, sf::seconds(0.01f));
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
 
@@ -236,18 +243,29 @@ void Game::handleMouseMoved(const MapVector &mousePosition)
 
 void Game::handleMousePressed(const MapVector &mousePosition)
 {
-    if (m_weapon && m_weapon->isAlive())
-    {
-        m_weapon->handleMousePressed(mousePosition);
-    }
-    else
-    {
-        WeaponCreator * creator = m_weaponCreatorContainer.GetWeaponCreator(mousePosition);
-        if (creator)
-        {
-            m_weapon = creator->createWeapon(*m_characters[1]);
-        }
-    }
+//    if (m_weapon && m_weapon->isAlive())
+//    {
+//        m_weapon->handleMousePressed(mousePosition);
+//    }
+//    else
+//    {
+//        WeaponCreator *creator = m_weaponCreatorContainer.GetWeaponCreator(
+//                mousePosition);
+//        if (creator)
+//        {
+//            m_weapon = creator->createWeapon(*m_characters[1]);
+//        }
+//    }
+    m_movingObjects.emplace_back(std::make_unique<Crate>(mousePosition, &m_map,
+                                                         std::make_unique<RifleWeaponCreator>(
+                                                                 10, &m_map,
+                                                                 [&](std::unique_ptr<MovingMapObject> &&m)
+                                                                 {
+                                                                     addMovingObject(
+                                                                             std::move(
+                                                                                     m));
+                                                                 },
+                                                                 m_bombHandler)));
 //    m_movingObjects.emplace_back(std::make_unique<Character>(
 //            mousePosition,
 //            &m_map,
@@ -268,7 +286,9 @@ void Game::stopMovingObjects()
     bool toStop = std::all_of(m_movingObjects.begin(), m_movingObjects.end(),
                               [](const std::unique_ptr<MovingMapObject> &object)
                               {
-                                  return object->isRest() || object->getMovementTime().asSeconds() > 2;
+                                  return object->isRest() ||
+                                         object->getMovementTime().asSeconds() >
+                                         2;
                               });
     if (toStop)
     {
