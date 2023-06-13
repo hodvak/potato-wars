@@ -63,6 +63,15 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
 void WeaponCreatorContainer::AddWeaponCreator(
         std::unique_ptr<WeaponCreator> &&weaponCreator)
 {
+    for (auto &creator : m_weaponCreators)
+    {
+        if (creator->getTexture() == weaponCreator->getTexture() &&
+            creator->getTextureRect() == weaponCreator->getTextureRect())
+        {
+            creator->addAmount(weaponCreator->getAmount());
+            return;
+        }
+    }
     m_weaponCreators.push_back(std::move(weaponCreator));
 }
 

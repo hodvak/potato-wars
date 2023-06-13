@@ -12,6 +12,7 @@ public:
     explicit WeaponCreator(int amount);
     std::unique_ptr<Weapon> createWeapon(Character &character);
     [[nodiscard]] int getAmount() const;
+    void addAmount(int amount);
     [[nodiscard]] virtual const sf::Texture *getTexture() const = 0;
     [[nodiscard]] virtual sf::IntRect getTextureRect() const = 0;
 
