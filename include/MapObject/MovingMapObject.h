@@ -290,7 +290,7 @@ protected:
     /***
      * update the object rotation angle according to the velocity
      */
-    void updateRotation(const sf::Time &deltaTime);
+    virtual void updateRotation(const sf::Time &deltaTime);
 
 
     /**

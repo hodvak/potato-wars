@@ -7,7 +7,7 @@
 #include "Weapon/ThrowWeapon.h"
 #include "Physics.h"
 #include "Weapon/Rifle.h"
-
+#include "MapObject/Crate.h"
 Game::Game(const std::string &levelName) :
         m_map(levelName), m_camera(m_map.getMask().getSize().x,
                                    m_map.getMask().getSize().y)
@@ -215,13 +215,11 @@ void Game::handleMousePressed(const MapVector &mousePosition)
     {
         m_weapon->handleMousePressed(mousePosition);
     }
-    m_movingObjects.emplace_back(std::make_unique<Character>(
+    m_movingObjects.emplace_back(std::make_unique<Crate>(
             mousePosition,
-            &m_map,
-            &m_bombHandler,
-            PlayerColor::RED));
-    m_characters.push_back(
-            dynamic_cast<Character *>(m_movingObjects.back().get()));
+            &m_map
+    ));
+
 
 }
 
