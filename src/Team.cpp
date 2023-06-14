@@ -31,6 +31,7 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     }
     else if(m_currentCharacter)
     {
+        target.draw(m_currentCharacter->getWeaponCreatorContainer(), states);
         shape.setPosition(m_currentCharacter->getPosition());
         // draw the character's weapons collection
         
@@ -50,11 +51,18 @@ bool Team::onMouseClick(const sf::Vector2f &mousePosition)
     }
     else if(m_currentCharacter)
     {
+        std::optional<WeaponCreator *> weaponCreator = 
+                m_currentCharacter->
+                getWeaponCreatorContainer().
+                getWeaponCreator(mousePosition);
+        if(weaponCreator)
+        {
+            m_weapon = (*weaponCreator)->createWeapon(*m_currentCharacter);
+        }
         // handle the character's weapons collection
     }
     else
     {
-        std::cout << "choose a character" << std::endl;
         // choose a character
         for(auto character : m_characters)
         {
@@ -91,15 +99,9 @@ bool Team::update(const sf::Time &deltaTime)
         if(!m_weapon->isAlive())
         {
             m_weapon.reset();
+            m_currentCharacter = nullptr;
+            return true;
         }
-    }
-    else if(m_currentCharacter)
-    {
-        // update the character's weapons collection
-    }
-    else
-    {
-        // nothing
     }
     return false;
 }
@@ -114,5 +116,10 @@ const PlayerColor &Team::getColor() const
 void Team::addCharacter(Character *character)
 {
     m_characters.push_back(character);
+}
+
+bool Team::isDead() const
+{
+    return m_characters.empty();
 }
 

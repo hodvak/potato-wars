@@ -42,7 +42,16 @@ void Game::update(const sf::Time &deltaTime)
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
     
     //update team
-    m_teams[m_teamTurnIndex].update(deltaTime);
+    if(m_teams[m_teamTurnIndex].update(deltaTime))
+    {
+        m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+        std::cout << "team " << m_teamTurnIndex << " is done with their turn" << std::endl;
+        while(m_teams[m_teamTurnIndex].isDead())
+        {
+            std::cout << "team " << m_teamTurnIndex << " is dead" << std::endl;
+            m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+        }
+    }
 
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
@@ -182,7 +191,15 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             &m_bombHandler,
             color
     );
-
+    character->addWeaponCreator(std::make_unique<RifleWeaponCreator>(
+            -1,
+            &m_map,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(std::move(object));
+            },
+            m_bombHandler
+            ));
     m_movingObjects.emplace_back(character);
     m_teams[color].addCharacter(character);
 }

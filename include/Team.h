@@ -24,7 +24,9 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
     [[nodiscard]] const PlayerColor &getColor() const;
-    
+
+    [[nodiscard]] bool isDead() const;
+
 private:
     PlayerColor m_color;
     std::vector<Character*> m_characters;

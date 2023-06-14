@@ -3,6 +3,7 @@
 #include "MovingMapObject.h"
 #include "GameMap.h"
 #include "MapObject/Textures/playerTexture.h"
+#include "Weapon/WeaponCreatorContainer.h"
 
 /**
  * a Character is one of the players characters
@@ -55,6 +56,11 @@ public:
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
+    void addWeaponCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
+
+    [[nodiscard]] const WeaponCreatorContainer &getWeaponCreatorContainer() const;
+    [[nodiscard]] WeaponCreatorContainer &getWeaponCreatorContainer();
+    
     /**
      * get the color of the Character
      */
@@ -77,6 +83,7 @@ private:
      */
     PlayerColor m_color;
     
+    WeaponCreatorContainer m_weaponCreatorContainer;
     
 
 };

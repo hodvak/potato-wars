@@ -1,15 +1,18 @@
 #pragma once
-#include "Weapon/Creators/WeaponCreator.h"
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
 #include <optional>
+#include "MapVector.h"
+#include "Weapon/Creators/WeaponCreator.h"
+
 class WeaponCreatorContainer : public sf::Drawable
 {
 public:
     WeaponCreatorContainer(const MapVector &size, const MapVector &position);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void AddWeaponCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
-    WeaponCreator * GetWeaponCreator(sf::Vector2f mousePosition);
+    void addWeaponCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
+    WeaponCreator * getWeaponCreator(sf::Vector2f mousePosition);
     
 private:
     std::vector<std::unique_ptr<WeaponCreator>> m_weaponCreators;

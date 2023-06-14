@@ -2,6 +2,8 @@
 
 #include <functional>
 #include "Weapon/Creators/WeaponCreator.h"
+#include "MapObject/MovingMapObject.h"
+#include "BombHandler.h"
 
 class RifleWeaponCreator : public WeaponCreator
 {
