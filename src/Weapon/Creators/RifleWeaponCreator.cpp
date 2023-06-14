@@ -26,12 +26,13 @@ RifleWeaponCreator::createWeaponImpl(Character &character)
 
 const sf::Texture *RifleWeaponCreator::getTexture() const
 {
-    return resources_manager::getTexture("resources/Images/Textures/rifles.png");
+    return resources_manager::getTexture(
+            "resources/Images/Textures/rifles.png");
 }
 
 sf::IntRect RifleWeaponCreator::getTextureRect() const
 {
-    return {0,0,100,100};
+    return {0, 0, 100, 100};
 }
 
 std::unique_ptr<WeaponCreator> RifleWeaponCreator::copy() const
@@ -39,8 +40,9 @@ std::unique_ptr<WeaponCreator> RifleWeaponCreator::copy() const
     return std::make_unique<RifleWeaponCreator>(*this);
 }
 
-RifleWeaponCreator::RifleWeaponCreator(const RifleWeaponCreator &other):
-        WeaponCreator(other.getAmount()),m_map(other.m_map),m_bombHandler(other.m_bombHandler)
+RifleWeaponCreator::RifleWeaponCreator(const RifleWeaponCreator &other) :
+        WeaponCreator(other.getAmount()), m_map(other.m_map),
+        m_bombHandler(other.m_bombHandler)
 {
 
 }

@@ -7,6 +7,10 @@
 #include "Weapon/Rifle.h"
 #include "Weapon/Creators/RifleWeaponCreator.h"
 #include "Weapon/ThrowWeapon.h"
+#include "MapObject/Crates/WeaponCrate.h"
+#include "Weapon/Creators/StoneThrowCreator.h"
+#include "Weapon/Creators/GrenadeCreator.h"
+#include <functional>
 
 Game::Game(const std::string &levelName) :
         m_map(levelName), m_camera(m_map.getMask().getSize().x,
@@ -40,13 +44,14 @@ void Game::update(const sf::Time &deltaTime)
 {
     //update objects
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
-    
+
     //update team
-    if(m_teams[m_teamTurnIndex].update(deltaTime))
+    if (m_teams[m_teamTurnIndex].update(deltaTime))
     {
         m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
-        std::cout << "team " << m_teamTurnIndex << " is done with their turn" << std::endl;
-        while(m_teams[m_teamTurnIndex].isDead())
+        std::cout << "team " << m_teamTurnIndex << " is done with their turn"
+                  << std::endl;
+        while (m_teams[m_teamTurnIndex].isDead())
         {
             std::cout << "team " << m_teamTurnIndex << " is dead" << std::endl;
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
@@ -56,7 +61,7 @@ void Game::update(const sf::Time &deltaTime)
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
     m_teams[m_teamTurnIndex].update(deltaTime);
-    
+
     // remove dead objects
     // from teams
     for (auto &team: m_teams)
@@ -157,6 +162,39 @@ void Game::handleMouseMoved(const MapVector &mousePosition)
 
 void Game::handleMousePressed(const MapVector &mousePosition)
 {
+    std::unique_ptr<RifleWeaponCreator> rifleCreator = std::make_unique<RifleWeaponCreator>(
+            1,
+            &m_map,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(std::move(object));
+            },
+            m_bombHandler
+    );
+    std::unique_ptr<StoneThrowCreator> rockCreator = std::make_unique<StoneThrowCreator>(
+            1,
+            &m_map,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(std::move(object));
+            }
+    );
+    std::unique_ptr<GrenadeCreator> grenadeCreator = std::make_unique<GrenadeCreator>(
+            1,
+            &m_map,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(std::move(object));
+            },&m_bombHandler
+    );
+    std::unique_ptr<WeaponCrate> crate = std::make_unique<WeaponCrate>(
+            mousePosition,
+            &m_map,
+            std::move(rockCreator)
+
+    );
+
+    m_movingObjects.emplace_back(std::move(crate));
     m_teams[m_teamTurnIndex].onMouseClick(mousePosition);
 }
 
@@ -191,15 +229,14 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             &m_bombHandler,
             color
     );
-    character->addWeaponCreator(std::make_unique<RifleWeaponCreator>(
-            -1,
-            &m_map,
-            [&](std::unique_ptr<MovingMapObject> &&object)
-            {
-                addMovingObject(std::move(object));
-            },
-            m_bombHandler
-            ));
+//    character->addWeaponCreator(std::make_unique<StoneThrowCreator>(
+//            1,
+//            &m_map,
+//            [&](std::unique_ptr<MovingMapObject> &&object)
+//            {
+//                addMovingObject(std::move(object));
+//            }
+//    ));
     m_movingObjects.emplace_back(character);
     m_teams[color].addCharacter(character);
 }

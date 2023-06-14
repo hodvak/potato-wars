@@ -12,6 +12,7 @@ class Projectile;
 class Rock;
 class BombObject;
 class Crate;
+class Grenade;
 
 /**
  * all object in the game are derived from this class.
@@ -149,6 +150,8 @@ public:
     virtual bool collideDD2(BombObject *other_object);
     //WITH CRATE
     virtual bool collideDD2(Crate *other_object);
+    //WITH GRENADE
+    virtual bool collideDD2(Grenade *other_object);
     /**
      * handle the collision physically with the other object
      */

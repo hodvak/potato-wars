@@ -362,3 +362,8 @@ bool MovingMapObject::collideDD2(Crate *other_object)
     return false;
 }
 
+bool MovingMapObject::collideDD2(Grenade *other_object)
+{
+    return false;
+}
+
