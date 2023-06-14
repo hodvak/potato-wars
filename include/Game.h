@@ -7,6 +7,7 @@
 #include "Weapon/Weapon.h"
 #include "Weapon/WeaponCreatorContainer.h"
 #include "Camera.h"
+#include "Team.h"
 
 //todo: add documentation
 
@@ -26,10 +27,10 @@ private:
     std::vector<std::unique_ptr<MovingMapObject>> m_movingObjects;
     BombHandler m_bombHandler;
     Camera m_camera;
-    WeaponCreatorContainer m_weaponCreatorContainer;
-    std::unique_ptr<Weapon> m_weapon;
-
-    std::vector<Character *> m_characters; // todo: make player or 3 vectors
+    
+    Team m_teams[PlayerColor::SIZE];
+    int m_teamTurnIndex;
+    
     void
     updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval);
 
@@ -40,6 +41,8 @@ private:
     void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
 
     void stopMovingObjects();
+    
+    void addCharacter(const PlayerColor &color,const MapVector &position);
 
 
 };

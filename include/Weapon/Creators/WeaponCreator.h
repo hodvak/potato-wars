@@ -2,9 +2,9 @@
 
 #include <memory>
 #include "Weapon/Weapon.h"
-#include "MapObject/Character.h"
 #include "GameMap.h"
 
+class Character;
 
 class WeaponCreator
 {

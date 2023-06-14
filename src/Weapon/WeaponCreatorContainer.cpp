@@ -1,4 +1,5 @@
 #include "Weapon/WeaponCreatorContainer.h"
+#include "Weapon/Creators/WeaponCreator.h"
 #include "resources_manager.h"
 
 sf::Vector2u TABLE_SIZE(5, 3);
@@ -60,7 +61,7 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
     }
 }
 
-void WeaponCreatorContainer::AddWeaponCreator(
+void WeaponCreatorContainer::addWeaponCreator(
         std::unique_ptr<WeaponCreator> &&weaponCreator)
 {
     for (auto &creator : m_weaponCreators)
@@ -76,7 +77,7 @@ void WeaponCreatorContainer::AddWeaponCreator(
 }
 
 WeaponCreator *
-WeaponCreatorContainer::GetWeaponCreator(sf::Vector2f mousePosition)
+WeaponCreatorContainer::getWeaponCreator(sf::Vector2f mousePosition)
 {
     int index_x = (mousePosition.x - m_position.x) / (m_size.x / TABLE_SIZE.x);
     int index_y = (mousePosition.y - m_position.y) / (m_size.y / TABLE_SIZE.y);
