@@ -29,11 +29,7 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
             }
             else
             {
-                if (event.type == sf::Event::MouseMoved)
-                {
-                    m_game.handleMouseMoved(window.mapPixelToCoords(sf::Vector2i(event.mouseMove.x, event.mouseMove.y)));
-                }
-                else if (event.type == sf::Event::MouseButtonPressed)
+                if (event.type == sf::Event::MouseButtonPressed)
                 {
                     m_game.handleMousePressed(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y)));
                 }
@@ -42,10 +38,12 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
         }
         sf::Time delta = clock.restart();
         m_game.update(delta);
+        m_game.handleMouseMoved(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
         // maybe for online game use this: 
         // m_game.update(sf::seconds(1.0f/60.0f));
-        // all computers will end with the same result but the slower computers
-        // will see the game slower (and update when they're done updating)
+        // all computers will end with the same result,
+        // but the slower computers will see the game slower
+        // (and update when they're done updating)
         
         window.clear();
         window.draw(m_game);

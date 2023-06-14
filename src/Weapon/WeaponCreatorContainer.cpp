@@ -79,15 +79,18 @@ void WeaponCreatorContainer::addWeaponCreator(
 WeaponCreator *
 WeaponCreatorContainer::getWeaponCreator(sf::Vector2f mousePosition)
 {
-    int index_x = (mousePosition.x - m_position.x) / (m_size.x / TABLE_SIZE.x);
-    int index_y = (mousePosition.y - m_position.y) / (m_size.y / TABLE_SIZE.y);
-    int index = index_x + index_y * TABLE_SIZE.x;
-
-    if (index_x < 0 || index_x >= TABLE_SIZE.x ||
-        index_y < 0 || index_y >= TABLE_SIZE.y)
+    // not in the table
+    if (mousePosition.x < m_position.x ||
+        mousePosition.x > m_position.x + m_size.x ||
+        mousePosition.y < m_position.y ||
+        mousePosition.y > m_position.y + m_size.y)
     {
         return nullptr;
     }
+    // calculate indexes
+    int index_x = (mousePosition.x - m_position.x) / (m_size.x / TABLE_SIZE.x);
+    int index_y = (mousePosition.y - m_position.y) / (m_size.y / TABLE_SIZE.y);
+    int index = index_x + index_y * TABLE_SIZE.x;
     if (index >= m_weaponCreators.size())
     {
         return nullptr;

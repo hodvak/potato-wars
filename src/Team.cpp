@@ -51,15 +51,14 @@ bool Team::onMouseClick(const sf::Vector2f &mousePosition)
     }
     else if(m_currentCharacter)
     {
-        std::optional<WeaponCreator *> weaponCreator = 
+        WeaponCreator * weaponCreator = 
                 m_currentCharacter->
                 getWeaponCreatorContainer().
                 getWeaponCreator(mousePosition);
         if(weaponCreator)
         {
-            m_weapon = (*weaponCreator)->createWeapon(*m_currentCharacter);
+            m_weapon = weaponCreator->createWeapon(*m_currentCharacter);
         }
-        // handle the character's weapons collection
     }
     else
     {
