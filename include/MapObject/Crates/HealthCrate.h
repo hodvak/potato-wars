@@ -1,5 +1,6 @@
 #pragma once
 #include "MapObject/Crates/Crate.h"
+#include "MapObject/Character.h"
 class HealthCrate : public Crate
 {
 public:

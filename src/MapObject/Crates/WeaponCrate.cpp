@@ -11,5 +11,7 @@ WeaponCrate::WeaponCrate(MapVector pos, GameMap *map,
 
 bool WeaponCrate::collideDD2(Character *other_object)
 {
-    return false;
+    other_object->addWeaponCreator(std::move(m_weaponCreator));
+    kill();
+    return true;
 }

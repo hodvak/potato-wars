@@ -1,6 +1,6 @@
 #pragma once
 #include "Crate.h"
-
+#include "MapObject/Character.h"
 class WeaponCrate : public Crate
 {
 public:
