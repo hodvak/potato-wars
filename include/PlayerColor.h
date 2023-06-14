@@ -9,7 +9,9 @@ enum PlayerColor
     YELLOW,
     GREEN,
     RED,
-    BLUE
+    BLUE,
+    
+    SIZE
 };
 
 /**

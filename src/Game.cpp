@@ -11,28 +11,12 @@
 Game::Game(const std::string &levelName) :
         m_map(levelName), m_camera(m_map.getMask().getSize().x,
                                    m_map.getMask().getSize().y),
-m_weaponCreatorContainer({600,300},{100,100})
+        m_teamTurnIndex(2),
+        m_teams{Team(PlayerColor::YELLOW),
+                Team(PlayerColor::GREEN),
+                Team(PlayerColor::RED),
+                Team(PlayerColor::BLUE)}
 {
-    m_weaponCreatorContainer.AddWeaponCreator(std::make_unique<RifleWeaponCreator>(10,&m_map,
-                                                                                  [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                                  {
-                                                                                      addMovingObject(std::move(m));
-                                                                                  },
-                                                                                  m_bombHandler));
-
-    m_weaponCreatorContainer.AddWeaponCreator(std::make_unique<RifleWeaponCreator>(3,&m_map,
-                                                                                   [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                                   {
-                                                                                       addMovingObject(std::move(m));
-                                                                                   },
-                                                                                   m_bombHandler));
-
-    m_weaponCreatorContainer.AddWeaponCreator(std::make_unique<RifleWeaponCreator>(-1,&m_map,
-                                                                                   [&](std::unique_ptr<MovingMapObject> &&m)
-                                                                                   {
-                                                                                       addMovingObject(std::move(m));
-                                                                                   },
-                                                                                   m_bombHandler));
     const sf::Image &mask = *resources_manager::getImage(
             "resources/Levels/" + levelName + "/map.bmp"
     );
@@ -41,91 +25,37 @@ m_weaponCreatorContainer({600,300},{100,100})
     {
         for (int y = 0; y < mask.getSize().y; ++y)
         {
-            if (mask.getPixel(x, y) == sf::Color(255, 0, 0))
+            for (int i = 0; i < PlayerColor::SIZE; ++i)
             {
-                auto *character = new Character(
-                        sf::Vector2f((float) x, (float) y),
-                        &m_map,
-                        &m_bombHandler,
-                        PlayerColor::RED
-                );
-                m_movingObjects.emplace_back(character);
-                m_characters.push_back(character);
-            }
-            else if (mask.getPixel(x, y) == sf::Color(0, 255, 0))
-            {
-                auto *character = new Character(
-                        sf::Vector2f((float) x, (float) y),
-                        &m_map,
-                        &m_bombHandler,
-                        PlayerColor::GREEN
-                );
-                m_movingObjects.emplace_back(character);
-                m_characters.push_back(character);
-
-            }
-            else if (mask.getPixel(x, y) == sf::Color(0, 0, 255))
-            {
-                auto *character = new Character(
-                        sf::Vector2f((float) x, (float) y),
-                        &m_map,
-                        &m_bombHandler,
-                        PlayerColor::BLUE
-                );
-                m_movingObjects.emplace_back(character);
-                m_characters.push_back(character);
+                if (mask.getPixel(x, y) == getColor((PlayerColor) i))
+                {
+                    addCharacter(PlayerColor(i), MapVector(x, y));
+                }
             }
         }
     }
-
-    m_weapon = std::make_unique<ThrowWeapon>(
-            *m_characters[1],
-
-            std::make_unique<Rock>(MapVector(0, 0),
-                                   MapVector(0, 0),
-                                   &m_map,
-                                   PlayerColor::BLUE),
-
-            [&](std::unique_ptr<MovingMapObject> &&m)
-            {
-                addMovingObject(std::move(m));
-            }
-    );
-
-//    m_weapon = std::make_unique<ThrowWeapon>(
-//            *m_characters[1],
-//
-//            std::make_unique<BombObject>(MapVector(0, 0),
-//                                         &m_map,
-//                                         &m_bombHandler),
-//
-//            [&](std::unique_ptr<MovingMapObject> &&m)
-//            {
-//                addMovingObject(std::move(m));
-//            }
-//    );
-
-    
-//    m_weapon = std::make_unique<Rifle>(
-//            *m_characters[1],
-//
-//            [&](std::unique_ptr<MovingMapObject> &&m)
-//            {
-//                addMovingObject(std::move(m));
-//            },
-//
-//            m_map,
-//            m_bombHandler
-//    );
 }
 
 void Game::update(const sf::Time &deltaTime)
 {
+    //update objects
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
+    
+    //update team
+    m_teams[m_teamTurnIndex].update(deltaTime);
+
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
-
+    m_teams[m_teamTurnIndex].update(deltaTime);
+    
     // remove dead objects
+    // from teams
+    for (auto &team: m_teams)
+    {
+        team.removeDeadCharacters();
+    }
+
+    // from moving objects (must be last because the unique_ptr)
     m_movingObjects.erase(
             std::remove_if(m_movingObjects.begin(), m_movingObjects.end(),
                            [](const std::unique_ptr<MovingMapObject> &object)
@@ -144,14 +74,6 @@ void Game::update(const sf::Time &deltaTime)
     }
     m_camera.setToFollow(objectsToWatch);
     m_camera.update(deltaTime);
-
-    //update weapon
-    if (m_weapon && m_weapon->isAlive())
-    {
-        m_weapon->update(deltaTime);
-    }
-
-
 }
 
 void
@@ -182,14 +104,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         target.draw(*movingObject, states);
     }
-    if (m_weapon && m_weapon->isAlive())
-    {
-        target.draw(*m_weapon, states);
-    }
-    else
-    {
-        target.draw(m_weaponCreatorContainer, states);
-    }
+    target.draw(m_teams[m_teamTurnIndex], states);
 }
 
 void Game::updateObjects(sf::Time time)
@@ -199,7 +114,7 @@ void Game::updateObjects(sf::Time time)
 
     for (auto &movingObject: m_movingObjects)
     {
-        //update the object`s position and animation
+        //update the object's position and animation
         movingObject->update(time);
 
         //check if the object is inside the map
@@ -228,34 +143,12 @@ void Game::updateCollision()
 
 void Game::handleMouseMoved(const MapVector &mousePosition)
 {
-    if (m_weapon && m_weapon->isAlive())
-    {
-        m_weapon->handleMouseMoved(mousePosition);
-    }
+    m_teams[m_teamTurnIndex].onMouseMove(mousePosition);
 }
 
 void Game::handleMousePressed(const MapVector &mousePosition)
 {
-    if (m_weapon && m_weapon->isAlive())
-    {
-        m_weapon->handleMousePressed(mousePosition);
-    }
-    else
-    {
-        WeaponCreator * creator = m_weaponCreatorContainer.GetWeaponCreator(mousePosition);
-        if (creator)
-        {
-            m_weapon = creator->createWeapon(*m_characters[1]);
-        }
-    }
-//    m_movingObjects.emplace_back(std::make_unique<Character>(
-//            mousePosition,
-//            &m_map,
-//            &m_bombHandler,
-//            PlayerColor::RED));
-//    m_characters.push_back(
-//            dynamic_cast<Character *>(m_movingObjects.back().get()));
-
+    m_teams[m_teamTurnIndex].onMouseClick(mousePosition);
 }
 
 void Game::addMovingObject(std::unique_ptr<MovingMapObject> &&object)
@@ -268,7 +161,9 @@ void Game::stopMovingObjects()
     bool toStop = std::all_of(m_movingObjects.begin(), m_movingObjects.end(),
                               [](const std::unique_ptr<MovingMapObject> &object)
                               {
-                                  return object->isRest() || object->getMovementTime().asSeconds() > 2;
+                                  return object->isRest() ||
+                                         object->getMovementTime().asSeconds() >
+                                         2;
                               });
     if (toStop)
     {
@@ -277,4 +172,17 @@ void Game::stopMovingObjects()
             object->stop();
         }
     }
+}
+
+void Game::addCharacter(const PlayerColor &color, const MapVector &position)
+{
+    Character *character = new Character(
+            position,
+            &m_map,
+            &m_bombHandler,
+            color
+    );
+
+    m_movingObjects.emplace_back(character);
+    m_teams[color].addCharacter(character);
 }
