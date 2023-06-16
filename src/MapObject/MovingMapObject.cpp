@@ -357,3 +357,13 @@ void MovingMapObject::stop()
     m_resting = true;
 }
 
+bool MovingMapObject::collideDD2(WeaponCrate &otherObject)
+{
+    return false;
+}
+
+bool MovingMapObject::collideDD2(HealthCrate &otherObject)
+{
+    return false;
+}
+

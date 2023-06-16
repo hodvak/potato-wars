@@ -94,14 +94,19 @@ bool Team::update(const sf::Time &deltaTime)
 {
     if(m_weapon)
     {
-        m_weapon->update(deltaTime);
+
         if(!m_weapon->isAlive())
         {
             m_weapon.reset();
             m_currentCharacter = nullptr;
             return true;
         }
+        else
+        {
+            m_weapon->update(deltaTime);
+        }
     }
+
     return false;
 }
 

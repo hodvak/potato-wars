@@ -15,6 +15,10 @@ class Rock;
 
 class BombObject;
 
+class HealthCrate;
+
+class WeaponCrate;
+
 /**
  * all object in the game are derived from this class.
  * this class know to draw the object, and to update it's position according to
@@ -46,7 +50,7 @@ public:
      * @param deltaTime the time since the last update
      */
     virtual void update(const sf::Time &deltaTime);
-    
+
     // ==================== getters ====================
     /**
      * get the velocity of the object
@@ -67,7 +71,7 @@ public:
      * get the radius of the object
      */
     [[nodiscard]] float getRadius() const;
-    
+
     /**
      * get the rotation of the object (in radians)
      */
@@ -88,9 +92,9 @@ public:
      * is the object still moving
      */
     [[nodiscard]] bool isRest() const;
-    
+
     // ================= end of getters =================
-    
+
     // ==================== setters ====================
     /**
      * set the position of the object
@@ -110,12 +114,12 @@ public:
      * @param forces the new forces acting on the object
      */
     void setForces(const MapVector &forces);
-    
+
     /**
      * get movement time
      */
     [[nodiscard]] const sf::Time &getMovementTime() const;
-    
+
     /**
      * kill the object
      */
@@ -125,7 +129,7 @@ public:
      * stop the object (set the `inRest` to true)
      */
     void stop();
-    
+
 
     // ==================== collision functions ====================
 
@@ -164,6 +168,12 @@ public:
     // with BombObject
     virtual bool collideDD2(BombObject &otherObject);
 
+    // with HealthCrate
+    virtual bool collideDD2(HealthCrate &otherObject);
+    
+    // with WeaponCrate
+    virtual bool collideDD2(WeaponCrate &otherObject);
+
     /**
      * handle the collision physically with the other object
      */
@@ -171,9 +181,8 @@ public:
 
 
     /**
-     * update the object's velocity based on the collision with another object
-     * override this function to change the collision behavior
-     * 
+     * is the object a collision object with generic collision if None of the
+     * other collideDD functions were implemented
      */
     [[nodiscard]] virtual bool collisionObject() const;
 
@@ -183,9 +192,9 @@ public:
      * @return is there an intersection
      */
     [[nodiscard]] bool intersect(const MovingMapObject &otherObject) const;
-    
+
     // ==================== end of collision functions ====================
-    
+
     /**
      * explode the object with the BOMB
      * @param bomb the BOMB that exploded
@@ -194,7 +203,7 @@ public:
 
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    
+
 
 protected:
 
@@ -236,7 +245,7 @@ protected:
     /***
      * update the object rotation angle according to the velocity
      */
-    void updateRotation(const sf::Time &deltaTime);
+    virtual void updateRotation(const sf::Time &deltaTime);
 
 
     /**
@@ -253,7 +262,7 @@ protected:
 
 
 private:
-    
+
     // ======= private member variables =======
     /**
      * the current position of the object
