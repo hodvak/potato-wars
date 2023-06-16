@@ -20,8 +20,8 @@ public:
     BombHandler();
 
     /**
-     * add a bomb to the handler
-     * @param bomb the bomb to add
+     * add a BOMB to the handler
+     * @param bomb the BOMB to add
      */
     void addBomb(const Bomb &bomb);
 

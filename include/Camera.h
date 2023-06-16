@@ -12,13 +12,13 @@ public:
     /**
      * regular constructor
      */
-    Camera(float width,float hight);
+    Camera(float width,float height);
 
     /**
-     * set the camera to follow an object
-     * @param object the object to follow or nullptr to stop following
+     * set the camera to follow a list of objects
+     * @param objectsToWatch the objects to follow
      */
-    void setToFollow(std::vector<MovingMapObject *> objectToWatch);
+    void setToFollow(std::vector<MovingMapObject *> &&objectsToWatch);
 
     /**
      * update the camera position and zoom
@@ -26,12 +26,16 @@ public:
      */
     void update(sf::Time deltaTime);
 
+    /**
+     * get the view of the camera
+     * @return the view of the camera
+     */ 
    const sf::View &getView() const;
 
 private:
 
     /**
-     * the object that the camera is following
+     * the objects to follow
      */
     std::vector<MovingMapObject *> m_objectsToWatch;
 
@@ -39,6 +43,10 @@ private:
      * the view of the camera
      */
     sf::View m_view;
+    
+    /**
+     * the size of the screen
+     */
     sf::Vector2f screenSize;
 
 };

@@ -42,7 +42,7 @@ void GameMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(sprite, states);
 }
 
-void GameMap::bomb(MapVector pos, int radius)
+void GameMap::bomb(const MapVector &pos, int radius)
 {
     int radius_squared = radius * radius; // to avoid sqrt
 

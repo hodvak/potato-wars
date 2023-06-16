@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <memory>
+#include <SFML/Graphics.hpp>
 
 /**
  * Abstract class for screens

@@ -1,8 +1,9 @@
 #include "resources_manager.h"
+#include <unordered_map>
 
-std::map<std::string, sf::Texture*> textures;
-std::map<std::string, sf::Font*> fonts;
-std::map<std::string, sf::Image*> images;
+std::unordered_map<std::string, sf::Texture*> textures;
+std::unordered_map<std::string, sf::Font*> fonts;
+std::unordered_map<std::string, sf::Image*> images;
 
 const sf::Texture* resources_manager::getTexture(const std::string &path)
 {

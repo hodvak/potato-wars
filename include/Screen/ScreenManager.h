@@ -1,7 +1,7 @@
 #pragma once
-#include "Screen.h"
-#include <memory>
 
+#include <memory>
+#include "Screen.h"
 
 /**
  * Class that manages the screens and runs them
@@ -15,7 +15,7 @@ public:
      * constructor
      * @param screen the first screen to run
      */
-    ScreenManager(std::unique_ptr<Screen> screen);
+    explicit ScreenManager(std::unique_ptr<Screen> &&screen);
     
     /**
      * run the screens one after the other until there is no next screen

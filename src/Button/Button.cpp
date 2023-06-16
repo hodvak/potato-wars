@@ -1,7 +1,7 @@
 #include "Button/Button.h"
 
-Button::Button(sf::Vector2f pos, 
-               sf::Vector2f size, 
+Button::Button(const sf::Vector2f &pos,
+               const sf::Vector2f &size, 
                const std::function<void()> &function) :
         m_function(function),
         m_rect(pos, size)
@@ -9,7 +9,7 @@ Button::Button(sf::Vector2f pos,
     
 }
 
-void Button::onClick(sf::Vector2f pos)
+void Button::onClick(const sf::Vector2f &pos)
 {
     if (isContains(pos))
     {
@@ -17,7 +17,7 @@ void Button::onClick(sf::Vector2f pos)
     }
 }
 
-bool Button::isContains(sf::Vector2f pos)
+bool Button::isContains(const sf::Vector2f &pos)
 {
     return m_rect.contains(pos);
 }

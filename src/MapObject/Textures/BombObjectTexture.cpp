@@ -16,27 +16,33 @@ BombObjectTexture::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::Text timeText;
     timeText.setFont(
-            *resources_manager::getFont("resources/Fonts/ARCADE2-Regular.otf"));
+            *resources_manager::getFont(resources_manager::FONT_ARCADE_PATH)
+    );
+
     timeText.setCharacterSize(20);
     timeText.setString(std::format("{:.2f}", m_remainedTime.asSeconds()));
     timeText.setPosition(-timeText.getLocalBounds().width / 2,
                          -timeText.getLocalBounds().height - 2 * m_radius - 2);
-    
+
     target.draw(timeText, states);
-    
-    const sf::Texture *texture = resources_manager::getTexture(
-            "resources/Images/Textures/bomb.png");
+
+    const sf::Texture *texture = resources_manager::getTexture
+            (
+                    resources_manager::IMG_BOMB_PATH
+            );
     sf::Sprite sprite;
     sprite.setTexture(*texture);
-    sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
-    sprite.setOrigin(50, 50);
-    sprite.setScale(m_radius / 50, m_radius / 50);
+    sprite.setOrigin((float)texture->getSize().x / 2.0f, 
+                     (float)texture->getSize().y / 2.0f);
+
+    sprite.setScale(m_radius / ((float)texture->getSize().x / 2.0f),
+                    m_radius / ((float)texture->getSize().y / 2.0f));
 
     states.transform.rotate(m_angle);
     target.draw(sprite, states);
 }
 
-void BombObjectTexture::setReminingTime(const sf::Time &time)
+void BombObjectTexture::setRemainingTime(const sf::Time &time)
 {
     m_remainedTime = time;
 }

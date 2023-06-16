@@ -10,7 +10,7 @@ ThrowWeapon::ThrowWeapon(const Character &character,
         m_weapon(std::move(weapon)),
         m_startVelocity(1, 0),
         m_character(character),
-        m_texture(character, {1,0}, m_maxDistance)
+        m_texture(character, {1,0}, MAX_MOUSE_DISTANCE)
 {
     fixPosition();
 }
@@ -19,9 +19,9 @@ ThrowWeapon::ThrowWeapon(const Character &character,
 void ThrowWeapon::handleMouseMoved(const MapVector &mousePosition)
 {
     m_startVelocity = m_character.getPosition() - mousePosition;
-    if(m_startVelocity.getMagnitude() > m_maxDistance)
+    if(m_startVelocity.getMagnitude() > MAX_MOUSE_DISTANCE)
     {
-        m_startVelocity.normalize(m_maxDistance);
+        m_startVelocity.normalize(MAX_MOUSE_DISTANCE);
     }
     m_texture.setDirection(m_startVelocity);
     fixPosition();
@@ -30,9 +30,9 @@ void ThrowWeapon::handleMouseMoved(const MapVector &mousePosition)
 void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
 {
     m_startVelocity = m_character.getPosition() - mousePosition;
-    if(m_startVelocity.getMagnitude() > m_maxDistance)
+    if(m_startVelocity.getMagnitude() > MAX_MOUSE_DISTANCE)
     {
-        m_startVelocity.normalize(m_maxDistance);
+        m_startVelocity.normalize(MAX_MOUSE_DISTANCE);
     }
     m_texture.setDirection(m_startVelocity);
     fixPosition();

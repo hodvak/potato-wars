@@ -15,8 +15,8 @@ public:
     // return true if done with their turn
     // called when it's their turn
     bool update(const sf::Time &deltaTime);
-    bool onMouseClick(const sf::Vector2f &mousePosition);
-    bool onMouseMove(const sf::Vector2f &mousePosition);
+    bool onMouseClick(const MapVector &mousePosition);
+    bool onMouseMove(const MapVector &mousePosition);
     
     
     void addCharacter(Character* character);

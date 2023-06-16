@@ -2,8 +2,6 @@
 #include "GameMap.h"
 #include <memory>
 
-static const float PI = acos(-1.0f);
-
 GameScreen::GameScreen(const std::string &levelName) :
         m_game(levelName)
 {

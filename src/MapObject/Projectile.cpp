@@ -5,10 +5,15 @@ Projectile::Projectile(float weight,
                        const MapVector &pos,
                        float radius,
                        float damage,
-                       const MapVector &start_velocity,
-                       GameMap *map,
-                       BombHandler *bomb_handler):
-    MovingMapObject(weight, pos, map, radius, start_velocity, bomb_handler),
+                       const MapVector &startVelocity,
+                       const GameMap &map,
+                       BombHandler &bombHandler):
+    MovingMapObject(pos,
+                    radius,
+                    weight,
+                    map,
+                    bombHandler,
+                    startVelocity),
     m_damage(damage)
 {
 
@@ -24,16 +29,16 @@ void Projectile::update(const sf::Time &deltaTime)
     }
 }
 
-bool Projectile::collideDD1(MovingMapObject *other_object)
+bool Projectile::collideDD1(MovingMapObject &otherObject)
 {
-    return other_object->collideDD2(this);
+    return otherObject.collideDD2(*this);
 }
 
-bool Projectile::collideDD2(Character *other_object)
+bool Projectile::collideDD2(Character &otherObject)
 {
-    collideGeneric(other_object);
+    collideGeneric(otherObject);
     addBomb({getPosition(),3*(int)getRadius(),0});
-    other_object->damage(m_damage);
+    otherObject.damage(m_damage);
     kill();
     return true;
 }

@@ -1,48 +1,51 @@
 #include <iostream>
 #include "MapObject/Character.h"
-#include "Weapon/Creators/RifleWeaponCreator.h"
 
 const float Character::RADIUS = 10;
 const float Character::WEIGHT = 200;
 
-Character::Character(sf::Vector2f pos,
-                     GameMap *map,
-                     BombHandler *bomb_handler,
-                     PlayerColor color
-           ) :
-        MovingMapObject(Character::WEIGHT, 
-                        pos, 
-                        map, 
+Character::Character(const MapVector &pos,
+                     const GameMap &map,
+                     BombHandler &bomb_handler,
+                     const PlayerColor &color
+) :
+        MovingMapObject(pos,
                         Character::RADIUS,
-                        {0,0}, // no speed at start
-                        bomb_handler),
+                        Character::WEIGHT,
+                        map,
+                        bomb_handler
+        ),
         m_life(1), // start with full life
         m_texture(color, Character::RADIUS),
         m_color(color),
-        m_weaponCreatorContainer(sf::Vector2f(map->getMask().getSize().x/2, map->getMask().getSize().y/2),
-                                 sf::Vector2f(map->getMask().getSize().x/4, map->getMask().getSize().y/4))
+        m_weaponCreatorContainer(
+                sf::Vector2f((float) map.getMask().getSize().x / 2.0f,
+                             (float) map.getMask().getSize().y / 2.0f),
+                sf::Vector2f((float) map.getMask().getSize().x / 4.0f,
+                             (float) map.getMask().getSize().y / 4.0f)
+        )
 {
-    
+
 }
 
 void Character::update(const sf::Time &delta_time)
 {
     MovingMapObject::update(delta_time);
-    if(isRest())
+    if (isRest())
     {
         setRotation(0);
     }
     m_texture.setAngle(getRotation());
 }
 
-bool Character::collideDD1(MovingMapObject *otherObject)
+bool Character::collideDD1(MovingMapObject &otherObject)
 {
-    return otherObject->collideDD2(this);
+    return otherObject.collideDD2(*this);
 }
 
-bool Character::collideDD2(Character *other_object)
+bool Character::collideDD2(Character &otherObject)
 {
-    collideGeneric(other_object);
+    collideGeneric(otherObject);
     return true;
 }
 
@@ -55,7 +58,7 @@ void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
 void Character::damage(float damage)
 {
     m_life -= damage;
-    if(m_life <= 0)
+    if (m_life <= 0)
     {
         kill();
     }

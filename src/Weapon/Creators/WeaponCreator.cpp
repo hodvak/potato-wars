@@ -5,7 +5,7 @@ WeaponCreator::WeaponCreator(int amount) :
 {
 }
 
-std::unique_ptr<Weapon> WeaponCreator::createWeapon(Character &character)
+std::unique_ptr<Weapon> WeaponCreator::createWeapon(const Character &character)
 {
     if (m_amount == 0)
     {

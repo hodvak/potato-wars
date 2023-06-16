@@ -12,7 +12,14 @@
 class Character : public MovingMapObject
 {
 private:
+    /**
+     * radius of the Character
+     */
     static const float RADIUS;
+    
+    /**
+     * weight of the Character
+     */
     static const float WEIGHT;
     
 public:
@@ -23,10 +30,10 @@ public:
      * @param bomb_handler BombHandler to add bombs to
      * @param color the color of the Character (Character)
      */
-    Character(sf::Vector2f pos,
-              GameMap *map,
-              BombHandler *bomb_handler,
-              PlayerColor color);
+    Character(const MapVector &pos,
+              const GameMap &map,
+              BombHandler &bomb_handler,
+              const PlayerColor &color);
     
     /**
      * update the Character according to the time that passed
@@ -38,12 +45,12 @@ public:
      * function for double dispatch. need to be the same in all the 
      * MovingMapObject derived classes
      */
-    bool collideDD1(MovingMapObject *other_object) override;
+    bool collideDD1(MovingMapObject &other_object) override;
     
     /**
      * collideDD1 with a Character.
      */
-    bool collideDD2(Character *other_object) override;
+    bool collideDD2(Character &other_object) override;
     
     /**
      * decrease the life of the Character
@@ -56,9 +63,20 @@ public:
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
+    /**
+     * add a WeaponCreator to the Character (to the WeaponCreatorContainer)
+     * @param weaponCreator 
+     */
     void addWeaponCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
 
+    /**
+     * get the WeaponCreatorContainer of the Character
+     */
     [[nodiscard]] const WeaponCreatorContainer &getWeaponCreatorContainer() const;
+    
+    /**
+     * get the WeaponCreatorContainer of the Character (non const)
+     */
     [[nodiscard]] WeaponCreatorContainer &getWeaponCreatorContainer();
     
     /**
@@ -83,7 +101,9 @@ private:
      */
     PlayerColor m_color;
     
+    /**
+     * container of the WeaponCreators of the Character (all the weapons that
+     * the Character can use)
+     */
     WeaponCreatorContainer m_weaponCreatorContainer;
-    
-
 };

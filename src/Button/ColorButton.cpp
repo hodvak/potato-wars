@@ -17,10 +17,12 @@ ColorButton::ColorButton(const sf::Vector2f &pos,
     m_text.setPosition(pos);
     m_text.setFillColor(sf::Color::Black);
     m_text.setCharacterSize(20);
-    m_text.setFont(*resources_manager::getFont("resources/Fonts/ARCADECLASSIC.TTF"));
-    
-    
-    
+    m_text.setFont(
+            *resources_manager::getFont(resources_manager::FONT_ARCADE_PATH)
+    );
+
+
+
     // if colorHover is not set, then set it to colorRegular with alpha 100/255
     // of the colorRegular alpha
     if (colorHover)
@@ -39,7 +41,7 @@ ColorButton::ColorButton(const sf::Vector2f &pos,
     m_rect.setSize(size);
 }
 
-void ColorButton::onHover(sf::Vector2f pos)
+void ColorButton::onHover(const sf::Vector2f &pos)
 {
     // if the mouse is hovering over the button
     if (isContains(pos))

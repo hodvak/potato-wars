@@ -43,7 +43,7 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(shape, states);
 }
 
-bool Team::onMouseClick(const sf::Vector2f &mousePosition)
+bool Team::onMouseClick(const MapVector &mousePosition)
 {
     if(m_weapon)
     {
@@ -76,7 +76,7 @@ bool Team::onMouseClick(const sf::Vector2f &mousePosition)
     return false;
 }
 
-bool Team::onMouseMove(const sf::Vector2f &mousePosition)
+bool Team::onMouseMove(const MapVector &mousePosition)
 {
     m_mousePosition = mousePosition;
     if(m_weapon)

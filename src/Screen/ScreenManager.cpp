@@ -1,6 +1,6 @@
 #include "Screen/ScreenManager.h"
 
-ScreenManager::ScreenManager(std::unique_ptr<Screen> screen) :
+ScreenManager::ScreenManager(std::unique_ptr<Screen> &&screen) :
         m_currentScreen(std::move(screen))
 {
 

@@ -5,8 +5,8 @@
 
 namespace Physics
 {
-    const float GRAVITY = 130.0f;
-    const float FRICTION = 0.2f;
+    const float GRAVITY = 130.0f; // pixels per second^2
+    const float FRICTION = 0.2f;  // friction coefficient (kind of)
     
     /**
      * regular elastic collision between two objects in 1D

@@ -3,23 +3,26 @@
 #include <numbers>
 
 RifleTexture::RifleTexture(PlayerColor color,
-                           MapVector position,
-                           MapVector aimPosition,
+                           const MapVector &position,
+                           const MapVector &aimPosition,
                            float radius) :
         m_color(color),
         m_position(position),
         m_aimPosition(aimPosition),
         m_radius(radius * 1.5f)
+// todo: is 1.5f a magic number?
+//       the size of the rifle is a ratio of the radius
+//       add to consts of the object maybe?
 {
 
 }
 
-void RifleTexture::setPosition(MapVector position)
+void RifleTexture::setPosition(const MapVector &position)
 {
     m_position = position;
 }
 
-void RifleTexture::setAimPosition(MapVector aimPosition)
+void RifleTexture::setAimPosition(const MapVector &aimPosition)
 {
     m_aimPosition = aimPosition;
 }

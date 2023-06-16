@@ -81,7 +81,7 @@ void Game::update(const sf::Time &deltaTime)
         if (!object->isRest())
         { objectsToWatch.push_back(object.get()); }
     }
-    m_camera.setToFollow(objectsToWatch);
+    m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
 }
 
@@ -116,7 +116,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_teams[m_teamTurnIndex], states);
 }
 
-void Game::updateObjects(sf::Time time)
+void Game::updateObjects(const sf::Time &time)
 {
     sf::RectangleShape bounds({(float) m_map.getMask().getSize().x,
                                (float) m_map.getMask().getSize().y});
@@ -145,7 +145,7 @@ void Game::updateCollision()
     {
         for (int j = i + 1; j < m_movingObjects.size(); ++j)
         {
-            m_movingObjects[i]->collide(m_movingObjects[j].get());
+            m_movingObjects[i]->collide(*m_movingObjects[j]);
         }
     }
 }
@@ -187,19 +187,19 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
 {
     Character *character = new Character(
             position,
-            &m_map,
-            &m_bombHandler,
+            m_map,
+            m_bombHandler,
             color
     );
     character->addWeaponCreator(std::make_unique<RifleWeaponCreator>(
             -1,
-            &m_map,
             [&](std::unique_ptr<MovingMapObject> &&object)
             {
                 addMovingObject(std::move(object));
             },
+            m_map,
             m_bombHandler
-            ));
+    ));
     m_movingObjects.emplace_back(character);
     m_teams[color].addCharacter(character);
 }

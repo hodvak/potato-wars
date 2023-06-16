@@ -1,5 +1,5 @@
 #include "MapVector.h"
-#include "Const.h"
+#include <numbers>
 
 MapVector::MapVector(float x, float y) : sf::Vector2f(x, y)
 {
@@ -30,11 +30,11 @@ sf::Vector2<MapVector> MapVector::getSplitVector(float angle) const
 {
     float thisAngle = getAngle();
     MapVector angels = MapVector(angle - thisAngle,
-                                 -thisAngle + angle + Consts::PI / 2);
+                                 -thisAngle + angle + std::numbers::pi_v<float> / 2);
     MapVector magnitudes =
             getMagnitude() * MapVector(cos(angels.x), cos(angels.y));
     return sf::Vector2<MapVector>(getVectorFromAngle(angle, magnitudes.x),
-                                  getVectorFromAngle(Consts::PI / 2 + angle,
+                                  getVectorFromAngle(std::numbers::pi_v<float> / 2 + angle,
                                                      magnitudes.y));
 }
 

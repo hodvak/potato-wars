@@ -5,15 +5,15 @@
 
 #include <utility>
 
-Camera::Camera(float width, float hight) : m_view({0, 0, width, hight}),
-                                           screenSize(width, hight)
+Camera::Camera(float width, float height) : m_view({0, 0, width, height}),
+                                            screenSize(width, height)
 {
 
 }
 
-void Camera::setToFollow(std::vector<MovingMapObject *> objectToWatch)
+void Camera::setToFollow(std::vector<MovingMapObject *> &&objectsToWatch)
 {
-    m_objectsToWatch = std::move(objectToWatch);
+    m_objectsToWatch = std::move(objectsToWatch);
 }
 
 const sf::View &Camera::getView() const

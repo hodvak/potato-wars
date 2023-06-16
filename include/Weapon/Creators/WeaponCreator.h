@@ -10,14 +10,14 @@ class WeaponCreator
 {
 public:
     explicit WeaponCreator(int amount);
-    std::unique_ptr<Weapon> createWeapon(Character &character);
+    std::unique_ptr<Weapon> createWeapon(const Character &character);
     [[nodiscard]] int getAmount() const;
     void addAmount(int amount);
     [[nodiscard]] virtual const sf::Texture *getTexture() const = 0;
     [[nodiscard]] virtual sf::IntRect getTextureRect() const = 0;
 
 protected:
-    virtual std::unique_ptr<Weapon> createWeaponImpl(Character &character) = 0;
+    virtual std::unique_ptr<Weapon> createWeaponImpl(const Character &character) = 0;
     
 private:
     int m_amount;

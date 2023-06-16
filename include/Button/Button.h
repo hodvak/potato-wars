@@ -1,7 +1,8 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <functional>
+#include <SFML/Graphics.hpp>
+#include "MapVector.h"
 
 /**
  * abstract class for all buttons in the game
@@ -16,15 +17,15 @@ public:
      * @param size the size of the button
      * @param function the function to call when the button is clicked
      */
-    Button(sf::Vector2f pos,
-           sf::Vector2f size,
+    Button(const sf::Vector2f &pos,
+           const sf::Vector2f &size,
            const std::function<void()> &function);
 
     /**
      * check if the button was clicked, and if so, call the function
      * @param pos the position of the click
      */
-    void onClick(sf::Vector2f pos);
+    void onClick(const sf::Vector2f &pos);
 
     /**
      *  handle the hover event
@@ -33,7 +34,7 @@ public:
      *  
      *  @param pos the position of the mouse
      */
-    virtual void onHover(sf::Vector2f pos)
+    virtual void onHover(const sf::Vector2f &pos)
     {};
     
     
@@ -42,7 +43,7 @@ protected:
     /**
      * check if a position is inside the button
      */
-    bool isContains(sf::Vector2f pos);
+    bool isContains(const sf::Vector2f &pos);
 
 
 private:

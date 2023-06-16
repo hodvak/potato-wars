@@ -1,15 +1,18 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <memory>
 #include <optional>
+#include <SFML/Graphics.hpp>
 #include "BombHandler.h"
 #include "MapVector.h"
 #include "GameMap.h"
 
 class Character;
+
 class Projectile;
+
 class Rock;
+
 class BombObject;
 
 /**
@@ -22,22 +25,20 @@ class MovingMapObject : public sf::Drawable
 public:
     /**
      * regular constructor
-     * @param weight the weight of the object
      * @param pos the start position of the object
      * @param radius the radius of the object
+     * @param weight the weight of the object
+     * @param map the game map
+     * @param bomb_handler the BOMB handler of the game
      * @param start_velocity the start velocity of the object
-     * @param bomb_handler the bomb handler of the game
      */
-    MovingMapObject(float weight,
-                    MapVector pos,
-                    GameMap *map,
+    MovingMapObject(const MapVector &pos,
                     float radius,
-                    MapVector start_velocity = {0, 0},
-                    BombHandler *bomb_handler = nullptr);
+                    float weight,
+                    const GameMap &map,
+                    BombHandler &bomb_handler, // not const, can add bombs
+                    const MapVector &start_velocity = {0, 0});
 
-
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-     
 
     /**
      * update the velocity and the position of the object according to the forces
@@ -45,34 +46,38 @@ public:
      * @param deltaTime the time since the last update
      */
     virtual void update(const sf::Time &deltaTime);
-
-    /**
-     * update the object's velocity based on the collision with another object
-     * @param other_object the object that the object collided with
-     * @return true if the function did something, false otherwise (and then
-     *         the other object should handle the collision)
-     */
-    virtual bool collisionObject(MovingMapObject *other_object);
-
+    
+    // ==================== getters ====================
     /**
      * get the velocity of the object
      */
-    [[nodiscard]] MapVector getVelocity() const;
+    [[nodiscard]] const MapVector &getVelocity() const;
 
     /**
      * get the position of the object
      */
-    [[nodiscard]] MapVector getPosition() const;
+    [[nodiscard]] const MapVector &getPosition() const;
 
     /**
      * get the forces acting on the object
      */
-    [[nodiscard]] MapVector getForces() const;
+    [[nodiscard]] const MapVector &getForces() const;
 
     /**
      * get the radius of the object
      */
     [[nodiscard]] float getRadius() const;
+    
+    /**
+     * get the rotation of the object (in radians)
+     */
+    [[nodiscard]] float getRotation() const;
+
+    /**
+     * getter for the map
+     */
+    [[nodiscard]] const GameMap &getMap() const;
+
 
     /**
      * is the object still alive
@@ -83,43 +88,55 @@ public:
      * is the object still moving
      */
     [[nodiscard]] bool isRest() const;
+    
+    // ================= end of getters =================
+    
+    // ==================== setters ====================
+    /**
+     * set the position of the object
+     * @param pos the new position of the object
+     */
+    void setPosition(const MapVector &pos);
 
     /**
-     * get the rotation of the object (in radians)
+     * set the velocity of the object
+     * @param velocity the new velocity of the object
      */
-    [[nodiscard]] float getRotation() const;
+    void setVelocity(const MapVector &velocity);
+
 
     /**
-     * getter for the map
+     * set the forces acting on the object
+     * @param forces the new forces acting on the object
      */
-    [[nodiscard]] const GameMap *getMap() const;
-
+    void setForces(const MapVector &forces);
+    
     /**
-     * check if 2 objects intersect
-     * @param other_object the other object
-     * @return is there an intersection
+     * get movement time
      */
-    [[nodiscard]] bool intersect(const MovingMapObject &other_object) const;
-
-
+    [[nodiscard]] const sf::Time &getMovementTime() const;
+    
     /**
      * kill the object
      */
     void kill();
+
     /**
-     * stop the object
+     * stop the object (set the `inRest` to true)
      */
     void stop();
     
+
     // ==================== collision functions ====================
-    
+
     /**
      * collide function test for collision with other object and react 
      * accordingly using double dispatch, if both object didn't react, the
      * default reaction is to do generic collision
      * @param other_object 
      */
-    void collide(MovingMapObject *other_object);
+    void collide(MovingMapObject &otherObject);
+
     /**
      * collideDD1 function for double dispatch
      * mus be implemented in the derived class as follows:
@@ -129,123 +146,58 @@ public:
      *     return other_object->collideDD2(this);
      * }
      * ```
-     */     
-    virtual bool collideDD1(MovingMapObject *other_object) = 0;
-    
+     */
+    virtual bool collideDD1(MovingMapObject &otherObject) = 0;
+
     /**
      * collideDD1 with double dispatch with the other objects
      */
     // with Character
-    virtual bool collideDD2(Character *other_object);
-    
+    virtual bool collideDD2(Character &otherObject);
+
     // with Projectile
-    virtual bool collideDD2(Projectile *other_object);
+    virtual bool collideDD2(Projectile &otherObject);
 
     // with Rock
-    virtual bool collideDD2(Rock *other_object);
-    
+    virtual bool collideDD2(Rock &otherObject);
+
     // with BombObject
-    virtual bool collideDD2(BombObject *other_object);
+    virtual bool collideDD2(BombObject &otherObject);
 
     /**
      * handle the collision physically with the other object
      */
-    void collideGeneric(MovingMapObject *other_object);
+    void collideGeneric(MovingMapObject &otherObject);
+
+
+    /**
+     * update the object's velocity based on the collision with another object
+     * override this function to change the collision behavior
+     * 
+     */
+    [[nodiscard]] virtual bool collisionObject() const;
+
+    /**
+     * check if 2 objects intersect
+     * @param other_object the other object
+     * @return is there an intersection
+     */
+    [[nodiscard]] bool intersect(const MovingMapObject &otherObject) const;
     
     // ==================== end of collision functions ====================
-
+    
     /**
-     * virtual destructor for the derived classes
-     */
-    ~MovingMapObject() override = default;
-
-    /**
-     * explode the object with the bomb
-     * @param bomb the bomb that exploded
+     * explode the object with the BOMB
+     * @param bomb the BOMB that exploded
      */
     virtual void exploded(const Bomb &bomb);
 
-/**
- * set the position of the object
- * @param pos the new position of the object
- */
-void setPosition(MapVector pos);
 
-/**
- * set the velocity of the object
- * @param velocity the new velocity of the object
- */
-void setVelocity(MapVector velocity);
-
-/**
- * get movement time
- */
-[[nodiscard]] sf::Time getMovementTime() const;
-
-private:
-
-    /**
-     * the rotation of the object (in radians)
-     */
-    float m_rotation;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
-    /**
-     * the bomb handler of the game
-     */
-    BombHandler *m_bombHandler;
-    
-    /**
-     * the weight of the object
-     */
-    float m_weight;
-
-    /**
-     * the forces acting on the object
-     */
-    MapVector m_forces;
-
-    /**
-     * the current velocity of the object
-     */
-    MapVector m_velocity;
-
-    /**
-     * the current position of the object
-     */
-    MapVector m_pos;
-
-    /**
-     * the radius of the object
-     */
-    float m_radius;
-
-    /**
-     * is the object resting on the ground and not need to be updated
-     */
-    bool m_resting;
-
-    /**
-     * is the object is still alive
-     */
-    bool m_alive;
-
-    /**
-     * the map that the object is on
-     */
-    GameMap *m_map;
-    /**
-     * a point that followes the object
-     * and stops it when it get stucks
-     */
-    MapVector m_stuckPoint;
-    /**
-     * the time the stuck point is in the object radius
-     */
-    sf::Time m_movementTime;
-
 
 protected:
-    
+
     /**
      * set the forces according to the delta time.
      * by default, the forces are only the gravity
@@ -267,18 +219,12 @@ protected:
     virtual void updatePosition(const sf::Time &deltaTime);
 
     /**
-     * set the forces acting on the object
-     * @param forces the new forces acting on the object
-     */
-    void setForces(MapVector forces);
-
-    /**
      * override this function to do something when the object is killed (will
      * only be called once)
      */
     virtual void onDeath()
     {};
-    
+
 
     /**
      * update the object's velocity based on the collision with the map
@@ -298,11 +244,75 @@ protected:
      * @param rotation the new rotation of the object
      */
     void setRotation(float rotation);
-    
+
     /**
-     * add a bomb to the bomb handler
-     * @param bomb the bomb to add
+     * add a BOMB to the BOMB handler
+     * @param bomb the BOMB to add
      */
     void addBomb(const Bomb &bomb);
+
+
+private:
+    
+    // ======= private member variables =======
+    /**
+     * the current position of the object
+     */
+    MapVector m_pos;
+
+
+    /**
+     * the rotation of the object (in radians)
+     */
+    float m_rotation;
+
+    /**
+     * the BOMB handler of the game
+     */
+    BombHandler &m_bombHandler;
+
+    /**
+     * the weight of the object
+     */
+    float m_weight;
+
+    /**
+     * the forces acting on the object
+     */
+    MapVector m_forces;
+
+    /**
+     * the current velocity of the object
+     */
+    MapVector m_velocity;
+
+    /**
+     * the radius of the object
+     */
+    float m_radius;
+
+    /**
+     * is the object resting on the ground and not need to be updated
+     */
+    bool m_resting;
+
+    /**
+     * is the object is still alive
+     */
+    bool m_alive;
+
+    /**
+     * the map that the object is on
+     */
+    const GameMap &m_map;
+    /**
+     * a point that follows the object
+     * and stops it when it get stacks
+     */
+    MapVector m_stuckPoint;
+    /**
+     * the time the stuck point is in the object radius
+     */
+    sf::Time m_movementTime;
 
 };

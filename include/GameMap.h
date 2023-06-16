@@ -13,20 +13,58 @@
 class GameMap : public sf::Drawable
 {
 public:
+    /**
+     * regular constructor
+     * @param levelName the name of the level to load
+     */
     explicit GameMap(const std::string &levelName);
 
+    /**
+     * get the mask of the map, used for collision detection
+     * @return the mask of the map
+     */
     [[nodiscard]] const sf::Image &getMask() const;
 
-    void bomb(MapVector pos, int radius);
+    /**
+     * change the map (mask) according to the explosion
+     * @param pos the position of the explosion
+     * @param radius the radius of the explosion
+     */
+    void bomb(const MapVector &pos, int radius);
 
+    /**
+     * draw the map on the target
+     * @param target the target to draw on
+     * @param states the states to draw with
+     */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 
 private:
+    
+/**
+     * the width of the map
+     */
     unsigned int m_width;
+    
+    /**
+     * the height of the map
+     */
     unsigned int m_height;
+    
+    /**
+     * the mask of the map
+     */
     sf::Image m_mask;
+    
+    /**
+     * image of the sky and the ground
+     */
     const sf::Image *m_sky;
     const sf::Image *m_ground;
+    
+    /**
+     * image to display on 'draw' function
+     */
     sf::Image m_display;
 };

@@ -1,24 +1,23 @@
 #include "MapObject/MovingMapObject.h"
-#include <cmath>
+#include <numbers>
 #include "Physics.h"
-#include "Const.h"
 
 
-MovingMapObject::MovingMapObject(float weight,
-                                 MapVector pos,
-                                 GameMap *map,
+MovingMapObject::MovingMapObject(const MapVector &pos,
                                  float radius,
-                                 MapVector start_velocity,
-                                 BombHandler *bomb_handler)
+                                 float weight,
+                                 const GameMap &map,
+                                 BombHandler &bombHandler,
+                                 const MapVector &startVelocity)
         : m_weight(weight),
-          m_velocity(start_velocity),
+          m_velocity(startVelocity),
           m_pos(pos),
           m_radius(radius),
           m_forces(0, m_weight * Physics::GRAVITY),
           m_resting(false),
           m_alive(true),
           m_map(map),
-          m_bombHandler(bomb_handler),
+          m_bombHandler(bombHandler),
           m_rotation(0),
           m_stuckPoint(pos),
           m_movementTime(sf::Time::Zero)
@@ -83,32 +82,32 @@ void MovingMapObject::update(const sf::Time &deltaTime)
 
 }
 
-void MovingMapObject::setVelocity(MapVector velocity)
+void MovingMapObject::setVelocity(const MapVector &velocity)
 {
     m_velocity = velocity;
 }
 
-void MovingMapObject::setPosition(MapVector pos)
+void MovingMapObject::setPosition(const MapVector &pos)
 {
     m_pos = pos;
 }
 
-void MovingMapObject::setForces(MapVector forces)
+void MovingMapObject::setForces(const MapVector &forces)
 {
     m_forces = forces;
 }
 
-MapVector MovingMapObject::getVelocity() const
+const MapVector &MovingMapObject::getVelocity() const
 {
     return m_velocity;
 }
 
-MapVector MovingMapObject::getPosition() const
+const MapVector &MovingMapObject::getPosition() const
 {
     return m_pos;
 }
 
-MapVector MovingMapObject::getForces() const
+const MapVector &MovingMapObject::getForces() const
 {
     return m_forces;
 }
@@ -118,7 +117,7 @@ float MovingMapObject::getRadius() const
     return m_radius;
 }
 
-bool MovingMapObject::collisionObject(MovingMapObject *other_object)
+bool MovingMapObject::collisionObject() const
 {
     return true;
 }
@@ -127,8 +126,8 @@ std::optional<float> MovingMapObject::collisionMap()
 {
 
     MapVector closestPoint = {-m_radius, -m_radius};
-    float hit_angle = 0;
-    int num_of_pixels = 0;
+    float hitAngle = 0;
+    int numOfPixels = 0;
 
     for (int i = (int) -m_radius; i < (int) m_radius; ++i)
     {
@@ -142,12 +141,12 @@ std::optional<float> MovingMapObject::collisionMap()
                                     (int) m_pos.y + j};
                 if (pos.x < 0 ||
                     pos.y < 0 ||
-                    pos.x >= (int) m_map->getMask().getSize().x ||
-                    pos.y >= (int) m_map->getMask().getSize().y)
+                    pos.x >= (int) m_map.getMask().getSize().x ||
+                    pos.y >= (int) m_map.getMask().getSize().y)
                 {
                     continue;
                 }
-                if (m_map->getMask().getPixel(pos.x, pos.y) ==
+                if (m_map.getMask().getPixel(pos.x, pos.y) ==
                     sf::Color::White)
                 {
                     if (i * i + j * j <
@@ -157,14 +156,14 @@ std::optional<float> MovingMapObject::collisionMap()
                         closestPoint.x = (float) i;
                         closestPoint.y = (float) j;
                     }
-                    hit_angle += (float) atan2(j, i);
-                    num_of_pixels++;
+                    hitAngle += (float) atan2(j, i);
+                    numOfPixels++;
                 }
             }
         }
     }
 
-    if (num_of_pixels == 0)
+    if (numOfPixels == 0)
     {
         return std::nullopt;
     }
@@ -175,10 +174,10 @@ std::optional<float> MovingMapObject::collisionMap()
                                            to_move);
 
     //fix the hit angle (average hit angle)
-    hit_angle /= (float) num_of_pixels;
+    hitAngle /= (float) numOfPixels;
 
 
-    auto [norm, tang] = m_velocity.getSplitVector(hit_angle);
+    auto [norm, tang] = m_velocity.getSplitVector(hitAngle);
 
     norm *= -1.0f; //bounce back
 
@@ -196,8 +195,8 @@ std::optional<float> MovingMapObject::collisionMap()
         tang = MapVector::getVectorFromAngle(ang, mag);
     }
 
-    if (hit_angle > Consts::PI / 2 - 0.001 &&
-        hit_angle < Consts::PI / 2 + 0.001 &&
+    if (hitAngle > std::numbers::pi_v<float> / 2 - 0.001 &&
+        hitAngle < std::numbers::pi_v<float> / 2 + 0.001 &&
         abs(norm.getMagnitude()) + abs(tang.getMagnitude()) <
         Physics::GRAVITY / 2)
     {
@@ -206,7 +205,7 @@ std::optional<float> MovingMapObject::collisionMap()
 
     m_velocity = norm + tang;
 
-    return hit_angle;
+    return hitAngle;
 }
 
 
@@ -229,33 +228,33 @@ bool MovingMapObject::isRest() const
     return m_resting;
 }
 
-void MovingMapObject::collideGeneric(MovingMapObject *other_object)
+void MovingMapObject::collideGeneric(MovingMapObject &otherObject)
 {
-    if (!other_object->isAlive() || !isAlive())
+    if (!otherObject.isAlive() || !isAlive())
     {
         return;
     }
-    float angle = (other_object->m_pos - m_pos).getAngle();
+    float angle = (otherObject.m_pos - m_pos).getAngle();
 
     auto [v1f, v2f] = Physics::elasticCollision(m_weight,
-                                                other_object->m_weight,
+                                                otherObject.m_weight,
                                                 m_velocity,
-                                                other_object->m_velocity,
+                                                otherObject.m_velocity,
                                                 angle);
     m_velocity = v1f;
-    other_object->m_velocity = v2f;
+    otherObject.m_velocity = v2f;
 
-    other_object->m_resting = false;
+    otherObject.m_resting = false;
     m_resting = false;
 
-    m_pos = other_object->m_pos +
-            MapVector::getVectorFromAngle(angle + Consts::PI,
+    m_pos = otherObject.m_pos +
+            MapVector::getVectorFromAngle(angle + std::numbers::pi_v<float>,
                                           m_radius +
-                                          other_object->m_radius);
+                                          otherObject.m_radius);
 }
 
 
-const GameMap *MovingMapObject::getMap() const
+const GameMap &MovingMapObject::getMap() const
 {
     return m_map;
 }
@@ -267,7 +266,7 @@ void MovingMapObject::exploded(const Bomb &bomb)
     if (distance < (float) bomb.radius + m_radius)
     {
         float force = bomb.force * (float) atan2(bomb.radius, distance) /
-                      (Consts::PI * m_weight);
+                      (std::numbers::pi_v<float> * m_weight);
         m_velocity += MapVector::getVectorFromAngle(diff.getAngle(), force);
         m_resting = false;
     }
@@ -275,7 +274,7 @@ void MovingMapObject::exploded(const Bomb &bomb)
 
 void MovingMapObject::addBomb(const Bomb &bomb)
 {
-    m_bombHandler->addBomb(bomb);
+    m_bombHandler.addBomb(bomb);
 }
 
 void
@@ -287,7 +286,7 @@ MovingMapObject::draw(sf::RenderTarget &target, sf::RenderStates states) const
 void MovingMapObject::updateRotation(const sf::Time &deltaTime)
 {
     m_rotation += m_velocity.x * 0.11f * deltaTime.asSeconds();
-    m_rotation = fmod(m_rotation, 2 * Consts::PI);
+    m_rotation = fmod(m_rotation, 2 * std::numbers::pi_v<float>);
 }
 
 float MovingMapObject::getRotation() const
@@ -300,40 +299,41 @@ void MovingMapObject::setRotation(float rotation)
     m_rotation = rotation;
 }
 
-bool MovingMapObject::collideDD2(Projectile *other_object)
+bool MovingMapObject::collideDD2(Projectile &otherObject)
 {
     return false;
 }
 
-bool MovingMapObject::collideDD2(Character *other_object)
+bool MovingMapObject::collideDD2(Character &otherObject)
 {
     return false;
 }
 
-bool MovingMapObject::collideDD2(Rock *other_object)
+bool MovingMapObject::collideDD2(Rock &otherObject)
 {
     return false;
 }
 
-void MovingMapObject::collide(MovingMapObject *other_object)
+void MovingMapObject::collide(MovingMapObject &otherObject)
 {
     // no collision if one of the objects is dead
-    if (!other_object->isAlive() || !isAlive() || !intersect(*other_object))
+    if (!otherObject.isAlive() || !isAlive() || !intersect(otherObject))
     {
         return;
     }
     // if this object implements DD2
-    if (collideDD1(other_object))
+    if (collideDD1(otherObject))
     {
         return;
     }
     // if other object implements DD2
-    if (other_object->collideDD1(this))
+    if (otherObject.collideDD1(*this))
     {
         return;
     }
     // generic collision by default
-    collideGeneric(other_object);
+    if(collisionObject())
+    collideGeneric(otherObject);
 }
 
 bool MovingMapObject::intersect(const MovingMapObject &other_object) const
@@ -342,12 +342,12 @@ bool MovingMapObject::intersect(const MovingMapObject &other_object) const
            m_radius + other_object.m_radius;
 }
 
-bool MovingMapObject::collideDD2(BombObject *other_object)
+bool MovingMapObject::collideDD2(BombObject &other_object)
 {
     return false;
 }
 
-sf::Time MovingMapObject::getMovementTime() const
+const sf::Time &MovingMapObject::getMovementTime() const
 {
     return m_movementTime;
 }
