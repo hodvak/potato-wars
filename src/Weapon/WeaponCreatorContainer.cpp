@@ -20,19 +20,30 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
     sf::RectangleShape rectangle;
     rectangle.setSize(sf::Vector2f(m_size.x, m_size.y));
     rectangle.setPosition(sf::Vector2f(m_position.x, m_position.y));
-    rectangle.setFillColor(sf::Color(255, 255, 255, 100));
+    rectangle.setFillColor(sf::Color(0, 0, 0, 100));
     target.draw(rectangle, states);
 
 
     // specific rectangles todo: add offset
     rectangle.setSize(
             sf::Vector2f(m_size.x / TABLE_SIZE.x, m_size.y / TABLE_SIZE.y));
-    rectangle.setFillColor(sf::Color(255, 255, 255, 150));
+    
+    rectangle.setOutlineThickness(1);
+    rectangle.setOutlineColor(sf::Color(0, 0, 0, 255));
+    
     for (int i = 0; i < m_weaponCreators.size(); ++i)
     {
         rectangle.setPosition(
                 sf::Vector2f(m_position.x + i * (m_size.x / TABLE_SIZE.x),
                              m_position.y));
+        if(m_weaponCreators[i]->getAmount() != 0)
+        {
+            rectangle.setFillColor(sf::Color(0, 0, 0, 100));
+        }
+        else
+        {
+            rectangle.setFillColor(sf::Color(255, 0, 0, 100));
+        }
         target.draw(rectangle, states);
         sf::Sprite sprite;
         sprite.setTexture(*m_weaponCreators[i]->getTexture());
@@ -43,7 +54,8 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
         target.draw(sprite, states);
         sf::Text text;
         text.setFont(
-                *resources_manager::getFont("resources/Fonts/ARCADE2.otf"));
+                *resources_manager::getFont(resources_manager::FONT_ARCADE_PATH)
+        );
         if (m_weaponCreators[i]->getAmount() == -1)
         {
             text.setString("inf");
@@ -64,7 +76,7 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
 void WeaponCreatorContainer::addWeaponCreator(
         std::unique_ptr<WeaponCreator> &&weaponCreator)
 {
-    for (auto &creator : m_weaponCreators)
+    for (auto &creator: m_weaponCreators)
     {
         if (creator->getTexture() == weaponCreator->getTexture() &&
             creator->getTextureRect() == weaponCreator->getTextureRect())

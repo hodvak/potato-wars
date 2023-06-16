@@ -30,13 +30,17 @@ StoneThrowCreator::StoneThrowCreator(const StoneThrowCreator &other) :
 
 const sf::Texture *StoneThrowCreator::getTexture() const
 {
-    return resources_manager::getTexture(
-            "resources/Images/Textures/rocks.png");
+    return resources_manager::getTexture(resources_manager::IMG_ROCK_PATH);
 }
 
 sf::IntRect StoneThrowCreator::getTextureRect() const
 {
-    return {0, 0, 100, 100};
+    return sf::IntRect(
+            resources_manager::IMG_ROCK_SIZE.x * PlayerColor::SIZE,
+            0,
+            resources_manager::IMG_ROCK_SIZE.x,
+            resources_manager::IMG_ROCK_SIZE.y
+    );
 }
 
 std::unique_ptr<WeaponCreator> StoneThrowCreator::copy() const

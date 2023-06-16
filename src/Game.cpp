@@ -187,7 +187,7 @@ void Game::handleMousePressed(const MapVector &mousePosition)
             m_bombHandler
     );
 
-    m_movingObjects.emplace_back(std::move(crate));
+//    m_movingObjects.emplace_back(std::move(crate));
     m_teams[m_teamTurnIndex].onMouseClick(mousePosition);
 }
 
