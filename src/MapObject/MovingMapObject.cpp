@@ -41,13 +41,14 @@ void MovingMapObject::updatePosition(const sf::Time &deltaTime)
 
     m_pos += m_velocity * deltaTime.asSeconds(); //update the position
 
-
-
-    direction = m_pos - direction; //get the direction of the movement
+    
+    
+    direction = m_pos - m_stuckPoint; //get the direction for the stuck point
+    direction *= deltaTime.asSeconds();
 
     //check if the object is stuck
     float maxDistance = 50 * deltaTime.asSeconds();
-    if (direction.getMagnitude() * deltaTime.asSeconds() > maxDistance)
+    if (direction.getMagnitude() > maxDistance)
     {
         direction.normalize(maxDistance);
         m_stuckPoint += direction;
@@ -59,11 +60,11 @@ void MovingMapObject::updatePosition(const sf::Time &deltaTime)
 
     if ((m_pos - m_stuckPoint).getMagnitude() >= m_radius)
     {
-        m_movementTime += deltaTime;
+        m_movementTime = sf::Time::Zero;
     }
     else
     {
-        m_movementTime = sf::Time::Zero;
+        m_movementTime += deltaTime;
     }
 }
 
@@ -355,6 +356,7 @@ const sf::Time &MovingMapObject::getMovementTime() const
 void MovingMapObject::stop()
 {
     m_resting = true;
+    m_movementTime = sf::Time::Zero;
 }
 
 bool MovingMapObject::collideDD2(WeaponCrate &otherObject)
@@ -367,3 +369,8 @@ bool MovingMapObject::collideDD2(HealthCrate &otherObject)
     return false;
 }
 
+
+const MapVector &MovingMapObject::getStuckPoint() const
+{
+    return m_stuckPoint;
+}

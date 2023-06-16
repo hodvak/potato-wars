@@ -41,6 +41,7 @@ void Game::update(const sf::Time &deltaTime)
 {
     //update objects
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
+    stopMovingObjects();
 
     //update team
     if (m_teams[m_teamTurnIndex].update(deltaTime))
@@ -135,10 +136,6 @@ void Game::updateObjects(const sf::Time &time)
         }
 
     }
-
-    stopMovingObjects();
-
-
 }
 
 void Game::updateCollision()

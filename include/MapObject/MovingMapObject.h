@@ -82,7 +82,11 @@ public:
      */
     [[nodiscard]] const GameMap &getMap() const;
 
-
+    /**
+     * getter for the stuck point
+     */
+    [[nodiscard]] const MapVector &getStuckPoint() const;
+    
     /**
      * is the object still alive
      */
