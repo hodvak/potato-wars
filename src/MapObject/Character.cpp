@@ -84,3 +84,4 @@ WeaponCreatorContainer &Character::getWeaponCreatorContainer()
 {
     return m_weaponCreatorContainer;
 }
+

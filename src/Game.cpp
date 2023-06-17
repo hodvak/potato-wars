@@ -7,6 +7,8 @@
 #include "Weapon/Creators/RifleWeaponCreator.h"
 #include "MapObject/Crates/WeaponCrate.h"
 #include "Weapon/Creators/StoneThrowCreator.h"
+#include "Weapon/Creators/JumpCreator.h"
+
 #include <functional>
 
 Game::Game(const std::string &levelName) :
@@ -213,7 +215,7 @@ void Game::stopMovingObjects()
 
 void Game::addCharacter(const PlayerColor &color, const MapVector &position)
 {
-    Character *character = new Character(
+    auto *character = new Character(
             position,
             m_map,
             m_bombHandler,
@@ -239,6 +241,14 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             },
             m_map,
             m_bombHandler
+    ));
+
+    character->addWeaponCreator(std::make_unique<JumpCreator>(-1,
+                                                              [&](std::unique_ptr<MovingMapObject> &&object)
+                                                              {
+                                                                  addMovingObject(std::move(object));
+                                                              }
+
     ));
 
     m_movingObjects.emplace_back(character);

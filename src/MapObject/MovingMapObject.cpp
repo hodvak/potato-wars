@@ -374,3 +374,13 @@ const MapVector &MovingMapObject::getStuckPoint() const
 {
     return m_stuckPoint;
 }
+
+BombHandler &MovingMapObject::getBombHandler() const
+{
+    return m_bombHandler;
+}
+
+void MovingMapObject::unrest()
+{
+    m_resting = false;
+}

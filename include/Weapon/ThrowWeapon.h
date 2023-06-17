@@ -59,11 +59,6 @@ private:
      * max distance of the mouse from the character to throw the weapon
      */
     const float MAX_MOUSE_DISTANCE = 100;
-    
-    /**
-     * fix the position of the weapon by the character
-     */
-    void fixPosition();
 
     /**
      * the character that holds the weapon
@@ -89,4 +84,11 @@ private:
      * the texture of the weapon
      */
     ThrowWeaponTexture m_texture;
+
+protected:
+/**
+ * fix the position of the weapon by the character
+ */
+void fixPosition();
+void setDirectionTexture(MapVector direction);
 };

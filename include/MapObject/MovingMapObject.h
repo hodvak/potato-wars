@@ -207,6 +207,14 @@ public:
 
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    /***
+     * get the bomb handler
+     * @return the bomb handler
+     */
+    [[nodiscard]] BombHandler &getBombHandler() const;
+
+    void unrest();
+
 
 
 protected:

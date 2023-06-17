@@ -63,3 +63,8 @@ void ThrowWeapon::fixPosition()
     m_weapon->setPosition(startPosition);
 
 }
+
+void ThrowWeapon::setDirectionTexture(MapVector direction)
+{
+    m_texture.setDirection(direction);
+}

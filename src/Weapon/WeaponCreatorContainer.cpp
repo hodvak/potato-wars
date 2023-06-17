@@ -51,6 +51,9 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
         sprite.setPosition(
                 sf::Vector2f(m_position.x + i * (m_size.x / TABLE_SIZE.x),
                              m_position.y));
+        sprite.setScale(
+                (m_size.x / TABLE_SIZE.x) / sprite.getGlobalBounds().width,
+                (m_size.y / TABLE_SIZE.y) / sprite.getGlobalBounds().height);
         target.draw(sprite, states);
         sf::Text text;
         text.setFont(
