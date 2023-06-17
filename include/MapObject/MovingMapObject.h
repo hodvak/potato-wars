@@ -13,7 +13,7 @@ class Projectile;
 
 class Rock;
 
-class BombObject;
+class Bomb;
 
 class HealthCrate;
 
@@ -169,8 +169,8 @@ public:
     // with Rock
     virtual bool collideDD2(Rock &otherObject);
 
-    // with BombObject
-    virtual bool collideDD2(BombObject &otherObject);
+    // with Bomb
+    virtual bool collideDD2(Bomb &otherObject);
 
     // with HealthCrate
     virtual bool collideDD2(HealthCrate &otherObject);
@@ -203,7 +203,7 @@ public:
      * explode the object with the BOMB
      * @param bomb the BOMB that exploded
      */
-    virtual void exploded(const Bomb &bomb);
+    virtual void exploded(const Explosion &bomb);
 
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -270,7 +270,7 @@ protected:
      * add a BOMB to the BOMB handler
      * @param bomb the BOMB to add
      */
-    void addBomb(const Bomb &bomb);
+    void addBomb(const Explosion &bomb);
 
 
 private:

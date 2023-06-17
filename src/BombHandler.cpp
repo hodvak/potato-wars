@@ -3,12 +3,12 @@
 
 BombHandler::BombHandler() = default;
 
-void drawBomb(GameMap *map, const Bomb &bomb)
+void drawBomb(GameMap *map, const Explosion &bomb)
 {
     map->bomb(bomb.pos, bomb.radius);
 }
 
-void BombHandler::addBomb(const Bomb &bomb)
+void BombHandler::addBomb(const Explosion &bomb)
 {
     m_bombs.push_back(bomb);
 }

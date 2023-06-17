@@ -3,12 +3,12 @@
 #include "MapObject/Projectile.h"
 #include "MapObject/Character.h"
 #include "MapObject/Rock.h"
-#include "MapObject/BombObject.h"
+#include "MapObject/Bomb.h"
 #include "Weapon/Creators/RifleWeaponCreator.h"
 #include "MapObject/Crates/WeaponCrate.h"
 #include "Weapon/Creators/StoneThrowCreator.h"
 #include "Weapon/Creators/JumpCreator.h"
-
+#include "Weapon/Creators/BombThrowCreator.h"
 #include <functional>
 
 Game::Game(const std::string &levelName) :
@@ -248,6 +248,14 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
                                                               {
                                                                   addMovingObject(std::move(object));
                                                               }
+
+    ));
+    character->addWeaponCreator(std::make_unique<BombThrowCreator>(1,
+                                                              [&](std::unique_ptr<MovingMapObject> &&object)
+                                                              {
+                                                                  addMovingObject(std::move(object));
+                                                              },
+                                                                m_map,m_bombHandler
 
     ));
 

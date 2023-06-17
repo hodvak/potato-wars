@@ -260,7 +260,7 @@ const GameMap &MovingMapObject::getMap() const
     return m_map;
 }
 
-void MovingMapObject::exploded(const Bomb &bomb)
+void MovingMapObject::exploded(const Explosion &bomb)
 {
     MapVector diff = m_pos - bomb.pos;
     float distance = diff.getMagnitude();
@@ -273,7 +273,7 @@ void MovingMapObject::exploded(const Bomb &bomb)
     }
 }
 
-void MovingMapObject::addBomb(const Bomb &bomb)
+void MovingMapObject::addBomb(const Explosion &bomb)
 {
     m_bombHandler.addBomb(bomb);
 }
@@ -343,7 +343,7 @@ bool MovingMapObject::intersect(const MovingMapObject &other_object) const
            m_radius + other_object.m_radius;
 }
 
-bool MovingMapObject::collideDD2(BombObject &other_object)
+bool MovingMapObject::collideDD2(Bomb &other_object)
 {
     return false;
 }
