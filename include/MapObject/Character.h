@@ -21,6 +21,13 @@ private:
      * weight of the Character
      */
     static const float WEIGHT;
+
+
+    /**
+     * explosion damage constant (the higher the const, the more damage the Character
+     * will deal on explosion)
+     */
+    static const float EXPLOSION_DAMAGE;
     
 public:
     /**

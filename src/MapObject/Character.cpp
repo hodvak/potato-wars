@@ -3,6 +3,7 @@
 
 const float Character::RADIUS = 10;
 const float Character::WEIGHT = 200;
+const float Character::EXPLOSION_DAMAGE = 0.00002f;
 
 Character::Character(const MapVector &pos,
                      const GameMap &map,
@@ -93,7 +94,7 @@ void Character::exploded(const Explosion &bomb)
     float bombDamage = bomb.force * (1 - distance / bomb.radius);
     if (bombDamage > 0)
     {
-        damage(0.00002f * bombDamage);
+        damage(EXPLOSION_DAMAGE * bombDamage);
     }
 }
 
