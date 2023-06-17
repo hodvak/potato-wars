@@ -8,17 +8,17 @@
  * rolling BOMB)
  * the BOMB object will explode after 10 seconds
  */
-class BombObject : public MovingMapObject
+class Bomb : public MovingMapObject
 {
 public:
     const static float RADIUS;
     const static float WEIGHT;
     const static sf::Time TIME_TO_EXPLODE;
-    const static Bomb BOMB; // the explosion BOMB
+    const static Explosion BOMB; // the explosion BOMB
     
-    BombObject(const MapVector &pos,
-               const GameMap &map,
-               BombHandler &bomb_handler);
+    Bomb(const MapVector &pos,
+         const GameMap &map,
+         BombHandler &bomb_handler);
 
     void update(const sf::Time &deltaTime) override;
 

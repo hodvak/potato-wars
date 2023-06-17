@@ -6,9 +6,9 @@
 /**
  * a struct class for the BombHandler
  */
-struct Bomb
+struct Explosion
 {
-    Bomb(MapVector pos, int radius, float force) :
+    Explosion(MapVector pos, int radius, float force) :
             pos(pos),
             radius(radius),
             force(force)

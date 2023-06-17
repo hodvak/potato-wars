@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "GameMap.h"
-#include "Bomb.h"
+#include "Explosion.h"
 
 class MovingMapObject;
 
@@ -23,7 +23,7 @@ public:
      * add a BOMB to the handler
      * @param bomb the BOMB to add
      */
-    void addBomb(const Bomb &bomb);
+    void addBomb(const Explosion &bomb);
 
     /**
      * draw the bombs on the map and update the objects according to the bombs
@@ -38,5 +38,5 @@ private:
     /**
      * the bombs in the handler
      */
-    std::vector<Bomb> m_bombs;
+    std::vector<Explosion> m_bombs;
 };
