@@ -36,9 +36,7 @@ sf::IntRect RifleWeaponCreator::getTextureRect() const
     sf::IntRect rect;
     rect.width = resources_manager::IMG_RIFLE_SIZE.x;
     rect.height = resources_manager::IMG_RIFLE_SIZE.y;
-    // for now, its color YELLOW,
-    // todo: add to texture natural color (to the png)
-    rect.left = rect.width * (PlayerColor::YELLOW);
+    rect.left = rect.width * (PlayerColor::SIZE);
     rect.top = 0;
     return rect;
 }

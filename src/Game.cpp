@@ -12,7 +12,7 @@
 Game::Game(const std::string &levelName) :
         m_map(levelName), m_camera(m_map.getMask().getSize().x,
                                    m_map.getMask().getSize().y),
-        m_teamTurnIndex(2),
+        m_teamTurnIndex(0),
         m_teams{Team(PlayerColor::YELLOW),
                 Team(PlayerColor::GREEN),
                 Team(PlayerColor::RED),
@@ -34,6 +34,10 @@ Game::Game(const std::string &levelName) :
                 }
             }
         }
+    }
+    while (m_teams[m_teamTurnIndex].isDead())
+    {
+        m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
     }
 }
 
