@@ -85,3 +85,15 @@ WeaponCreatorContainer &Character::getWeaponCreatorContainer()
     return m_weaponCreatorContainer;
 }
 
+void Character::exploded(const Explosion &bomb)
+{
+    MovingMapObject::exploded(bomb);
+    MapVector diff = getPosition() - bomb.pos;
+    float distance = diff.getMagnitude();
+    float bombDamage = bomb.force * (1 - distance / bomb.radius);
+    if (bombDamage > 0)
+    {
+        damage(0.00002f * bombDamage);
+    }
+}
+

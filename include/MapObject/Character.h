@@ -83,6 +83,12 @@ public:
      * get the color of the Character
      */
     PlayerColor getColor() const;
+    
+    /**
+     * get damage from the explosion
+     * @param bomb the explosion
+     */
+    void exploded(const Explosion &bomb) override;
 
 
 

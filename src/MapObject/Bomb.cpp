@@ -3,7 +3,7 @@
 const float Bomb::RADIUS = 7;
 const float Bomb::WEIGHT = 50;
 const sf::Time Bomb::TIME_TO_EXPLODE = sf::seconds(10);
-const Explosion Bomb::BOMB = Explosion({0, 0}, 50, 3000);
+const Explosion Bomb::BOMB = Explosion({0, 0}, 50, 50000);
 
 Bomb::Bomb(const MapVector &pos,
            const GameMap &map,
