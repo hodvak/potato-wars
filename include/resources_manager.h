@@ -84,6 +84,7 @@ namespace resources_manager
     const std::string IMG_JUMP_PATH = "resources/Images/Textures/jump.png";
     const sf::Vector2u IMG_JUMP_SIZE = { 100, 100 };
     
+    const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
     
     // all the levels will be in the format of:
     // PATH_LEVELS + "lvl" + level_number + "/map.bmp"

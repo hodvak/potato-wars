@@ -47,25 +47,29 @@ void ThrowWeaponTexture::draw(sf::RenderTarget &target,
 
     shape.setPosition(m_character.getPosition());
     target.draw(shape, states);
+    
     sf::Sprite slingshot;
     slingshot.setTexture(*resources_manager::getTexture(
-            "resources/Images/Textures/slingshot.png"));
-    slingshot.scale((m_character.getRadius() * 2*2) / slingshot.getTexture()->getSize().x,
-                    (m_character.getRadius() * 2*2) / slingshot.getTexture()->getSize().y);
+            resources_manager::IMG_SLINGSHOT_PATH));
     
+    slingshot.scale((m_character.getRadius() * 2 * 2) /
+                    slingshot.getTexture()->getSize().x,
+                    (m_character.getRadius() * 2 * 2) /
+                    slingshot.getTexture()->getSize().y);
+
     slingshot.setOrigin(slingshot.getTexture()->getSize().x / 2.0f,
                         slingshot.getTexture()->getSize().y / 2.0f);
-    
-    if(m_direction.getAngle() < std::numbers::pi_v<float> / 2.0f &&
-       m_direction.getAngle() > -std::numbers::pi_v<float> / 2.0f)
+
+    if (m_direction.getAngle() > std::numbers::pi_v<float> / 2.0f ||
+        m_direction.getAngle() < -std::numbers::pi_v<float> / 2.0f)
     {
         slingshot.scale(1, -1);
     }
     slingshot.setPosition(m_character.getPosition());
     slingshot.setRotation(
-            m_direction.getAngle() * 180 / std::numbers::pi_v<float> + 180);
+            m_direction.getAngle() * 180 / std::numbers::pi_v<float>);
     target.draw(slingshot, states);
-    
+
     states.transform.translate(-m_direction);
     target.draw(m_weapon, states);
 
