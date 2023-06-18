@@ -50,7 +50,7 @@ void Game::update(const sf::Time &deltaTime)
     stopMovingObjects();
 
     //update team
-    if (m_teams[m_teamTurnIndex].update(deltaTime))
+    if (m_teams[m_teamTurnIndex].update(deltaTime,m_allStopped))
     {
         m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         std::cout << "team " << m_teamTurnIndex << " is done with their turn"
@@ -64,7 +64,7 @@ void Game::update(const sf::Time &deltaTime)
 
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
-    m_teams[m_teamTurnIndex].update(deltaTime);
+
 
     // remove dead objects
     // from teams
@@ -208,6 +208,7 @@ void Game::stopMovingObjects()
                                          object->getMovementTime().asSeconds() >
                                          2;
                               });
+    m_allStopped = toStop;
     if (toStop)
     {
         for (auto &object: m_movingObjects)

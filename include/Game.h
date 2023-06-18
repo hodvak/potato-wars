@@ -118,4 +118,8 @@ private:
      * add a character to the game
      */
     void addCharacter(const PlayerColor &color,const MapVector &position);
+    /**
+     * if all object stopped moving
+     */
+    bool m_allStopped;
 };

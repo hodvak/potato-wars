@@ -49,6 +49,7 @@ void Rifle::handleMousePressed(const MapVector &mousePosition)
                                          m_map,
                                          m_bombHandler));
     // todo: magic numbers? 30, 3, 0.6 ?
+    endTurn();
     die();
 }
 

@@ -20,7 +20,9 @@ void Jump::handleMousePressed(const MapVector &mousePosition)
     {
         velocity.normalize(MAX_MOUSE_DISTANCE);
     }
+
     setDirectionTexture(velocity);
+
     fixPosition();
     m_character.setVelocity(velocity * 3);
     m_character.unrest();
