@@ -65,8 +65,9 @@ namespace resources_manager
     
     const std::string IMG_BOMB_PATH = "resources/Images/Textures/BOMB.png";
     
-    // 1 * 4
-    // arr[a] is the rifle in the color a (`PlayerColor`)
+    // 1 * 5
+    // arr[a] is the rifle in the color a (`PlayerColor`) and 
+    // arr[4] is rifle without color
     const std::string IMG_RIFLE_PATH = "resources/Images/Textures/rifles.png";
     const sf::Vector2u IMG_RIFLE_SIZE = { 100, 100 };
     
@@ -76,6 +77,12 @@ namespace resources_manager
     // damage y (the arr[0][x] is the rock that was not damaged at all)
     const std::string IMG_ROCK_PATH = "resources/Images/Textures/rocks.png";
     const sf::Vector2u IMG_ROCK_SIZE = { 100, 100 };
+    
+    // 1 * 5
+    // arr[a] is the jump image in the color a (`PlayerColor`) and
+    // arr[4] is jump image without color
+    const std::string IMG_JUMP_PATH = "resources/Images/Textures/jump.png";
+    const sf::Vector2u IMG_JUMP_SIZE = { 100, 100 };
     
     
     // all the levels will be in the format of:

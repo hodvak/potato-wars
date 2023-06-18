@@ -9,12 +9,15 @@ JumpCreator::JumpCreator(int amount,const std::function<void(std::unique_ptr<Mov
 
 const sf::Texture *JumpCreator::getTexture() const
 {
-    return resources_manager::getTexture("resources/images/Textures/jump.png");
+    return resources_manager::getTexture(resources_manager::IMG_JUMP_PATH);
 }
 
 sf::IntRect JumpCreator::getTextureRect() const
 {
-    return {0,0,542,243};
+    return sf::IntRect(resources_manager::IMG_JUMP_SIZE.x * PlayerColor::SIZE, 
+                       0, 
+                       resources_manager::IMG_JUMP_SIZE.x,
+                       resources_manager::IMG_JUMP_SIZE.y);
 }
 
 std::unique_ptr<WeaponCreator> JumpCreator::copy() const
