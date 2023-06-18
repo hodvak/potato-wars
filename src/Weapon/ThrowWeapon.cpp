@@ -10,9 +10,12 @@ ThrowWeapon::ThrowWeapon(const Character &character,
         m_weapon(std::move(weapon)),
         m_startVelocity(1, 0),
         m_character(character),
-        m_texture(character, {1,0}, MAX_MOUSE_DISTANCE)
+        m_texture(character, 
+                  {1,0},
+                  *m_weapon,
+                  MAX_MOUSE_DISTANCE)
 {
-    fixPosition();
+    //fixPosition();
 }
 
 
@@ -24,7 +27,7 @@ void ThrowWeapon::handleMouseMoved(const MapVector &mousePosition)
         m_startVelocity.normalize(MAX_MOUSE_DISTANCE);
     }
     m_texture.setDirection(m_startVelocity);
-    fixPosition();
+//    fixPosition();
 }
 
 void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
@@ -43,14 +46,14 @@ void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
 
 void ThrowWeapon::update(const sf::Time &deltaTime)
 {
-    fixPosition();
+//    fixPosition();
     m_texture.update(deltaTime);
 }
 
 void ThrowWeapon::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(*m_weapon, states);
-    target.draw(m_texture, states);
+    m_texture.draw(target, states);
+//    m_weapon->draw(target, states);
 }
 
 void ThrowWeapon::fixPosition()

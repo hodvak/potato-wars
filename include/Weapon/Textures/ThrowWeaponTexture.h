@@ -18,6 +18,7 @@ public:
      */
     explicit ThrowWeaponTexture(const Character &character,
                                 const MapVector &direction,
+                                const MovingMapObject &weapon,
                                 float maxDistance = 100);
     
     /**
@@ -41,6 +42,7 @@ public:
 
 private:
     const Character &m_character;
+    const MovingMapObject &m_weapon;
     MapVector m_direction;
     float m_maxDistance;
 
