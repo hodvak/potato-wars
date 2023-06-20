@@ -4,6 +4,7 @@
 #include <memory>
 #include "MapObject/Character.h"
 #include "Weapon/Weapon.h"
+#include "CrateDropper.h"
 
 class Team : public sf::Drawable
 {
@@ -34,4 +35,5 @@ private:
     std::unique_ptr<Weapon> m_weapon;
     MapVector m_mousePosition;
     bool m_drwaingContainer = false;
+
 };

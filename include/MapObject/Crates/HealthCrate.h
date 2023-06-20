@@ -9,7 +9,7 @@ public:
     HealthCrate(const MapVector &pos,
                 const GameMap &map,
                 BombHandler &bombHandler);
-    
+    ~HealthCrate() override = default;
     bool collideDD1(MovingMapObject &otherObject) override;
     bool collideDD2(Character &otherObject) override;
     

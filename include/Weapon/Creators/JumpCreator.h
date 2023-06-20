@@ -12,6 +12,6 @@ public:
     [[nodiscard]] sf::IntRect getTextureRect() const override;
     std::unique_ptr<WeaponCreator> copy() const override;
 private:
-    std::unique_ptr<Weapon> createWeaponImpl(const Character &character) override;
+    std::unique_ptr<Weapon> createWeaponImpl(Character &character) override;
     std::function<void(std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
 };

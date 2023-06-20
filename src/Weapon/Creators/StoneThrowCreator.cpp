@@ -49,7 +49,7 @@ std::unique_ptr<WeaponCreator> StoneThrowCreator::copy() const
 }
 
 std::unique_ptr<Weapon>
-StoneThrowCreator::createWeaponImpl(const Character &character)
+StoneThrowCreator::createWeaponImpl(Character &character)
 {
 
     Rock * rock  = new Rock(

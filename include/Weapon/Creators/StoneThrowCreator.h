@@ -16,7 +16,7 @@ public:
 
     StoneThrowCreator(const StoneThrowCreator &other);
 
-    std::unique_ptr<Weapon> createWeaponImpl(const Character &character) override;
+    std::unique_ptr<Weapon> createWeaponImpl(Character &character) override;
 
     [[nodiscard]] const sf::Texture *getTexture() const override;
 

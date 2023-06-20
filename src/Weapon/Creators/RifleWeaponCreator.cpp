@@ -18,7 +18,7 @@ RifleWeaponCreator::RifleWeaponCreator(int amount,
 }
 
 std::unique_ptr<Weapon>
-RifleWeaponCreator::createWeaponImpl(const Character &character)
+RifleWeaponCreator::createWeaponImpl(Character &character)
 {
     return std::make_unique<Rifle>(character, 
                                    m_addMapObjectFunc,

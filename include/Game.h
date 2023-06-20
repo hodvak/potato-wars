@@ -1,9 +1,7 @@
 #pragma once
 
 #include <string>
-
 #include <SFML/Graphics.hpp>
-
 #include "GameMap.h"
 #include "MapObject/Character.h"
 #include "BombHandler.h"
@@ -11,6 +9,7 @@
 #include "Weapon/WeaponCreatorContainer.h"
 #include "Camera.h"
 #include "Team.h"
+#include "CrateDropper.h"
 
 /**
  * a class that handle the game (the main class in the project)
@@ -122,4 +121,8 @@ private:
      * if all object stopped moving
      */
     bool m_allStopped;
+    /**
+     * the crate dropper
+     */
+    CrateDropper m_crateDropper;
 };

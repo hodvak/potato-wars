@@ -22,7 +22,7 @@ BombThrowCreator::BombThrowCreator(const BombThrowCreator &other):
 }
 
 std::unique_ptr<Weapon>
-BombThrowCreator::createWeaponImpl(const Character &character)
+BombThrowCreator::createWeaponImpl(Character &character)
 {
     return std::unique_ptr<Weapon>(std::make_unique<ThrowWeapon>(character,
                                                                  std::make_unique<Bomb>(

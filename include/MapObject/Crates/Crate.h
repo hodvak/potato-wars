@@ -11,7 +11,7 @@ public:
           const sf::IntRect &overShape,
           const GameMap &map,
           BombHandler &bombHandler);
-    
+    ~Crate() override = default;
     void update(const sf::Time &deltaTime) override;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

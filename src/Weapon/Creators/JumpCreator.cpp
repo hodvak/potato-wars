@@ -26,7 +26,7 @@ std::unique_ptr<WeaponCreator> JumpCreator::copy() const
 }
 
 std::unique_ptr<Weapon>
-JumpCreator::createWeaponImpl(const Character &character)
+JumpCreator::createWeaponImpl(Character &character)
 {
-    return std::make_unique<Jump>(const_cast<Character &>(character), m_addMapObjectFunc);
+    return std::make_unique<Jump>(character, m_addMapObjectFunc);
 }
