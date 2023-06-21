@@ -1,27 +1,27 @@
 
 
-#include "Camera.h"
+#include "ActionCamera.h"
 #include <cmath>
 
 #include <utility>
 
-Camera::Camera(float width, float height) : m_view({0, 0, width, height}),
-                                            screenSize(width, height)
+ActionCamera::ActionCamera(float width, float height) : m_view({0, 0, width, height}),
+                                                        screenSize(width, height)
 {
 
 }
 
-void Camera::setToFollow(std::vector<MovingMapObject *> &&objectsToWatch)
+void ActionCamera::setToFollow(std::vector<MovingMapObject *> &&objectsToWatch)
 {
     m_objectsToWatch = std::move(objectsToWatch);
 }
 
-const sf::View &Camera::getView() const
+const sf::View &ActionCamera::getView() const
 {
     return m_view;
 }
 
-void Camera::update(sf::Time deltaTime)
+void ActionCamera::update(sf::Time deltaTime)
 {
     sf::Vector2f center(screenSize.x / 2, screenSize.y / 2);
     sf::Vector2f viewSize = screenSize;

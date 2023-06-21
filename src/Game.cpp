@@ -3,7 +3,7 @@
 #include "MapObject/Projectile.h"
 #include "MapObject/Character.h"
 #include "MapObject/Rock.h"
-#include "MapObject/Bomb.h"
+
 #include "Weapon/Creators/RifleWeaponCreator.h"
 #include "MapObject/Crates/WeaponCrate.h"
 #include "Weapon/Creators/StoneThrowCreator.h"
@@ -11,7 +11,8 @@
 #include "Weapon/Creators/BombThrowCreator.h"
 #include "MapObject/Crates/HealthCrate.h"
 
-#include "MapObject/Crates/WeaponCrate.h"
+
+
 #include <functional>
 
 Game::Game(const std::string &levelName) :
@@ -21,14 +22,17 @@ Game::Game(const std::string &levelName) :
         m_teams{Team(PlayerColor::YELLOW),
                 Team(PlayerColor::GREEN),
                 Team(PlayerColor::RED),
-                Team(PlayerColor::BLUE)}
-                ,
+                Team(PlayerColor::BLUE)},
         m_crateDropper(m_map.getMask().getSize().x,
                        [this](std::unique_ptr<MovingMapObject> &&object)
                        {
                            addMovingObject(
                                    std::move(object));
-                       }, m_map, m_bombHandler)
+                       },
+                       m_map,
+                       m_bombHandler),
+        m_teamCamera(m_map.getMask().getSize().x,
+                     m_map.getMask().getSize().y)
 {
     const sf::Image &mask = *resources_manager::getImage(
             "resources/Levels/" + levelName + "/map.bmp"
@@ -70,7 +74,11 @@ void Game::update(const sf::Time &deltaTime)
             std::cout << "team " << m_teamTurnIndex << " is dead" << std::endl;
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         }
-        m_crateDropper.dropCrate();
+        for (int i = 0; i < 5; ++i)
+        {
+            m_crateDropper.dropCrate();
+        }
+
     }
 
     // update bombs
@@ -103,6 +111,7 @@ void Game::update(const sf::Time &deltaTime)
     }
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
+    m_teamCamera.update(deltaTime);
 }
 
 void
@@ -128,7 +137,7 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.setView(m_camera.getView());
+    target.setView(m_teamCamera.getView());
     target.draw(m_map, states);
     for (const auto &movingObject: m_movingObjects)
     {
@@ -167,16 +176,19 @@ void Game::updateCollision()
     }
 }
 
-void Game::handleMouseMoved(const MapVector &mousePosition)
+void
+Game::handleMouseMoved(const MapVector &mousePosition, const sf::Window &window)
 {
+    m_teamCamera.handleMouseMoved(sf::Mouse::getPosition(window));
     m_teams[m_teamTurnIndex].onMouseMove(mousePosition);
+
 }
 
 void Game::handleMousePressed(const MapVector &mousePosition)
 {
-
-
-    // todo: understand the non virtual destructor warning
+    std::cout << "mouse pressed -- " <<m_teamCamera.getView().getCenter()<< std::endl;
+    //m_teamCamera.reset();
+    // TODO: understand the non virtual destructor warning
 
 
 //    m_movingObjects.emplace_back(std::move(crate));
@@ -205,11 +217,14 @@ void Game::stopMovingObjects()
             object->stop();
         }
     }
-    int x =3;
-    std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(MapVector(0, 0), m_map,m_bombHandler);
-    std::unique_ptr<Crate> crate = std::make_unique<HealthCrate>(MapVector{float (x), 0}, m_map, m_bombHandler) ;
+    int x = 3;
+    std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(
+            MapVector(0, 0), m_map, m_bombHandler);
+    std::unique_ptr<Crate> crate = std::make_unique<HealthCrate>(
+            MapVector{float(x), 0}, m_map, m_bombHandler);
     std::vector<std::unique_ptr<Crate>> crates;
-    crates.emplace_back(std::make_unique<HealthCrate>(MapVector(0, 0), m_map,m_bombHandler));
+    crates.emplace_back(std::make_unique<HealthCrate>(MapVector(0, 0), m_map,
+                                                      m_bombHandler));
 }
 
 void Game::addCharacter(const PlayerColor &color, const MapVector &position)
@@ -265,4 +280,9 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
 
     m_movingObjects.emplace_back(character);
     m_teams[color].addCharacter(character);
+}
+
+void Game::handleScroll(int delta)
+{
+    m_teamCamera.handleScroll(delta);
 }

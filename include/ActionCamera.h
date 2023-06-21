@@ -6,13 +6,13 @@
 /**
  * a class that handle camera movement, focus and zoom
  */
-class Camera
+class ActionCamera
 {
 public:
     /**
      * regular constructor
      */
-    Camera(float width,float height);
+    ActionCamera(float width, float height);
 
     /**
      * set the camera to follow a list of objects

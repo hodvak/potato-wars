@@ -89,5 +89,6 @@ namespace resources_manager
     // all the levels will be in the format of:
     // PATH_LEVELS + "lvl" + level_number + "/map.bmp"
     const std::string PATH_LEVELS = "resources/Levels/";
-    
+    const int SCREEN_WIDTH = 1080;
+    const int SCREEN_HEIGHT = 720;
 }
