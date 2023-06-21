@@ -14,15 +14,15 @@ namespace resources_manager
      * @param path the path to the texture
      * @return the texture
      */
-    const sf::Texture* getTexture(const std::string &path);
-    
+    const sf::Texture *getTexture(const std::string &path);
+
     /**
      * get a font from the manager.
      * if the font is not loaded, load it.
      * @param path the path to the font
      * @return the font
      */
-    const sf::Font* getFont(const std::string &path);
+    const sf::Font *getFont(const std::string &path);
 
     /**
      * get an image from the manager.
@@ -31,7 +31,7 @@ namespace resources_manager
      * @return the image
      */
     const sf::Image *getImage(const std::string &path);
-    
+
     /**
      * consts for the resources
      * ======= IMAGE =======
@@ -49,45 +49,52 @@ namespace resources_manager
      * ======= PATHS =======
      * paths to resources by groups
      */
-     
+
     const std::string FONT_ARCADE_PATH = "resources/Fonts/ARCADE2.otf";
 
     const std::string IMG_SKY_PATH = "resources/Images/MapImages/sky.bmp";
     const std::string IMG_GROUND_PATH = "resources/Images/MapImages/ground.bmp";
-    
-    
+
+
     // 1 * 4
     // arr[a] is the player in the color a (`PlayerColor`)
     const std::string IMG_PLAYER_PATH = "resources/Images/Textures/players.png";
-    const sf::Vector2u IMG_PLAYER_SIZE = { 100, 100 };
-    
+    const sf::Vector2u IMG_PLAYER_SIZE = {100, 100};
+
     const std::string IMG_AIM_PATH = "resources/Images/Textures/Aim.png";
-    
+
     const std::string IMG_BOMB_PATH = "resources/Images/Textures/BOMB.png";
-    
+
     // 1 * 5
     // arr[a] is the rifle in the color a (`PlayerColor`) and 
     // arr[4] is rifle without color
     const std::string IMG_RIFLE_PATH = "resources/Images/Textures/rifles.png";
-    const sf::Vector2u IMG_RIFLE_SIZE = { 100, 100 };
-    
+    const sf::Vector2u IMG_RIFLE_SIZE = {100, 100};
+
+    // 1 * 5
+    // arr[a] is the shotgun in the color a (`PlayerColor`) and 
+    // arr[4] is shotgun without color
+    const std::string IMG_SHOTGUN_PATH = "resources/Images/Textures/shotgun.png";
+    const sf::Vector2u IMG_SHOTGUN_SIZE = {100, 100};
+
     // 3 * 5
     // arr[y][x] is the rock in the:
     // color x (`PlayerColor`) and arr[y][4] is rock without color
     // damage y (the arr[0][x] is the rock that was not damaged at all)
     const std::string IMG_ROCK_PATH = "resources/Images/Textures/rocks.png";
-    const sf::Vector2u IMG_ROCK_SIZE = { 100, 100 };
-    
+    const sf::Vector2u IMG_ROCK_SIZE = {100, 100};
+
     // 1 * 5
     // arr[a] is the jump image in the color a (`PlayerColor`) and
     // arr[4] is jump image without color
     const std::string IMG_JUMP_PATH = "resources/Images/Textures/jump.png";
-    const sf::Vector2u IMG_JUMP_SIZE = { 100, 100 };
-    
+    const sf::Vector2u IMG_JUMP_SIZE = {100, 100};
+
+
     const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
-    
+
     // all the levels will be in the format of:
     // PATH_LEVELS + "lvl" + level_number + "/map.bmp"
     const std::string PATH_LEVELS = "resources/Levels/";
-    
+
 }
