@@ -51,3 +51,8 @@ void Projectile::draw(sf::RenderTarget &target, sf::RenderStates states) const
     shape.setPosition(getPosition());
     target.draw(shape, states);
 }
+
+bool Projectile::collideDD2(Projectile &otherObject)
+{
+    return true;
+}
