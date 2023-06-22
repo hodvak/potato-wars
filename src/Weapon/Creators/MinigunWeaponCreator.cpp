@@ -1,11 +1,11 @@
-#include "Weapon/Creators/ShotgunWeaponCreator.h"
+#include "Weapon/Creators/MinigunWeaponCreator.h"
 #include "Weapon/Shotgun.h"
 #include "resources_manager.h"
 #include "PlayerColor.h"
 #include "Weapon/Minigun.h"
 
 
-ShotgunWeaponCreator::ShotgunWeaponCreator(int amount,
+MinigunWeaponCreator::MinigunWeaponCreator(int amount,
                                        const std::function<void(
                                                std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
                                        const GameMap &map,
@@ -19,7 +19,7 @@ ShotgunWeaponCreator::ShotgunWeaponCreator(int amount,
 }
 
 std::unique_ptr<Weapon>
-ShotgunWeaponCreator::createWeaponImpl(const Character &character)
+MinigunWeaponCreator::createWeaponImpl(const Character &character)
 {
     return std::make_unique<Minigun>(character, 
                                    m_addMapObjectFunc,
@@ -27,27 +27,27 @@ ShotgunWeaponCreator::createWeaponImpl(const Character &character)
                                    m_bombHandler);
 }
 
-const sf::Texture *ShotgunWeaponCreator::getTexture() const
+const sf::Texture *MinigunWeaponCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_SHOTGUN_PATH);
+    return resources_manager::getTexture(resources_manager::IMG_MINIGUN_PATH);
 }
 
-sf::IntRect ShotgunWeaponCreator::getTextureRect() const
+sf::IntRect MinigunWeaponCreator::getTextureRect() const
 {
     sf::IntRect rect;
-    rect.width = resources_manager::IMG_SHOTGUN_SIZE.x;
-    rect.height = resources_manager::IMG_SHOTGUN_SIZE.y;
+    rect.width = resources_manager::IMG_MINIGUN_SIZE.x;
+    rect.height = resources_manager::IMG_MINIGUN_SIZE.y;
     rect.left = rect.width * (PlayerColor::SIZE);
     rect.top = 0;
     return rect;
 }
 
-std::unique_ptr<WeaponCreator> ShotgunWeaponCreator::copy() const
+std::unique_ptr<WeaponCreator> MinigunWeaponCreator::copy() const
 {
-    return std::make_unique<ShotgunWeaponCreator>(*this);
+    return std::make_unique<MinigunWeaponCreator>(*this);
 }
 
-ShotgunWeaponCreator::ShotgunWeaponCreator(const ShotgunWeaponCreator &other) :
+MinigunWeaponCreator::MinigunWeaponCreator(const MinigunWeaponCreator &other) :
         WeaponCreator(other.getAmount()), m_map(other.m_map),
         m_bombHandler(other.m_bombHandler)
 {

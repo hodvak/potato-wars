@@ -77,6 +77,13 @@ namespace resources_manager
     const std::string IMG_SHOTGUN_PATH = "resources/Images/Textures/shotgun.png";
     const sf::Vector2u IMG_SHOTGUN_SIZE = {100, 100};
 
+
+    // 1 * 5
+    // arr[a] is the shotgun in the color a (`PlayerColor`) and 
+    // arr[4] is shotgun without color
+    const std::string IMG_MINIGUN_PATH = "resources/Images/Textures/minigun.png";
+    const sf::Vector2u IMG_MINIGUN_SIZE = {200, 200};
+
     // 3 * 5
     // arr[y][x] is the rock in the:
     // color x (`PlayerColor`) and arr[y][4] is rock without color

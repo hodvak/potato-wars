@@ -10,6 +10,7 @@
 #include "Weapon/Creators/JumpCreator.h"
 #include "Weapon/Creators/BombThrowCreator.h"
 #include "Weapon/Creators/ShotgunWeaponCreator.h"
+#include "Weapon/Creators/MinigunWeaponCreator.h"
 #include <functional>
 
 Game::Game(const std::string &levelName) :
@@ -245,7 +246,7 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_bombHandler
     ));
 
-    character->addWeaponCreator(std::make_unique<ShotgunWeaponCreator>(
+    character->addWeaponCreator(std::make_unique<MinigunWeaponCreator>(
             2,
             [&](std::unique_ptr<MovingMapObject> &&object)
             {
