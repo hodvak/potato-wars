@@ -39,4 +39,6 @@ private:
      * the next screen to run
      */
     std::unique_ptr<Screen> m_nextScreen;
+    void help();
+
 };

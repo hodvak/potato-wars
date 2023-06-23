@@ -4,9 +4,10 @@
 #include "Screen/GameScreen.h"
 #include <iostream>
 #include "resources_manager.h"
-
+#include "Screen/HelpScreen.h"
 void nothing()
 {}
+
 
 
 MainScreen::MainScreen() :
@@ -22,7 +23,7 @@ MainScreen::MainScreen() :
                                                                resources_manager::IMG_BUTTON_NEW_GAME_PATH)));
     m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width-75, screen_height*0.75),
                                                        sf::Vector2f(150, 50),
-                                                       [this] { startGame(); },
+                                                       [this] { help(); },
                                                        resources_manager::getTexture(
                                                                resources_manager::IMG_BUTTON_HELP_PATH)));
     m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*5-75, screen_height*0.75),
@@ -99,5 +100,10 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 void MainScreen::startGame()
 {
     m_nextScreen = std::make_unique<GameScreen>("lvl2");
+}
+
+void MainScreen::help()
+{
+    m_nextScreen = std::make_unique<HelpScreen>();
 }
 

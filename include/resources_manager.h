@@ -50,7 +50,8 @@ namespace resources_manager
      * paths to resources by groups
      */
      
-    const std::string FONT_ARCADE_PATH = "resources/Fonts/ARCADE2.otf";
+    const std::string FONT_ARCADE_PATH = "resources/Fonts/ARCADE2.TTF";
+    const std::string FONT_CALIBRI_PATH = "resources/Fonts/calibrib.ttf";
 
     const std::string IMG_SKY_PATH = "resources/Images/MapImages/sky.bmp";
     const std::string IMG_GROUND_PATH = "resources/Images/MapImages/ground.bmp";
@@ -83,15 +84,20 @@ namespace resources_manager
     // arr[4] is jump image without color
     const std::string IMG_JUMP_PATH = "resources/Images/Textures/jump.png";
     const sf::Vector2u IMG_JUMP_SIZE = { 100, 100 };
-    
     const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
+
+        //buttons
     const std::string IMG_BUTTON_NEW_GAME_PATH = "resources/Images/Textures/button_new-game.png";
     const std::string IMG_BUTTON_HELP_PATH = "resources/Images/Textures/button_help.png";
     const std::string IMG_BUTTON_SETTINGS_PATH = "resources/Images/Textures/button_settings.png";
     const std::string IMG_BACKGROUND_MAIN_PATH = "resources/Images/Textures/logo-color.png";
+    const std::string IMG_BUTTON_BACK_PATH = "resources/Images/Textures/button_back .png";
+    const std::string IMG_BUTTON_LEFT_PATH = "resources/Images/Textures/button_left_arrow.png";
+    const std::string IMG_BUTTON_RIGHT_PATH = "resources/Images/Textures/button_right_arrow.png";
+
     // all the levels will be in the format of:
     // PATH_LEVELS + "lvl" + level_number + "/map.bmp"
     const std::string PATH_LEVELS = "resources/Levels/";
-    const int SCREEN_WIDTH = 1080;
-    const int SCREEN_HEIGHT = 720;
+    const int SCREEN_WIDTH = 1200;
+    const int SCREEN_HEIGHT = 900;
 }
