@@ -7,9 +7,9 @@ JumpCreator::JumpCreator(int amount,const std::function<void(std::unique_ptr<Mov
 
 }
 
-const sf::Texture *JumpCreator::getTexture() const
+const sf::Texture &JumpCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_JUMP_PATH);
+    return resources_manager::get<sf::Texture>(resources_manager::IMG_JUMP_PATH);
 }
 
 sf::IntRect JumpCreator::getTextureRect() const
@@ -22,7 +22,7 @@ sf::IntRect JumpCreator::getTextureRect() const
 
 std::unique_ptr<WeaponCreator> JumpCreator::copy() const
 {
-    return std::unique_ptr<WeaponCreator>(std::make_unique<JumpCreator>(this->getAmount(),m_addMapObjectFunc));
+    return std::make_unique<JumpCreator>(this->getAmount(),m_addMapObjectFunc);
 }
 
 std::unique_ptr<Weapon>

@@ -10,7 +10,7 @@
 #include "Weapon/Creators/JumpCreator.h"
 #include "Weapon/Creators/BombThrowCreator.h"
 #include "MapObject/Crates/HealthCrate.h"
-
+#include "Weapon/Creators/MinigunWeaponCreator.h"
 
 
 #include <functional>
@@ -131,7 +131,6 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
         updateCollision();
         time += interval;
     }
-
 }
 
 
@@ -186,7 +185,8 @@ Game::handleMouseMoved(const MapVector &mousePosition, const sf::Window &window)
 
 void Game::handleMousePressed(const MapVector &mousePosition)
 {
-    std::cout << "mouse pressed -- " <<m_teamCamera.getView().getCenter()<< std::endl;
+    std::cout << "mouse pressed -- " << m_teamCamera.getView().getCenter()
+              << std::endl;
     //m_teamCamera.reset();
     // TODO: understand the non virtual destructor warning
 
@@ -247,7 +247,7 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_bombHandler
     ));
 
-    character->addWeaponCreator(std::make_unique<RifleWeaponCreator>(
+    character->addWeaponCreator(std::make_unique<MinigunWeaponCreator>(
             1,
             [&](std::unique_ptr<MovingMapObject> &&object)
             {
@@ -257,24 +257,26 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_bombHandler
     ));
 
-    character->addWeaponCreator(std::make_unique<JumpCreator>(-1,
-                                                              [&](std::unique_ptr<MovingMapObject> &&object)
-                                                              {
-                                                                  addMovingObject(
-                                                                          std::move(
-                                                                                  object));
-                                                              }
+    character->addWeaponCreator(std::make_unique<JumpCreator>(
+            -1,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(
+                        std::move(
+                                object));
+            }
 
     ));
-    character->addWeaponCreator(std::make_unique<BombThrowCreator>(1,
-                                                                   [&](std::unique_ptr<MovingMapObject> &&object)
-                                                                   {
-                                                                       addMovingObject(
-                                                                               std::move(
-                                                                                       object));
-                                                                   },
-                                                                   m_map,
-                                                                   m_bombHandler
+    character->addWeaponCreator(std::make_unique<BombThrowCreator>(
+            1,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(
+                        std::move(
+                                object));
+            },
+            m_map,
+            m_bombHandler
 
     ));
 

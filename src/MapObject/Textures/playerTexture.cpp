@@ -6,7 +6,7 @@ PlayerTexture::PlayerTexture(PlayerColor color, float radius) :
         m_angle(0),
         m_radius(radius)
 {
-    m_sprite.setTexture(*resources_manager::getTexture(
+    m_sprite.setTexture(resources_manager::get<sf::Texture>(
                                 resources_manager::IMG_PLAYER_PATH
                         )
     );

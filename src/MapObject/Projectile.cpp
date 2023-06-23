@@ -25,6 +25,7 @@ void Projectile::update(const sf::Time &deltaTime)
     if(collisionMap())
     {
         kill();
+        // todo: maybe change to a parameter instead of those magic numbers
         addBomb({getPosition(),3*(int)getRadius(),100});
     }
 }
@@ -50,4 +51,9 @@ void Projectile::draw(sf::RenderTarget &target, sf::RenderStates states) const
     shape.setOrigin(getRadius(), getRadius());
     shape.setPosition(getPosition());
     target.draw(shape, states);
+}
+
+bool Projectile::collideDD2(Projectile &otherObject)
+{
+    return true;
 }

@@ -7,7 +7,7 @@ class Crate : public MovingMapObject
 {
 public:
     Crate(const MapVector &pos,
-          const sf::Texture *texture,
+          const sf::Texture &texture,
           const sf::IntRect &overShape,
           const GameMap &map,
           BombHandler &bombHandler);
@@ -20,7 +20,7 @@ public:
     [[nodiscard]] bool collisionObject() const override;
 private:
     bool m_onGround;
-    const sf::Texture *m_overTexture;
+    const sf::Texture &m_overTexture;
     sf::IntRect m_overShape;
 
 };

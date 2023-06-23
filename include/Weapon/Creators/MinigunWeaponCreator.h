@@ -8,7 +8,7 @@
 /**
  * the class that creates rifle weapon
  */
-class RifleWeaponCreator : public WeaponCreator
+class MinigunWeaponCreator : public WeaponCreator
 {
 public:
     /**
@@ -18,7 +18,7 @@ public:
      * @param map the game map
      * @param bombHandler the bomb handler 
      */
-    RifleWeaponCreator(int amount,
+    MinigunWeaponCreator(int amount,
                        const std::function<void(
                                std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
                        const GameMap &map,
@@ -26,7 +26,7 @@ public:
 
     std::unique_ptr<Weapon> createWeaponImpl(Character &character) override;
 
-    RifleWeaponCreator(const RifleWeaponCreator &other);
+    MinigunWeaponCreator(const MinigunWeaponCreator &other);
 
     [[nodiscard]] const sf::Texture &getTexture() const override;
 

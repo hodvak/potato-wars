@@ -6,23 +6,19 @@
 /**
  * class that draws the rifle (and the aim) of the player
  */
-class RifleTexture : public sf::Drawable
+class GunTexture : public sf::Drawable
 {
 public:
-    /**
-     * regular constructor
-     * @param color the color of the player
-     * @param position the position of the player
-     * @param aimPosition the position of the aim
-     * @param radius the radius of the aim
-     */
-    RifleTexture(PlayerColor color, 
-                 const MapVector &position,
-                 const MapVector &aimPosition, 
-                 float radius);
+    GunTexture(const sf::Vector2f &gunPosition,
+               float gunRadius,
+               const sf::Texture &gunTexture,
+               const sf::IntRect &textureRect,
+               const sf::Vector2f &aimPosition,
+               float aimRadius);
+    
     
     /**
-     * set the position of the rifle (the center of the character)
+     * set the position of the gun (the center of the character)
      * @param position the position of the rifle
      */
     void setPosition(const MapVector &position);
@@ -41,23 +37,19 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
 private:
-    /**
-     * the color of the player
-     */
-    PlayerColor m_color;
     
     /**
-     * the position of the rifle
+     * fix the rotation of the gun
      */
-    MapVector m_position;
+    void fixRotation();
     
     /**
-     * the position of the aim
+     * the sprite of the gun
      */
-    MapVector m_aimPosition;
+    sf::Sprite m_gunSprite;
     
     /**
-     * the radius of the rifle
+     * the sprite of the aim
      */
-    float m_radius;
+    sf::Sprite m_aimSprite;
 };

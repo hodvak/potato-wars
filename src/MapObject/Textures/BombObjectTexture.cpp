@@ -26,17 +26,17 @@ BombObjectTexture::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     target.draw(timeText, states);
 
-    const sf::Texture *texture = resources_manager::getTexture
+    const sf::Texture &texture = resources_manager::get<sf::Texture>
             (
                     resources_manager::IMG_BOMB_PATH
             );
     sf::Sprite sprite;
-    sprite.setTexture(*texture);
-    sprite.setOrigin((float)texture->getSize().x / 2.0f, 
-                     (float)texture->getSize().y / 2.0f);
+    sprite.setTexture(texture);
+    sprite.setOrigin((float)texture.getSize().x / 2.0f, 
+                     (float)texture.getSize().y / 2.0f);
 
-    sprite.setScale(m_radius / ((float)texture->getSize().x / 2.0f),
-                    m_radius / ((float)texture->getSize().y / 2.0f));
+    sprite.setScale(m_radius / ((float)texture.getSize().x / 2.0f),
+                    m_radius / ((float)texture.getSize().y / 2.0f));
 
     states.transform.rotate(m_angle);
     target.draw(sprite, states);

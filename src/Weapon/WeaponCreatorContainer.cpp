@@ -46,7 +46,7 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
         }
         target.draw(rectangle, states);
         sf::Sprite sprite;
-        sprite.setTexture(*m_weaponCreators[i]->getTexture());
+        sprite.setTexture(m_weaponCreators[i]->getTexture());
         sprite.setTextureRect(m_weaponCreators[i]->getTextureRect());
         sprite.setPosition(
                 sf::Vector2f(m_position.x + i * (m_size.x / TABLE_SIZE.x),
@@ -83,7 +83,7 @@ void WeaponCreatorContainer::addWeaponCreator(
 {
     for (auto &creator: m_weaponCreators)
     {
-        if (creator->getTexture() == weaponCreator->getTexture() &&
+        if (&creator->getTexture() == &weaponCreator->getTexture() &&
             creator->getTextureRect() == weaponCreator->getTextureRect())
         {
             creator->addAmount(weaponCreator->getAmount());

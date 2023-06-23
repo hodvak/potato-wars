@@ -6,7 +6,7 @@
 
 
 Crate::Crate(const MapVector &pos,
-             const sf::Texture *texture,
+             const sf::Texture &texture,
              const sf::IntRect &overShape,
              const GameMap &map,
              BombHandler &bombHandler):
@@ -25,7 +25,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
     sf::Sprite sprite;
     sf::Sprite overTexture;
 
-    overTexture.setTexture(*m_overTexture);
+    overTexture.setTexture(m_overTexture);
     overTexture.setScale(
             getRadius() * 2 / m_overShape.width,
             getRadius() * 2 / m_overShape.height);
@@ -33,7 +33,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
     overTexture.setOrigin(m_overShape.width / 2,
                           m_overShape.height / 2);
     overTexture.setRotation(getRotation());
-    const sf::Texture *texture = resources_manager::getTexture(
+    const sf::Texture *texture = &resources_manager::get<sf::Texture>(
             "resources/images/Textures/CrateTextureNP.png");
     sf::Vector2f scale = {
             getRadius() * 2 / texture->getSize().x,
@@ -43,8 +43,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     if (m_onGround || isRest())
     {
-        sprite.setTexture(*resources_manager::getTexture(
-                "resources/images/Textures/CrateTextureNP.png"));
+        sprite.setTexture(resources_manager::get<sf::Texture>("resources/images/Textures/CrateTextureNP.png"));
         sprite.setOrigin(sprite.getTexture()->getSize().x / 2,
                          sprite.getTexture()->getSize().y / 2);
 
@@ -53,7 +52,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
     else
     {
 
-        sprite.setTexture(*resources_manager::getTexture(
+        sprite.setTexture(resources_manager::get<sf::Texture>(
                 "resources/images/Textures/CrateTexture.png"));
         sprite.setOrigin(sprite.getTexture()->getSize().x / 2,
                          sprite.getTexture()->getSize().y - getRadius());

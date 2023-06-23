@@ -14,9 +14,9 @@ public:
     virtual ~WeaponCreator() = default;
     [[nodiscard]] int getAmount() const;
     void addAmount(int amount);
-    [[nodiscard]] virtual const sf::Texture *getTexture() const = 0;
+    [[nodiscard]] virtual const sf::Texture &getTexture() const = 0;
     [[nodiscard]] virtual sf::IntRect getTextureRect() const = 0;
-    virtual std::unique_ptr<WeaponCreator> copy() const = 0;
+    [[nodiscard]] virtual std::unique_ptr<WeaponCreator> copy() const = 0;
 
 protected:
     virtual std::unique_ptr<Weapon> createWeaponImpl(Character &character) = 0;

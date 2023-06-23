@@ -48,6 +48,12 @@ public:
     bool collideDD2(Character &otherObject) override;
     
     /**
+     * collide Double Dispatch with a Wall.
+     * will do nothing
+     */
+    bool collideDD2(Projectile &otherObject) override;
+    
+    /**
      * draw the projectile on the target
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

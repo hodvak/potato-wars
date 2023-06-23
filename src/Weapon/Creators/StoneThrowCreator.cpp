@@ -28,9 +28,9 @@ StoneThrowCreator::StoneThrowCreator(const StoneThrowCreator &other) :
 
 }
 
-const sf::Texture *StoneThrowCreator::getTexture() const
+const sf::Texture &StoneThrowCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_ROCK_PATH);
+    return resources_manager::get<sf::Texture>(resources_manager::IMG_ROCK_PATH);
 }
 
 sf::IntRect StoneThrowCreator::getTextureRect() const
