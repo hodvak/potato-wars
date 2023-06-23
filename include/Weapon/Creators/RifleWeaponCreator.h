@@ -24,7 +24,7 @@ public:
                        const GameMap &map,
                        BombHandler &bombHandler);
 
-    std::unique_ptr<Weapon> createWeaponImpl(const Character &character) override;
+    std::unique_ptr<Weapon> createWeaponImpl(Character &character) override;
 
     RifleWeaponCreator(const RifleWeaponCreator &other);
 

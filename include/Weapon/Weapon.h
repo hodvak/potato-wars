@@ -37,12 +37,15 @@ public:
      * @return 
      */
     [[nodiscard]] bool isAlive() const;
-    
+
+    bool turnEndded() const;
+
 protected:
     /**
      * kill the weapon
      */
     void die();
+    void endTurn();
     
 private:
     
@@ -50,4 +53,6 @@ private:
      * is the weapon alive
      */
     bool m_isAlive;
+
+    bool m_endsTurn;
 };

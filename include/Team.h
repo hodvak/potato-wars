@@ -4,6 +4,7 @@
 #include <memory>
 #include "MapObject/Character.h"
 #include "Weapon/Weapon.h"
+#include "CrateDropper.h"
 
 class Team : public sf::Drawable
 {
@@ -14,7 +15,7 @@ public:
     
     // return true if done with their turn
     // called when it's their turn
-    bool update(const sf::Time &deltaTime);
+    bool update(const sf::Time &deltaTime,bool allStopped);
     bool onMouseClick(const MapVector &mousePosition);
     bool onMouseMove(const MapVector &mousePosition);
     
@@ -33,4 +34,6 @@ private:
     Character *m_currentCharacter;
     std::unique_ptr<Weapon> m_weapon;
     MapVector m_mousePosition;
+    bool m_drwaingContainer = false;
+
 };

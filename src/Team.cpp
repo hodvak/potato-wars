@@ -1,12 +1,12 @@
 #include "Team.h"
 
-Team::Team(const PlayerColor &color):
+Team::Team(const PlayerColor &color) :
         m_currentCharacter(nullptr),
         m_weapon(nullptr),
         m_color(color),
         m_mousePosition(0, 0)
 {
-    
+
 }
 
 
@@ -25,18 +25,22 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     sf::Color color = ::getColor(m_color);
     color.a = 100;
     shape.setFillColor(color);
-    if(m_weapon)
+    if (m_weapon)
     {
         target.draw(*m_weapon, states);
     }
-    else if(m_currentCharacter)
+    else if (m_currentCharacter&&m_drwaingContainer)
     {
-        target.draw(m_currentCharacter->getWeaponCreatorContainer(), states);
-        shape.setPosition(m_currentCharacter->getPosition());
-        // draw the character's weapons collection
-        
+
+
+            target.draw(m_currentCharacter->getWeaponCreatorContainer(),
+                        states);
+            shape.setPosition(m_currentCharacter->getPosition());
+            // draw the character's weapons collection
+
+
     }
-    else
+    else if(m_drwaingContainer)
     {
         shape.setPosition(m_mousePosition);
     }
@@ -45,28 +49,31 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 bool Team::onMouseClick(const MapVector &mousePosition)
 {
-    if(m_weapon)
+    if (m_weapon)
     {
         m_weapon->handleMousePressed(mousePosition);
     }
-    else if(m_currentCharacter)
+    else if (m_currentCharacter)
     {
-        WeaponCreator * weaponCreator = 
+        WeaponCreator *weaponCreator =
                 m_currentCharacter->
-                getWeaponCreatorContainer().
-                getWeaponCreator(mousePosition);
-        if(weaponCreator)
+                        getWeaponCreatorContainer().
+                        getWeaponCreator(mousePosition);
+        if (weaponCreator)
         {
             m_weapon = weaponCreator->createWeapon(*m_currentCharacter);
         }
     }
-    else
+    else if(m_drwaingContainer)
     {
         // choose a character
-        for(auto character : m_characters)
+        for (auto character: m_characters)
         {
-            std::cout << (character->getPosition() - MapVector(mousePosition)).getMagnitude() << std::endl;
-            if((character->getPosition() - MapVector(mousePosition)).getMagnitude() < character->getRadius())
+            std::cout << (character->getPosition() -
+                          MapVector(mousePosition)).getMagnitude() << std::endl;
+            if ((character->getPosition() -
+                 MapVector(mousePosition)).getMagnitude() <
+                character->getRadius())
             {
                 m_currentCharacter = character;
                 break;
@@ -79,27 +86,32 @@ bool Team::onMouseClick(const MapVector &mousePosition)
 bool Team::onMouseMove(const MapVector &mousePosition)
 {
     m_mousePosition = mousePosition;
-    if(m_weapon)
+    if (m_weapon)
     {
         m_weapon->handleMouseMoved(mousePosition);
     }
-    else if(m_currentCharacter)
+    else if (m_currentCharacter)
     {
         // handle the character's weapons collection
     }
     return false;
 }
 
-bool Team::update(const sf::Time &deltaTime)
+bool Team::update(const sf::Time &deltaTime, bool allStopped)
 {
-    if(m_weapon)
+    m_drwaingContainer = allStopped;
+    if (m_weapon)
     {
 
-        if(!m_weapon->isAlive())
+        if (!m_weapon->isAlive())
         {
+            bool done = m_weapon->turnEndded();
             m_weapon.reset();
-            m_currentCharacter = nullptr;
-            return true;
+            if (done)
+            {
+                m_currentCharacter = nullptr;
+            }
+            return done;
         }
         else
         {
@@ -109,7 +121,6 @@ bool Team::update(const sf::Time &deltaTime)
 
     return false;
 }
-
 
 
 const PlayerColor &Team::getColor() const

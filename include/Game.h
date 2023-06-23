@@ -1,17 +1,16 @@
 #pragma once
 
 #include <string>
-
 #include <SFML/Graphics.hpp>
-
 #include "GameMap.h"
 #include "MapObject/Character.h"
 #include "BombHandler.h"
 #include "Weapon/Weapon.h"
 #include "Weapon/WeaponCreatorContainer.h"
-#include "Camera.h"
+#include "ActionCamera.h"
 #include "Team.h"
-
+#include "CrateDropper.h"
+#include "TeamCamera.h"
 /**
  * a class that handle the game (the main class in the project)
  */
@@ -34,7 +33,7 @@ public:
      * handle the mouse moved event
      * @param mousePosition the mouse position
      */
-    void handleMouseMoved(const MapVector &mousePosition);
+    void handleMouseMoved(const MapVector &mousePosition,const sf::Window &window);
     
     /**
      * handle the mouse pressed event
@@ -48,6 +47,7 @@ public:
      * @param states the states to draw with
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    void handleScroll(int delta);
 
     
 private:
@@ -70,7 +70,7 @@ private:
     /**
      * camera of the game
      */
-    Camera m_camera;
+    ActionCamera m_camera;
     
     /**
      * the team that play the game (all team exists in every game, team that 
@@ -118,4 +118,13 @@ private:
      * add a character to the game
      */
     void addCharacter(const PlayerColor &color,const MapVector &position);
+    /**
+     * if all object stopped moving
+     */
+    bool m_allStopped;
+    /**
+     * the crate dropper
+     */
+    CrateDropper m_crateDropper;
+    TeamCamera m_teamCamera;
 };

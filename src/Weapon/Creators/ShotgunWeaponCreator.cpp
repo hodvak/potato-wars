@@ -26,7 +26,7 @@ ShotgunWeaponCreator::ShotgunWeaponCreator(int amount,
 }
 
 std::unique_ptr<Weapon>
-ShotgunWeaponCreator::createWeaponImpl(const Character &character)
+ShotgunWeaponCreator::createWeaponImpl(Character &character)
 {
     return std::make_unique<Shotgun>(character, 
                                    m_addMapObjectFunc,

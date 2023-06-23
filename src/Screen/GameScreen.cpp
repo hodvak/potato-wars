@@ -31,12 +31,16 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
                 {
                     m_game.handleMousePressed(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y)));
                 }
+                if(event.type == sf::Event::MouseWheelScrolled)
+                {
+                    m_game.handleScroll(event.mouseWheelScroll.delta);
+                }
             }
 
         }
         sf::Time delta = clock.restart();
         m_game.update(delta);
-        m_game.handleMouseMoved(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+        m_game.handleMouseMoved(window.mapPixelToCoords(sf::Mouse::getPosition(window)), window);
         // maybe for online game use this: 
         // m_game.update(sf::seconds(1.0f/60.0f));
         // all computers will end with the same result,

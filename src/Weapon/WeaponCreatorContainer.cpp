@@ -68,7 +68,9 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
             text.setString(std::to_string(m_weaponCreators[i]->getAmount()));
         }
         text.setCharacterSize(20);
-        text.setFillColor(sf::Color::Black);
+        text.setFillColor(sf::Color::White);
+        text.setOutlineColor(sf::Color::Black);
+        text.setOutlineThickness(1);
         text.setPosition(
                 sf::Vector2f(m_position.x + i * (m_size.x / TABLE_SIZE.x),
                              m_position.y));

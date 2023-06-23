@@ -22,11 +22,11 @@ sf::IntRect JumpCreator::getTextureRect() const
 
 std::unique_ptr<WeaponCreator> JumpCreator::copy() const
 {
-    return std::unique_ptr<WeaponCreator>(std::make_unique<JumpCreator>(this->getAmount(),m_addMapObjectFunc));
+    return std::make_unique<JumpCreator>(this->getAmount(),m_addMapObjectFunc);
 }
 
 std::unique_ptr<Weapon>
-JumpCreator::createWeaponImpl(const Character &character)
+JumpCreator::createWeaponImpl(Character &character)
 {
-    return std::make_unique<Jump>(const_cast<Character &>(character), m_addMapObjectFunc);
+    return std::make_unique<Jump>(character, m_addMapObjectFunc);
 }

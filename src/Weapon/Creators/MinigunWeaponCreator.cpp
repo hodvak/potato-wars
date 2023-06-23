@@ -19,7 +19,7 @@ MinigunWeaponCreator::MinigunWeaponCreator(int amount,
 }
 
 std::unique_ptr<Weapon>
-MinigunWeaponCreator::createWeaponImpl(const Character &character)
+MinigunWeaponCreator::createWeaponImpl(Character &character)
 {
     return std::make_unique<Minigun>(character, 
                                    m_addMapObjectFunc,

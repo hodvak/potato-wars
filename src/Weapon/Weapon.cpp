@@ -1,7 +1,7 @@
 #include "Weapon/Weapon.h"
 
 Weapon::Weapon():
-    m_isAlive(true)
+    m_isAlive(true),m_endsTurn(false)
 {
 
 }
@@ -14,6 +14,16 @@ void Weapon::die()
 bool Weapon::isAlive() const
 {
     return m_isAlive;
+}
+
+bool Weapon::turnEndded() const
+{
+    return m_endsTurn;
+}
+
+void Weapon::endTurn()
+{
+    m_endsTurn = true;
 }
 
 
