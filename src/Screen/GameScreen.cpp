@@ -12,7 +12,7 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
 {
     window.create(sf::VideoMode(1080,720), "Game");
     window.setFramerateLimit(60);
-
+    m_game.setTarget(&window);
     sf::Clock clock;
     sf::Time previousTime = clock.getElapsedTime();
     sf::Time currentTime;

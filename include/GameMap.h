@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "MapVector.h"
+#include "ParallaxLayer.h"
 
 /**
  * a class that represents the map of the game
@@ -17,7 +18,7 @@ public:
      * regular constructor
      * @param levelName the name of the level to load
      */
-    explicit GameMap(const std::string &levelName);
+    explicit GameMap(const std::string &levelName,const sf::RenderTarget *target);
 
     /**
      * get the mask of the map, used for collision detection
@@ -38,6 +39,8 @@ public:
      * @param states the states to draw with
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    void update(const sf::Time &deltaTime);
+    void setTarget(const sf::RenderTarget *target);
 
 
 private:
@@ -67,4 +70,11 @@ private:
      * image to display on 'draw' function
      */
     sf::Image m_display;
+
+    /**
+     * the layers of the map
+     */
+    std::vector<ParallaxLayer> m_layers;
+
+    const sf::RenderTarget *m_target;
 };

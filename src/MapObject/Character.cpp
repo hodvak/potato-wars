@@ -22,8 +22,8 @@ Character::Character(const MapVector &pos,
         m_weaponCreatorContainer(
                 sf::Vector2f((float) map.getMask().getSize().x / 2.0f,
                              (float) map.getMask().getSize().y / 2.0f),
-                sf::Vector2f((float) map.getMask().getSize().x / 4.0f,
-                             (float) map.getMask().getSize().y / 4.0f)
+                sf::Vector2f((float) getPosition().x,
+                             (float) getPosition().y +50)
         )
 {
 

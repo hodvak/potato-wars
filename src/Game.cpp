@@ -16,7 +16,7 @@
 #include <functional>
 
 Game::Game(const std::string &levelName) :
-        m_map(levelName), m_camera(m_map.getMask().getSize().x,
+        m_map(levelName, nullptr), m_camera(m_map.getMask().getSize().x,
                                    m_map.getMask().getSize().y),
         m_teamTurnIndex(0),
         m_teams{Team(PlayerColor::YELLOW),
@@ -62,7 +62,7 @@ void Game::update(const sf::Time &deltaTime)
     //update objects
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
     stopMovingObjects();
-
+    m_map.update(deltaTime);
     //update team
     if (m_teams[m_teamTurnIndex].update(deltaTime, m_allStopped))
     {
@@ -287,4 +287,9 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
 void Game::handleScroll(int delta)
 {
     m_teamCamera.handleScroll(delta);
+}
+
+void Game::setTarget(const sf::RenderTarget *target)
+{
+    m_map.setTarget(target);
 }

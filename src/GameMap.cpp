@@ -1,16 +1,18 @@
 #include "GameMap.h"
 #include "resources_manager.h"
 
-GameMap::GameMap(const std::string &levelName)
+GameMap::GameMap(const std::string &levelName,const sf::RenderTarget *target) :
+        m_target(nullptr)
 {
+
     m_mask = *resources_manager::getImage(
             "resources/Levels/" + levelName + "/map.bmp");
     m_sky = resources_manager::getImage(
             "resources/Images/MapImages/sky2.jpg"
-            );
+    );
     m_ground = resources_manager::getImage(
             resources_manager::IMG_GROUND_PATH
-            );
+    );
 
     m_width = m_mask.getSize().x;
     m_height = m_mask.getSize().y;
@@ -28,19 +30,35 @@ GameMap::GameMap(const std::string &levelName)
             }
             else
             {
-                sf::Color skyColor = m_sky->getPixel(x, y);
-                m_display.setPixel(x, y, skyColor);
+
+                m_display.setPixel(x, y, sf::Color::Transparent);
             }
         }
     }
+    const sf::Texture *texture = resources_manager::getTexture(
+            "resources/Images/MapImages/sky2.jpg");
+    m_layers.emplace_back(texture,
+                          sf::Vector2f(texture->getSize().x,
+                                       texture->getSize().y),
+                          sf::Vector2f(m_width, m_height),
+                          0.5f);
 }
 
 void GameMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::Sprite sprite;
+
+
     sf::Texture texture;
     texture.loadFromImage(m_display);
     sprite.setTexture(texture);
+
+
+    for (auto &layer: m_layers)
+    {
+        target.draw(layer, states);
+    }
+
     target.draw(sprite, states);
 }
 
@@ -54,12 +72,12 @@ void GameMap::bomb(const MapVector &pos, int radius)
         {
             if (i * i + j * j <= radius_squared)
             {
-                int x = (int)(pos.x + (float)i);
-                int y = (int)(pos.y + (float)j);
+                int x = (int) (pos.x + (float) i);
+                int y = (int) (pos.y + (float) j);
                 if (x >= 0 && x < m_width && y >= 0 && y < m_height)
                 {
                     m_mask.setPixel(x, y, sf::Color::Black);
-                    m_display.setPixel(x, y, m_sky->getPixel(x, y));
+                    m_display.setPixel(x, y, sf::Color::Transparent);
                 }
             }
         }
@@ -69,4 +87,18 @@ void GameMap::bomb(const MapVector &pos, int radius)
 const sf::Image &GameMap::getMask() const
 {
     return m_mask;
+}
+
+void GameMap::update(const sf::Time &deltaTime)
+{
+    for (auto &layer: m_layers)
+    {
+        layer.setPosition(m_target->getView().getCenter());
+        layer.update(deltaTime);
+    }
+}
+
+void GameMap::setTarget(const sf::RenderTarget *target)
+{
+    m_target = target;
 }

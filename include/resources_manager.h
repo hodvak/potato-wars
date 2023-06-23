@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
+#include <unordered_map>
 /**
  * a class that manages the textures in the game.
  * load the textures when needed and return them when asked.

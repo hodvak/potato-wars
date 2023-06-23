@@ -39,9 +39,9 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     else if (m_currentCharacter && m_drwaingContainer)
     {
 
-
+        m_currentCharacter->getWeaponCreatorContainer().setPosition(target.getView().getCenter());
         target.draw(m_currentCharacter->getWeaponCreatorContainer(),
-                    weaponStates);
+                    states);
         shape.setPosition(m_currentCharacter->getPosition());
         // draw the character's weapons collection
 

@@ -39,6 +39,8 @@ public:
      * @param states the states to draw with
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+    void setPosition(const MapVector &pos);
     
 private:
     

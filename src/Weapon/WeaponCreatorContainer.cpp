@@ -114,3 +114,9 @@ WeaponCreatorContainer::getWeaponCreator(sf::Vector2f mousePosition)
     }
     return m_weaponCreators[index].get();
 }
+
+void WeaponCreatorContainer::setPosition(const MapVector &pos)
+{
+    m_position.x = pos.x - m_size.x / 2;
+    m_position.y = pos.y - m_size.y / 2;
+}

@@ -48,6 +48,7 @@ public:
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void handleScroll(int delta);
+    void setTarget(const sf::RenderTarget *target);
 
     
 private:
