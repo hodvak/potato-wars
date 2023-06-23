@@ -24,23 +24,30 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     shape.setOrigin(10, 10);
     sf::Color color = ::getColor(m_color);
     color.a = 100;
+    sf::RenderStates weaponStates = states;
+    sf::Vector2<float> newC = (target.getView().getCenter() - target.getView().getSize()) / 2.f;
+
+
+    weaponStates.transform.translate(newC);
+
+
     shape.setFillColor(color);
     if (m_weapon)
     {
         target.draw(*m_weapon, states);
     }
-    else if (m_currentCharacter&&m_drwaingContainer)
+    else if (m_currentCharacter && m_drwaingContainer)
     {
 
 
-            target.draw(m_currentCharacter->getWeaponCreatorContainer(),
-                        states);
-            shape.setPosition(m_currentCharacter->getPosition());
-            // draw the character's weapons collection
+        target.draw(m_currentCharacter->getWeaponCreatorContainer(),
+                    weaponStates);
+        shape.setPosition(m_currentCharacter->getPosition());
+        // draw the character's weapons collection
 
 
     }
-    else if(m_drwaingContainer)
+    else if (m_drwaingContainer)
     {
         shape.setPosition(m_mousePosition);
     }
@@ -49,6 +56,7 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 bool Team::onMouseClick(const MapVector &mousePosition)
 {
+    std::cout << "mouse clicked  -- " << mousePosition << std::endl;
     if (m_weapon)
     {
         m_weapon->handleMousePressed(mousePosition);
@@ -64,13 +72,12 @@ bool Team::onMouseClick(const MapVector &mousePosition)
             m_weapon = weaponCreator->createWeapon(*m_currentCharacter);
         }
     }
-    else if(m_drwaingContainer)
+    else if (m_drwaingContainer)
     {
         // choose a character
         for (auto character: m_characters)
         {
-            std::cout << (character->getPosition() -
-                          MapVector(mousePosition)).getMagnitude() << std::endl;
+
             if ((character->getPosition() -
                  MapVector(mousePosition)).getMagnitude() <
                 character->getRadius())

@@ -35,3 +35,13 @@ void ButtonsGroup::draw(sf::RenderTarget &target, sf::RenderStates states) const
         target.draw(*button, states);
     }
 }
+
+size_t ButtonsGroup::size() const
+{
+    return m_buttons.size();
+}
+
+Button *ButtonsGroup::operator[](int i)
+{
+    return m_buttons[i].get();
+}

@@ -101,6 +101,10 @@ namespace resources_manager
 
 
     const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
+    const std::string IMG_BUTTON_NEW_GAME_PATH = "resources/Images/Textures/button_new-game.png";
+    const std::string IMG_BUTTON_HELP_PATH = "resources/Images/Textures/button_help.png";
+    const std::string IMG_BUTTON_SETTINGS_PATH = "resources/Images/Textures/button_settings.png";
+    const std::string IMG_BACKGROUND_MAIN_PATH = "resources/Images/Textures/logo-color.png";
 
     // all the levels will be in the format of:
     // PATH_LEVELS + "lvl" + level_number + "/map.bmp"

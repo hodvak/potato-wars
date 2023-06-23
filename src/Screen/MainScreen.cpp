@@ -1,7 +1,9 @@
 #include "Screen/MainScreen.h"
 #include "Button/ColorButton.h"
+#include "Button/TextureButton.h"
 #include "Screen/GameScreen.h"
 #include <iostream>
+#include "resources_manager.h"
 
 void nothing()
 {}
@@ -11,29 +13,34 @@ MainScreen::MainScreen() :
         m_nextScreen(nullptr)
 {
     // use std::bind to bind a function to a function object
-    m_buttonsGroup.add(std::make_unique<ColorButton>(sf::Vector2f(100, 100),
-                                                     sf::Vector2f(100, 100),
-                                                     [this] { startGame(); },
-                                                     sf::Color::Red,
-                                                     "start"));
-    m_buttonsGroup.add(std::make_unique<ColorButton>(sf::Vector2f(100, 300),
-                                                     sf::Vector2f(100, 100),
-                                                     nothing, sf::Color::Green,
-                                                     "start2"));
-    m_buttonsGroup.add(std::make_unique<ColorButton>(sf::Vector2f(100, 500),
-                                                     sf::Vector2f(100, 100),
-                                                     nothing, sf::Color::Blue,
-                                                     "start3"));
-    m_buttonsGroup.add(std::make_unique<ColorButton>(sf::Vector2f(100, 700),
-                                                     sf::Vector2f(100, 100),
-                                                     nothing,
-                                                     sf::Color::Yellow,
-                                                     "start4"));
+    float screen_width = 1200/6;
+    float screen_height = 900;
+    m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*3-75, screen_height*0.75),
+                                                       sf::Vector2f(150, 50),
+                                                       [this] { startGame(); },
+                                                       resources_manager::getTexture(
+                                                               resources_manager::IMG_BUTTON_NEW_GAME_PATH)));
+    m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width-75, screen_height*0.75),
+                                                       sf::Vector2f(150, 50),
+                                                       [this] { startGame(); },
+                                                       resources_manager::getTexture(
+                                                               resources_manager::IMG_BUTTON_HELP_PATH)));
+    m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*5-75, screen_height*0.75),
+                                                       sf::Vector2f(150, 50),
+                                                       [this] { startGame(); },
+                                                       resources_manager::getTexture(
+                                                               resources_manager::IMG_BUTTON_SETTINGS_PATH)));
+
+
+
+
 }
 
 std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 {
-    window.create(sf::VideoMode(1200, 900), "Main Menu Screen");
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    window.create(sf::VideoMode(1200, 900), "Main Menu Screen", sf::Style::Default, settings);
     while (window.isOpen() && !m_nextScreen)
     {
         sf::Event event{};
@@ -71,7 +78,18 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 
             }
         }
+        sf::Sprite background;
+        sf::Vector2f textureSize(
+                resources_manager::getTexture(
+                        resources_manager::IMG_BACKGROUND_MAIN_PATH)->getSize());
+        background.setTexture(*resources_manager::getTexture(
+                resources_manager::IMG_BACKGROUND_MAIN_PATH));
+        background.scale(
+                window.getSize().x / textureSize.x,
+                window.getSize().y / textureSize.y
+        );
         window.clear();
+        window.draw(background);
         window.draw(m_buttonsGroup);
         window.display();
     }
@@ -82,3 +100,4 @@ void MainScreen::startGame()
 {
     m_nextScreen = std::make_unique<GameScreen>("lvl2");
 }
+

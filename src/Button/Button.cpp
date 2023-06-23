@@ -21,3 +21,13 @@ bool Button::isContains(const sf::Vector2f &pos)
 {
     return m_rect.contains(pos);
 }
+
+sf::Vector2f Button::getPosition() const
+{
+    return {m_rect.left, m_rect.top};
+}
+
+sf::Vector2f Button::getSize() const
+{
+    return {m_rect.width, m_rect.height};
+}
