@@ -16,7 +16,7 @@ public:
 
     std::unique_ptr<Weapon> createWeaponImpl(const Character &character) override;
 
-    [[nodiscard]] const sf::Texture *getTexture() const override;
+    [[nodiscard]] const sf::Texture &getTexture() const override;
 
     [[nodiscard]] sf::IntRect getTextureRect() const override;
 

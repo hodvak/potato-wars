@@ -26,9 +26,9 @@ RifleWeaponCreator::createWeaponImpl(const Character &character)
                                    m_bombHandler);
 }
 
-const sf::Texture *RifleWeaponCreator::getTexture() const
+const sf::Texture &RifleWeaponCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_RIFLE_PATH);
+    return resources_manager::get<sf::Texture>(resources_manager::IMG_RIFLE_PATH);
 }
 
 sf::IntRect RifleWeaponCreator::getTextureRect() const

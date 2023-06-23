@@ -2,8 +2,15 @@
 #include "Weapon/Shotgun.h"
 #include "resources_manager.h"
 #include "PlayerColor.h"
-#include "Weapon/Minigun.h"
 
+
+ShotgunWeaponCreator::ShotgunWeaponCreator(const ShotgunWeaponCreator &other) :
+        WeaponCreator(other.getAmount()),
+        m_map(other.m_map),
+        m_bombHandler(other.m_bombHandler)
+{
+
+}
 
 ShotgunWeaponCreator::ShotgunWeaponCreator(int amount,
                                        const std::function<void(
@@ -21,15 +28,15 @@ ShotgunWeaponCreator::ShotgunWeaponCreator(int amount,
 std::unique_ptr<Weapon>
 ShotgunWeaponCreator::createWeaponImpl(const Character &character)
 {
-    return std::make_unique<Minigun>(character, 
+    return std::make_unique<Shotgun>(character, 
                                    m_addMapObjectFunc,
                                    m_map,
                                    m_bombHandler);
 }
 
-const sf::Texture *ShotgunWeaponCreator::getTexture() const
+const sf::Texture &ShotgunWeaponCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_SHOTGUN_PATH);
+    return resources_manager::get<sf::Texture>(resources_manager::IMG_SHOTGUN_PATH);
 }
 
 sf::IntRect ShotgunWeaponCreator::getTextureRect() const
@@ -47,9 +54,4 @@ std::unique_ptr<WeaponCreator> ShotgunWeaponCreator::copy() const
     return std::make_unique<ShotgunWeaponCreator>(*this);
 }
 
-ShotgunWeaponCreator::ShotgunWeaponCreator(const ShotgunWeaponCreator &other) :
-        WeaponCreator(other.getAmount()), m_map(other.m_map),
-        m_bombHandler(other.m_bombHandler)
-{
 
-}

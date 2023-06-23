@@ -246,6 +246,16 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_bombHandler
     ));
 
+    character->addWeaponCreator(std::make_unique<ShotgunWeaponCreator>(
+            2,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(std::move(object));
+            },
+            m_map,
+            m_bombHandler
+    ));
+
     character->addWeaponCreator(std::make_unique<MinigunWeaponCreator>(
             2,
             [&](std::unique_ptr<MovingMapObject> &&object)
@@ -255,7 +265,16 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_map,
             m_bombHandler
     ));
-    
+
+    character->addWeaponCreator(std::make_unique<RifleWeaponCreator>(
+            2,
+            [&](std::unique_ptr<MovingMapObject> &&object)
+            {
+                addMovingObject(std::move(object));
+            },
+            m_map,
+            m_bombHandler
+    ));
 
     m_movingObjects.emplace_back(character);
     m_teams[color].addCharacter(character);

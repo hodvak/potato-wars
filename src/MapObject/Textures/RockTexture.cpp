@@ -19,11 +19,11 @@ void RockTexture::setLife(int life)
 
 void RockTexture::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    const sf::Texture *texture = resources_manager::getTexture(
+    const sf::Texture &texture = resources_manager::get<sf::Texture>(
             resources_manager::IMG_ROCK_PATH);
 
     sf::Sprite sprite;
-    sprite.setTexture(*texture);
+    sprite.setTexture(texture);
     unsigned int left = 4;
     if (m_color)
     {

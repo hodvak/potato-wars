@@ -27,9 +27,9 @@ MinigunWeaponCreator::createWeaponImpl(const Character &character)
                                    m_bombHandler);
 }
 
-const sf::Texture *MinigunWeaponCreator::getTexture() const
+const sf::Texture &MinigunWeaponCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_MINIGUN_PATH);
+    return resources_manager::get<sf::Texture>(resources_manager::IMG_MINIGUN_PATH);
 }
 
 sf::IntRect MinigunWeaponCreator::getTextureRect() const

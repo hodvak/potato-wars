@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
+#include <iostream>
 
 /**
  * a class that manages the textures in the game.
@@ -8,13 +10,10 @@
  */
 namespace resources_manager
 {
-    /**
-     * get a texture from the manager.
-     * if the texture is not loaded, load it.
-     * @param path the path to the texture
-     * @return the texture
-     */
-    const sf::Texture *getTexture(const std::string &path);
+    
+    const
+
+    sf::Texture *getTexture(const std::string &path);
 
     /**
      * get a font from the manager.
@@ -103,5 +102,19 @@ namespace resources_manager
     // all the levels will be in the format of:
     // PATH_LEVELS + "lvl" + level_number + "/map.bmp"
     const std::string PATH_LEVELS = "resources/Levels/";
+
+
+
+    template<class T>
+    const T &get(const std::string &path)
+    {
+        static std::unordered_map<std::string, T> resources;
+        if (resources.find(path) == resources.end())
+        {
+            resources.try_emplace(path);
+            resources[path].loadFromFile(path);
+        }
+        return resources[path];
+    }
 
 }

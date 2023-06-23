@@ -28,7 +28,7 @@ public:
 
     RifleWeaponCreator(const RifleWeaponCreator &other);
 
-    [[nodiscard]] const sf::Texture *getTexture() const override;
+    [[nodiscard]] const sf::Texture &getTexture() const override;
 
     [[nodiscard]] std::unique_ptr<WeaponCreator> copy() const override;
 

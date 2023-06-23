@@ -25,6 +25,7 @@ void Projectile::update(const sf::Time &deltaTime)
     if(collisionMap())
     {
         kill();
+        // todo: maybe change to a parameter instead of those magic numbers
         addBomb({getPosition(),3*(int)getRadius(),100});
     }
 }

@@ -33,14 +33,15 @@ BombThrowCreator::createWeaponImpl(const Character &character)
                                                                          m_addMapObjectFunc));
 }
 
-const sf::Texture *BombThrowCreator::getTexture() const
+const sf::Texture &BombThrowCreator::getTexture() const
 {
-    return resources_manager::getTexture(resources_manager::IMG_BOMB_PATH);
+    return resources_manager::get<sf::Texture>(resources_manager::IMG_BOMB_PATH);
 }
 
 sf::IntRect BombThrowCreator::getTextureRect() const
 {
-    return {0,0,100,100};
+    const sf::Texture &texture = getTexture();
+    return  sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y);
 }
 
 std::unique_ptr<WeaponCreator> BombThrowCreator::copy() const
