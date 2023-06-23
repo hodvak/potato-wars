@@ -36,6 +36,9 @@ public:
      */
     virtual void onHover(const sf::Vector2f &pos)
     {};
+    [[nodiscard]] sf::Vector2f getPosition() const;
+    [[nodiscard]] sf::Vector2f getSize() const;
+
     
     
 

@@ -44,6 +44,10 @@ public:
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
+    size_t size() const;
+
+    Button *operator [](int i) ;
+
 private:
     
     /**

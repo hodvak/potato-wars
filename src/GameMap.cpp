@@ -6,7 +6,7 @@ GameMap::GameMap(const std::string &levelName)
     m_mask = *resources_manager::getImage(
             "resources/Levels/" + levelName + "/map.bmp");
     m_sky = resources_manager::getImage(
-            resources_manager::IMG_SKY_PATH
+            "resources/Images/MapImages/sky2.jpg"
             );
     m_ground = resources_manager::getImage(
             resources_manager::IMG_GROUND_PATH
