@@ -26,9 +26,22 @@ public:
 
 private:
     /**
+     * static consts data about the screen
+     */
+    static const sf::Vector2u WINDOW_SIZE;
+    static const sf::Vector2u BUTTONS_SIZE;
+    static const unsigned int NUM_OF_BUTTONS;
+    
+    /**
      * start the game and set the next screen to the game screen
+     * todo: make it a `select map` screen instead
      */
     void startGame();
+
+    /**
+     * set the next screen to the help screen
+     */
+    void help();
     
     /**
      * all the buttons (start game, exit, etc.)
@@ -39,6 +52,6 @@ private:
      * the next screen to run
      */
     std::unique_ptr<Screen> m_nextScreen;
-    void help();
+    
 
 };

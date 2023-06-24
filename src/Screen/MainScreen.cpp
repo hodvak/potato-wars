@@ -1,47 +1,79 @@
+#include <iostream>
+
 #include "Screen/MainScreen.h"
-#include "Button/ColorButton.h"
 #include "Button/TextureButton.h"
 #include "Screen/GameScreen.h"
-#include <iostream>
 #include "resources_manager.h"
 #include "Screen/HelpScreen.h"
-void nothing()
-{}
 
-
+const sf::Vector2u MainScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
+const sf::Vector2u MainScreen::BUTTONS_SIZE = sf::Vector2u(150, 50);
+const unsigned int MainScreen::NUM_OF_BUTTONS = 3;
 
 MainScreen::MainScreen() :
         m_nextScreen(nullptr)
 {
-    // use std::bind to bind a function to a function object
-    float screen_width = 1200/6;
-    float screen_height = 900;
-    m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*3-75, screen_height*0.75),
-                                                       sf::Vector2f(150, 50),
-                                                       [this] { startGame(); },
-                                                       resources_manager::get<sf::Texture>(
-                                                               resources_manager::IMG_BUTTON_NEW_GAME_PATH)));
-    m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width-75, screen_height*0.75),
-                                                       sf::Vector2f(150, 50),
-                                                       [this] { help(); },
-                                                       resources_manager::get<sf::Texture>(
-                                                               resources_manager::IMG_BUTTON_HELP_PATH)));
-    m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*5-75, screen_height*0.75),
-                                                       sf::Vector2f(150, 50),
-                                                       [this] { startGame(); },
-                                                       resources_manager::get<sf::Texture>(
-                                                               resources_manager::IMG_BUTTON_SETTINGS_PATH)));
+    m_buttonsGroup.add(std::make_unique<TextureButton>(
+            sf::Vector2f((float) WINDOW_SIZE.x * 1 /
+                         (float) (NUM_OF_BUTTONS + 1) -
+                         (float) BUTTONS_SIZE.x / 2,
+                         (float) WINDOW_SIZE.y * 0.75f -
+                         (float) BUTTONS_SIZE.y / 2),
+            sf::Vector2f((float) BUTTONS_SIZE.x, (float) BUTTONS_SIZE.y),
+            [this] { startGame(); },
+            resources_manager::get<sf::Texture>(
+                    resources_manager::IMG_BUTTON_NEW_GAME_PATH)
+    ));
 
+    m_buttonsGroup.add(std::make_unique<TextureButton>(
+            sf::Vector2f((float) WINDOW_SIZE.x * 2 /
+                         (float) (NUM_OF_BUTTONS + 1) -
+                         (float) BUTTONS_SIZE.x / 2,
+                         (float) WINDOW_SIZE.y * 0.75f -
+                         (float) BUTTONS_SIZE.y / 2),
+            sf::Vector2f((float) BUTTONS_SIZE.x, (float) BUTTONS_SIZE.y),
+            [this] { help(); },
+            resources_manager::get<sf::Texture>(
+                    resources_manager::IMG_BUTTON_HELP_PATH)
+    ));
 
+    m_buttonsGroup.add(std::make_unique<TextureButton>(
+            sf::Vector2f((float) WINDOW_SIZE.x * 3 /
+                         (float) (NUM_OF_BUTTONS + 1) -
+                         (float) BUTTONS_SIZE.x / 2,
+                         (float) WINDOW_SIZE.y * 0.75f -
+                         (float) BUTTONS_SIZE.y / 2),
+            sf::Vector2f((float) BUTTONS_SIZE.x, (float) BUTTONS_SIZE.y),
+            [this] { std::cout << "todo: setting screen\n"; },
+            resources_manager::get<sf::Texture>(
+                    resources_manager::IMG_BUTTON_SETTINGS_PATH)
+    ));
 
 
 }
 
 std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 {
+
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    window.create(sf::VideoMode(1200, 900), "Main Menu Screen", sf::Style::Default, settings);
+    window.create(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y),
+                  "Potato War - Main Menu Screen",
+                  sf::Style::Default,
+                  settings);
+
+    sf::Sprite background;
+    background.setTexture(
+            resources_manager::get<sf::Texture>(
+                    resources_manager::IMG_BACKGROUND_MAIN_PATH
+            )
+    );
+    background.scale(
+            (float) WINDOW_SIZE.x /
+            (float) background.getTexture()->getSize().x,
+            (float) WINDOW_SIZE.y / (float) background.getTexture()->getSize().y
+    );
+
     while (window.isOpen() && !m_nextScreen)
     {
         sf::Event event{};
@@ -79,16 +111,7 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 
             }
         }
-        sf::Sprite background;
-        sf::Vector2f textureSize(
-                resources_manager::getTexture(
-                        resources_manager::IMG_BACKGROUND_MAIN_PATH)->getSize());
-        background.setTexture(*resources_manager::getTexture(
-                resources_manager::IMG_BACKGROUND_MAIN_PATH));
-        background.scale(
-                window.getSize().x / textureSize.x,
-                window.getSize().y / textureSize.y
-        );
+
         window.clear();
         window.draw(background);
         window.draw(m_buttonsGroup);
