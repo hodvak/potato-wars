@@ -49,7 +49,7 @@ namespace resources_manager
      * ======= PATHS =======
      * paths to resources by groups
      */
-     
+
     const std::string FONT_ARCADE_PATH = "resources/Fonts/ARCADE2.TTF";
     const std::string FONT_CALIBRI_PATH = "resources/Fonts/calibrib.ttf";
 
@@ -101,7 +101,7 @@ namespace resources_manager
 
     const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
 
-        //buttons
+    //buttons
     const std::string IMG_BUTTON_NEW_GAME_PATH = "resources/Images/Textures/button_new-game.png";
     const std::string IMG_BUTTON_HELP_PATH = "resources/Images/Textures/button_help.png";
     const std::string IMG_BUTTON_SETTINGS_PATH = "resources/Images/Textures/button_settings.png";

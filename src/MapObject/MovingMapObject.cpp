@@ -41,8 +41,8 @@ void MovingMapObject::updatePosition(const sf::Time &deltaTime)
 
     m_pos += m_velocity * deltaTime.asSeconds(); //update the position
 
-    
-    
+
+
     direction = m_pos - m_stuckPoint; //get the direction for the stuck point
     direction *= deltaTime.asSeconds();
 
@@ -333,8 +333,10 @@ void MovingMapObject::collide(MovingMapObject &otherObject)
         return;
     }
     // generic collision by default
-    if(collisionObject())
-    collideGeneric(otherObject);
+    if (collisionObject() && otherObject.collisionObject())
+    {
+        collideGeneric(otherObject);
+    }
 }
 
 bool MovingMapObject::intersect(const MovingMapObject &other_object) const
