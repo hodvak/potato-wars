@@ -10,10 +10,11 @@ void ScreenManager::run(sf::RenderWindow &window)
 {
     while (m_currentScreen)
     {
-        // empty the event queue
+        // empty the event queue (events from the previous screen)
         sf::Event event{};
         while (window.pollEvent(event))
         {
+            
         }
         m_currentScreen = m_currentScreen->run(window);
     }
