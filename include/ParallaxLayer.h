@@ -16,5 +16,6 @@ private:
     sf::Sprite m_sprite;
     sf::Vector2f m_size;
     sf::Vector2f m_position;
+    sf::Vector2f m_direction;
     float m_speed;
 };

@@ -73,11 +73,11 @@ void Game::update(const sf::Time &deltaTime)
     if (m_teams[m_teamTurnIndex].update(deltaTime, m_allStopped))
     {
         m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
-        std::cout << "team " << m_teamTurnIndex << " is done with their turn"
-                  << std::endl;
+
+
         while (m_teams[m_teamTurnIndex].isDead())
         {
-            std::cout << "team " << m_teamTurnIndex << " is dead" << std::endl;
+
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         }
         for (int i = 0; i < 5; ++i)
@@ -191,8 +191,8 @@ Game::handleMouseMoved(const MapVector &mousePosition, const sf::Window &window)
 
 void Game::handleMousePressed(const MapVector &mousePosition)
 {
-    std::cout << "mouse pressed -- " << m_teamCamera.getView().getCenter()
-              << std::endl;
+
+
     //m_teamCamera.reset();
     // TODO: understand the non virtual destructor warning
 

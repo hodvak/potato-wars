@@ -34,13 +34,34 @@ GameMap::GameMap(int levelNumber)
             }
         }
     }
-    const sf::Texture *texture = resources_manager::getTexture(
-            "resources/Images/MapImages/sky2.jpg");
-    m_layers.emplace_back(texture,
-                          sf::Vector2f(texture->getSize().x,
-                                       texture->getSize().y),
+    const sf::Texture *texture1 = resources_manager::getTexture(
+            resources_manager::IMG_LAYER1_PATH);
+    const sf::Texture *texture2 = resources_manager::getTexture(
+            resources_manager::IMG_LAYER2_PATH);
+    const sf::Texture *texture3 = resources_manager::getTexture(
+            resources_manager::IMG_LAYER3_PATH);
+    const sf::Texture *texture4 = resources_manager::getTexture(
+            resources_manager::IMG_LAYER4_PATH);
+    m_layers.emplace_back(texture1,
+                          sf::Vector2f(m_mask.getSize().x+200,
+                                       m_mask.getSize().y+200),
                           sf::Vector2f(m_width, m_height),
-                          0.5f);
+                          0.8);
+    m_layers.emplace_back(texture2,
+                          sf::Vector2f(m_mask.getSize().x+200,
+                                       m_mask.getSize().y+200),
+                          sf::Vector2f(m_width, m_height),
+                          0.6);
+    m_layers.emplace_back(texture3,
+                          sf::Vector2f(m_mask.getSize().x+200,
+                                       m_mask.getSize().y+200),
+                          sf::Vector2f(m_width, m_height),
+                          0.4);
+    m_layers.emplace_back(texture4,
+                            sf::Vector2f(m_mask.getSize().x+200,
+                                         m_mask.getSize().y+200),
+                            sf::Vector2f(m_width, m_height),
+                            0);
 }
 
 void GameMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -52,11 +73,10 @@ void GameMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
     texture.loadFromImage(m_display);
     sprite.setTexture(texture);
 
-
-    for (auto &layer: m_layers)
-    {
-        target.draw(layer, states);
-    }
+for (int i = m_layers.size();i>0;--i)
+{
+    target.draw(m_layers[i-1],states);
+}
 
     target.draw(sprite, states);
 }
