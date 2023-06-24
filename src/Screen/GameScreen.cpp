@@ -2,6 +2,7 @@
 #include "GameMap.h"
 #include <memory>
 
+const sf::Vector2u GameScreen::WINDOW_SIZE = {1080, 720};
 GameScreen::GameScreen(int levelNumber) :
         m_game(levelNumber)
 {
@@ -10,7 +11,7 @@ GameScreen::GameScreen(int levelNumber) :
 
 std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
 {
-    window.create(sf::VideoMode(1080,720), "Game");
+    window.create(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Potato War!");
     window.setFramerateLimit(60);
     m_game.setTarget(&window);
     sf::Clock clock;

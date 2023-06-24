@@ -23,6 +23,10 @@ public:
      */
     std::unique_ptr<Screen> run(sf::RenderWindow &window) override;
 private:
+    /**
+     * static consts data about the screen
+     */
+    static const sf::Vector2u WINDOW_SIZE;
     
     /**
      * the game itself

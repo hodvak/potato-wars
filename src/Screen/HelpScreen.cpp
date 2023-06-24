@@ -108,6 +108,7 @@ std::unique_ptr<Screen> HelpScreen::run(sf::RenderWindow &window)
                   "Help Menu Screen",
                   sf::Style::Default,
                   settings);
+    window.setFramerateLimit(60);
 
     sf::Sprite background;
     background.setTexture(

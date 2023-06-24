@@ -61,7 +61,8 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
                   "Potato War - Main Menu Screen",
                   sf::Style::Default,
                   settings);
-
+    window.setFramerateLimit(60);
+    
     sf::Sprite background;
     background.setTexture(
             resources_manager::get<sf::Texture>(
