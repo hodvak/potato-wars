@@ -12,6 +12,7 @@ public:
     Jump(Character &character,const std::function<void(std::unique_ptr<MovingMapObject> &&)>
     &addMapObjectFunc);
     void handleMousePressed(const MapVector &mousePosition) override;
+    bool turnEnder() const override;
 private:
     /**
      * max distance of the mouse from the character to throw the weapon

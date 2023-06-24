@@ -50,7 +50,7 @@ namespace resources_manager
      * paths to resources by groups
      */
 
-    const std::string FONT_ARCADE_PATH = "resources/Fonts/ARCADE2.TTF";
+    const std::string FONT_ARCADE_PATH = "resources/Fonts/ARCADE2.otf";
     const std::string FONT_CALIBRI_PATH = "resources/Fonts/calibrib.ttf";
 
     const std::string IMG_SKY_PATH = "resources/Images/MapImages/sky.bmp";
@@ -112,8 +112,10 @@ namespace resources_manager
     const std::string IMG_BUTTON_RIGHT_PATH = "resources/Images/Textures/button_right_arrow.png";
 
     // all the levels will be in the format of:
-    // PATH_LEVELS + "lvl" + level_number + "/map.bmp"
-    const std::string PATH_LEVELS = "resources/Levels/";
+    // std::format(PATH_LEVELS,int levelNumber) 
+    const std::string PATH_LEVELS = "resources/Levels/lvl{}/map.bmp";
+    const int NUM_OF_LEVELS = 2;
+    
     const int SCREEN_WIDTH = 1080;
     const int SCREEN_HEIGHT = 720;
 

@@ -11,13 +11,9 @@ class GameScreen : public Screen
 public:
     /**
      * constructor for the game screen with a level name to load
-     * @param levelName the name of the level to load
-     * if the levelName is `lvl1` then the level will be loaded from
-     * `Resources/Levels/lvl1/map.bmp`
-     * 
-     * //todo: when adding path as const, change this comment
+     * @param levelNumber the number of the level to load
      */
-    explicit GameScreen(const std::string &levelName);
+    explicit GameScreen(int levelNumber);
     
     /**
      * the main loop of the game

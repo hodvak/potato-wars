@@ -9,21 +9,21 @@ HelpScreen::HelpScreen() : m_helpTextIndex(0)
             std::make_unique<TextureButton>(sf::Vector2f(200, 900 * 0.85),
                                             sf::Vector2f(150, 50),
                                             [this] { m_nextScreen = std::make_unique<MainScreen>(); },
-                                            resources_manager::getTexture(
+                                            resources_manager::get<sf::Texture>(
                                                     resources_manager::IMG_BUTTON_BACK_PATH)));
 
     m_buttonsGroup.add(std::make_unique<TextureButton>(
             sf::Vector2f(1200 / 3 - 75, 900 * 0.85 - 100),
             sf::Vector2f(50, 50),
             [this] { prevHelpText(); },
-            resources_manager::getTexture(
+            resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_LEFT_PATH)));
 
     m_buttonsGroup.add(std::make_unique<TextureButton>(
             sf::Vector2f((1200 / 3) * 2 - 75, 900 * 0.85 - 100),
             sf::Vector2f(50, 50),
             [this] { nextHelpText(); },
-            resources_manager::getTexture(
+            resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_RIGHT_PATH)));
 
 

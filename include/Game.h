@@ -11,6 +11,8 @@
 #include "Team.h"
 #include "CrateDropper.h"
 #include "TeamCamera.h"
+#include "GameHelperData.h"
+
 /**
  * a class that handle the game (the main class in the project)
  */
@@ -19,9 +21,9 @@ class Game: public sf::Drawable
 public:
     /**
      * regular constructor
-     * @param levelName the name of the level to load
+     * @param levelNumber the name of the level to load
      */
-    explicit Game(const std::string &levelName);
+    explicit Game(int levelNumber);
     
     /**
      * update the game
@@ -52,6 +54,10 @@ public:
 
     
 private:
+    /**
+     * the helper data of the game
+     */
+    GameHelperData m_helperData;
     
     /**
      * the map of the game

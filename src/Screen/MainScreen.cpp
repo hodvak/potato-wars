@@ -19,17 +19,17 @@ MainScreen::MainScreen() :
     m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*3-75, screen_height*0.75),
                                                        sf::Vector2f(150, 50),
                                                        [this] { startGame(); },
-                                                       resources_manager::getTexture(
+                                                       resources_manager::get<sf::Texture>(
                                                                resources_manager::IMG_BUTTON_NEW_GAME_PATH)));
     m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width-75, screen_height*0.75),
                                                        sf::Vector2f(150, 50),
                                                        [this] { help(); },
-                                                       resources_manager::getTexture(
+                                                       resources_manager::get<sf::Texture>(
                                                                resources_manager::IMG_BUTTON_HELP_PATH)));
     m_buttonsGroup.add(std::make_unique<TextureButton>(sf::Vector2f(screen_width*5-75, screen_height*0.75),
                                                        sf::Vector2f(150, 50),
                                                        [this] { startGame(); },
-                                                       resources_manager::getTexture(
+                                                       resources_manager::get<sf::Texture>(
                                                                resources_manager::IMG_BUTTON_SETTINGS_PATH)));
 
 
@@ -99,7 +99,7 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 
 void MainScreen::startGame()
 {
-    m_nextScreen = std::make_unique<GameScreen>("lvl2");
+    m_nextScreen = std::make_unique<GameScreen>(2);
 }
 
 void MainScreen::help()

@@ -112,7 +112,7 @@ bool Team::update(const sf::Time &deltaTime, bool allStopped)
 
         if (!m_weapon->isAlive())
         {
-            bool done = m_weapon->turnEndded();
+            bool done = m_weapon->turnEnder();
             m_weapon.reset();
             if (done)
             {

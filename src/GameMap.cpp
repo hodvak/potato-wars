@@ -1,12 +1,11 @@
+#include <format>
 #include "GameMap.h"
 #include "resources_manager.h"
 
-GameMap::GameMap(const std::string &levelName,const sf::RenderTarget *target) :
-        m_target(nullptr)
+GameMap::GameMap(int levelNumber)
 {
 
-    m_mask = *resources_manager::getImage(
-            "resources/Levels/" + levelName + "/map.bmp");
+    m_mask = *resources_manager::getImage(std::vformat(resources_manager::PATH_LEVELS, std::make_format_args(levelNumber)));
     m_sky = resources_manager::getImage(
             "resources/Images/MapImages/sky2.jpg"
     );
@@ -91,14 +90,14 @@ const sf::Image &GameMap::getMask() const
 
 void GameMap::update(const sf::Time &deltaTime)
 {
-    for (auto &layer: m_layers)
-    {
-        layer.setPosition(m_target->getView().getCenter());
-        layer.update(deltaTime);
-    }
+//    for (auto &layer: m_layers)
+//    {
+//        layer.setPosition(m_target->getView().getCenter());
+//        layer.update(deltaTime);
+//    }
 }
 
 void GameMap::setTarget(const sf::RenderTarget *target)
 {
-    m_target = target;
+//    m_target = target;
 }

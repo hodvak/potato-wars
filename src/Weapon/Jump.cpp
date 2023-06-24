@@ -29,3 +29,8 @@ void Jump::handleMousePressed(const MapVector &mousePosition)
 
     die();
 }
+
+bool Jump::turnEnder() const
+{
+    return false;
+}

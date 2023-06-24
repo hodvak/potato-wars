@@ -41,7 +41,6 @@ void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
     fixPosition();
     m_weapon->setVelocity(m_startVelocity * 3);
     m_addMapObjectFunc(std::move(m_weapon));
-    endTurn();
     die();
 }
 

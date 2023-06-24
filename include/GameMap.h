@@ -18,7 +18,7 @@ public:
      * regular constructor
      * @param levelName the name of the level to load
      */
-    explicit GameMap(const std::string &levelName,const sf::RenderTarget *target);
+    explicit GameMap(int levelNumber);
 
     /**
      * get the mask of the map, used for collision detection
@@ -75,6 +75,4 @@ private:
      * the layers of the map
      */
     std::vector<ParallaxLayer> m_layers;
-
-    const sf::RenderTarget *m_target;
 };

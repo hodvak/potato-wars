@@ -14,15 +14,21 @@
 
 
 #include <functional>
+#include <format>
 
-Game::Game(const std::string &levelName) :
-        m_map(levelName, nullptr), m_camera(m_map.getMask().getSize().x,
-                                   m_map.getMask().getSize().y),
+Game::Game(int levelNumber) :
+        m_map(levelNumber),
+        m_helperData(m_map, m_bombHandler),
+        
+        m_camera((float)m_map.getMask().getSize().x,
+                 (float)m_map.getMask().getSize().y),
+
         m_teamTurnIndex(0),
         m_teams{Team(PlayerColor::YELLOW),
                 Team(PlayerColor::GREEN),
                 Team(PlayerColor::RED),
                 Team(PlayerColor::BLUE)},
+
         m_crateDropper(m_map.getMask().getSize().x,
                        [this](std::unique_ptr<MovingMapObject> &&object)
                        {
@@ -35,8 +41,8 @@ Game::Game(const std::string &levelName) :
                      m_map.getMask().getSize().y)
 {
     const sf::Image &mask = *resources_manager::getImage(
-            "resources/Levels/" + levelName + "/map.bmp"
-    );
+            std::vformat(resources_manager::PATH_LEVELS, 
+                         std::make_format_args(levelNumber)));
 
     for (int x = 0; x < mask.getSize().x; ++x)
     {

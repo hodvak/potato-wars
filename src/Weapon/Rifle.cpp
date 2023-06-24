@@ -28,6 +28,5 @@ void Rifle::handleMousePressed(const MapVector &mousePosition)
     
     shot(power, 0.9, 30, 3);
     // todo: magic numbers? 30, 3, 0.6 ?
-    endTurn();
     die();
 }

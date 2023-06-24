@@ -2,8 +2,8 @@
 #include "GameMap.h"
 #include <memory>
 
-GameScreen::GameScreen(const std::string &levelName) :
-        m_game(levelName)
+GameScreen::GameScreen(int levelNumber) :
+        m_game(levelNumber)
 {
 
 }
