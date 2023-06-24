@@ -60,7 +60,6 @@ TeamCamera::update(const sf::Time &deltaTime)
         m_view.setCenter(m_view.getCenter().x, resources_manager::SCREEN_HEIGHT + maxBorder - m_view.getSize().y/2);
     }
 
-std::cout<<m_mousePosition.x<<" "<<m_mousePosition.y<<std::endl;
 
 }
 

@@ -55,6 +55,13 @@ namespace resources_manager
 
     const std::string IMG_SKY_PATH = "resources/Images/MapImages/sky.bmp";
     const std::string IMG_GROUND_PATH = "resources/Images/MapImages/ground.bmp";
+    const std::string IMG_GROUND2_PATH = "resources/Images/MapImages/sky2.jpg";
+
+    const std::string IMG_LAYER1_PATH = "resources/Images/MapImages/mountain/Layer1.png";
+    const std::string IMG_LAYER2_PATH = "resources/Images/MapImages/mountain/Layer2.png";
+    const std::string IMG_LAYER3_PATH = "resources/Images/MapImages/mountain/Layer3.png";
+    const std::string IMG_LAYER4_PATH = "resources/Images/MapImages/mountain/Layer4.png";
+
 
 
     // 1 * 4

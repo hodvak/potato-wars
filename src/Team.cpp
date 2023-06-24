@@ -56,7 +56,7 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 bool Team::onMouseClick(const MapVector &mousePosition)
 {
-    std::cout << "mouse clicked  -- " << mousePosition << std::endl;
+
     if (m_weapon)
     {
         m_weapon->handleMousePressed(mousePosition);
