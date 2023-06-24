@@ -29,7 +29,7 @@ private:
      * static consts data about the screen
      */
     static const sf::Vector2u WINDOW_SIZE;
-    static const sf::Vector2u BUTTONS_SIZE;
+    static const sf::Vector2f BUTTONS_SIZE;
     static const unsigned int NUM_OF_BUTTONS;
     
     /**

@@ -7,7 +7,7 @@
 #include "Screen/HelpScreen.h"
 
 const sf::Vector2u MainScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
-const sf::Vector2u MainScreen::BUTTONS_SIZE = sf::Vector2u(150, 50);
+const sf::Vector2f MainScreen::BUTTONS_SIZE = sf::Vector2f(150, 50);
 const unsigned int MainScreen::NUM_OF_BUTTONS = 3;
 
 MainScreen::MainScreen() :
@@ -19,7 +19,7 @@ MainScreen::MainScreen() :
                          (float) BUTTONS_SIZE.x / 2,
                          (float) WINDOW_SIZE.y * 0.75f -
                          (float) BUTTONS_SIZE.y / 2),
-            sf::Vector2f((float) BUTTONS_SIZE.x, (float) BUTTONS_SIZE.y),
+            MainScreen::BUTTONS_SIZE,
             [this] { startGame(); },
             resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_NEW_GAME_PATH)
@@ -31,7 +31,7 @@ MainScreen::MainScreen() :
                          (float) BUTTONS_SIZE.x / 2,
                          (float) WINDOW_SIZE.y * 0.75f -
                          (float) BUTTONS_SIZE.y / 2),
-            sf::Vector2f((float) BUTTONS_SIZE.x, (float) BUTTONS_SIZE.y),
+            BUTTONS_SIZE,
             [this] { help(); },
             resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_HELP_PATH)
@@ -43,7 +43,7 @@ MainScreen::MainScreen() :
                          (float) BUTTONS_SIZE.x / 2,
                          (float) WINDOW_SIZE.y * 0.75f -
                          (float) BUTTONS_SIZE.y / 2),
-            sf::Vector2f((float) BUTTONS_SIZE.x, (float) BUTTONS_SIZE.y),
+            BUTTONS_SIZE,
             [this] { std::cout << "todo: setting screen\n"; },
             resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_SETTINGS_PATH)

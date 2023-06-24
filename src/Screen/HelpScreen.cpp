@@ -3,52 +3,71 @@
 #include "Button/TextureButton.h"
 #include "Screen/MainScreen.h"
 
+const sf::Vector2u HelpScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
+const sf::Vector2f HelpScreen::BUTTONS_SIZE = sf::Vector2f(150, 50);
+
 HelpScreen::HelpScreen() : m_helpTextIndex(0)
 {
-    m_buttonsGroup.add(
-            std::make_unique<TextureButton>(sf::Vector2f(200, 900 * 0.85),
-                                            sf::Vector2f(150, 50),
-                                            [this] { m_nextScreen = std::make_unique<MainScreen>(); },
-                                            resources_manager::get<sf::Texture>(
-                                                    resources_manager::IMG_BUTTON_BACK_PATH)));
 
     m_buttonsGroup.add(std::make_unique<TextureButton>(
-            sf::Vector2f(1200 / 3 - 75, 900 * 0.85 - 100),
-            sf::Vector2f(50, 50),
+            sf::Vector2f((float) WINDOW_SIZE.x * 1 / 4 -
+                         BUTTONS_SIZE.x / 2,
+                         (float) WINDOW_SIZE.y * 0.75f -
+                         BUTTONS_SIZE.y / 2),
+            BUTTONS_SIZE,
             [this] { prevHelpText(); },
             resources_manager::get<sf::Texture>(
-                    resources_manager::IMG_BUTTON_LEFT_PATH)));
+                    resources_manager::IMG_BUTTON_LEFT_PATH)
+    ));
+    m_buttonsGroup.add(std::make_unique<TextureButton>(
+            sf::Vector2f((float) WINDOW_SIZE.x * 2 / 4 -
+                         BUTTONS_SIZE.x / 2,
+                         (float) WINDOW_SIZE.y * 0.75f -
+                         BUTTONS_SIZE.y / 2),
+            BUTTONS_SIZE,
+            [this] { exitToMainMenu(); },
+            resources_manager::get<sf::Texture>(
+                    resources_manager::IMG_BUTTON_BACK_PATH)
+    ));
 
     m_buttonsGroup.add(std::make_unique<TextureButton>(
-            sf::Vector2f((1200 / 3) * 2 - 75, 900 * 0.85 - 100),
-            sf::Vector2f(50, 50),
+            sf::Vector2f((float) WINDOW_SIZE.x * 3 / 4 -
+                         BUTTONS_SIZE.x / 2,
+                         (float) WINDOW_SIZE.y * 0.75f -
+                         BUTTONS_SIZE.y / 2),
+            BUTTONS_SIZE,
             [this] { nextHelpText(); },
             resources_manager::get<sf::Texture>(
-                    resources_manager::IMG_BUTTON_RIGHT_PATH)));
+                    resources_manager::IMG_BUTTON_RIGHT_PATH)
+    ));
 
 
-    m_helpTextsHeader.emplace_back("OBJECTIVE:", *resources_manager::getFont(
-            resources_manager::FONT_CALIBRI_PATH), 50);
-    m_helpText.emplace_back("\n"
-                            "Your goal is to eliminate all the enemy potatos and be the last team standing.\n"
-                            "Use a variety of weapons and tactics to strategically defeat your opponents.",
-                            *resources_manager::getFont(
-                                    resources_manager::FONT_CALIBRI_PATH),
-                            20);
+    m_helpTextsHeader.emplace_back("OBJECTIVE:",
+                                   resources_manager::get<sf::Font>(
+                                           resources_manager::FONT_CALIBRI_PATH),
+                                   50);
+    m_helpText.emplace_back(
+            "Your goal is to eliminate all the enemy potatoes and be the last team standing.\n"
+            "Use a variety of weapons and tactics to strategically defeat your opponents.",
+            *resources_manager::getFont(
+                    resources_manager::FONT_CALIBRI_PATH),
+            20);
 
-    m_helpTextsHeader.emplace_back("GAMEPLAY:", *resources_manager::getFont(
-            resources_manager::FONT_CALIBRI_PATH), 50);
-    m_helpText.emplace_back("\n"
-                            "The game is turn-based.\n You control one Potato at a time, taking turns with the opposing team.\n"
-                            "Each Potato has a limited amount of health represented by a health bar.\nWhen the health reaches zero, the Potato is eliminated.\n"
-                            "Terrain and obstacles can affect the trajectory and outcome of your attacks, so plan your moves carefully.\n"
-                            "Collect crates that appear on the battlefield to gain advantages, such as extra weapons, health boosts.\n",
-                            *resources_manager::getFont(
-                                    resources_manager::FONT_CALIBRI_PATH),
-                            20);
+    m_helpTextsHeader.emplace_back("GAMEPLAY:",
+                                   resources_manager::get<sf::Font>(
+                                           resources_manager::FONT_CALIBRI_PATH),
+                                   50);
+    m_helpText.emplace_back(
+            "The game is turn-based.\n You control one Potato at a time, taking turns with the opposing team.\n"
+            "Each Potato has a limited amount of health represented by a health bar.\nWhen the health reaches zero, the Potato is eliminated.\n"
+            "Terrain and obstacles can affect the trajectory and outcome of your attacks, so plan your moves carefully.\n"
+            "Collect crates that appear on the battlefield to gain advantages, such as extra weapons, health boosts.\n",
+            *resources_manager::getFont(
+                    resources_manager::FONT_CALIBRI_PATH),
+            20);
 
 
-    m_helpTextsHeader.emplace_back("WEAPONS:", *resources_manager::getFont(
+    m_helpTextsHeader.emplace_back("WEAPONS:", resources_manager::get<sf::Font>(
             resources_manager::FONT_CALIBRI_PATH), 50);
 
 
@@ -65,14 +84,18 @@ HelpScreen::HelpScreen() : m_helpTextIndex(0)
     {
         header.setFillColor(sf::Color::Black);
         header.setOutlineColor(sf::Color::White);
-        header.setPosition(1200 / 2 - header.getGlobalBounds().width / 2,
-                           900 * 0.05);
+        header.setPosition((float) WINDOW_SIZE.x / 2 -
+                           header.getGlobalBounds().width / 2,
+
+                           (float) WINDOW_SIZE.y * 0.05f);
     }
     for (auto &text: m_helpText)
     {
         text.setFillColor(sf::Color::Black);
         text.setOutlineColor(sf::Color::White);
-        text.setPosition(50, 900 * 0.15);
+        
+        // header + line spacing (header line(50 px * 2))
+        text.setPosition(50, (float) WINDOW_SIZE.y * 0.05f + 100); 
     }
 
 }
@@ -81,8 +104,23 @@ std::unique_ptr<Screen> HelpScreen::run(sf::RenderWindow &window)
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    window.create(sf::VideoMode(1200, 900), "Help Menu Screen",
-                  sf::Style::Default, settings);
+    window.create(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y),
+                  "Help Menu Screen",
+                  sf::Style::Default,
+                  settings);
+
+    sf::Sprite background;
+    background.setTexture(
+            resources_manager::get<sf::Texture>(
+                    resources_manager::IMG_BACKGROUND_MAIN_PATH
+            )
+    );
+    background.scale(
+            (float) WINDOW_SIZE.x /
+            (float) background.getTexture()->getSize().x,
+            (float) WINDOW_SIZE.y / (float) background.getTexture()->getSize().y
+    );
+    
     while (window.isOpen() && !m_nextScreen)
     {
         sf::Event event{};
@@ -120,16 +158,7 @@ std::unique_ptr<Screen> HelpScreen::run(sf::RenderWindow &window)
 
             }
         }
-        sf::Sprite background;
-        sf::Vector2f textureSize(
-                resources_manager::getTexture(
-                        resources_manager::IMG_BACKGROUND_MAIN_PATH)->getSize());
-        background.setTexture(*resources_manager::getTexture(
-                resources_manager::IMG_BACKGROUND_MAIN_PATH));
-        background.scale(
-                window.getSize().x / textureSize.x,
-                window.getSize().y / textureSize.y
-        );
+        
         window.clear();
         window.draw(background);
         window.draw(m_buttonsGroup);
@@ -143,7 +172,7 @@ std::unique_ptr<Screen> HelpScreen::run(sf::RenderWindow &window)
 void HelpScreen::nextHelpText()
 {
     m_helpTextIndex++;
-    m_helpTextIndex %= m_helpTextsHeader.size();
+    m_helpTextIndex %= (int) m_helpTextsHeader.size();
 }
 
 void HelpScreen::prevHelpText()
@@ -151,6 +180,11 @@ void HelpScreen::prevHelpText()
     m_helpTextIndex--;
     if (m_helpTextIndex < 0)
     {
-        m_helpTextIndex = m_helpTextsHeader.size() - 1;
+        m_helpTextIndex = (int) m_helpTextsHeader.size() - 1;
     }
+}
+
+void HelpScreen::exitToMainMenu()
+{
+    m_nextScreen = std::make_unique<MainScreen>();
 }
