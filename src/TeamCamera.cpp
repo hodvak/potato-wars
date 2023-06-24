@@ -66,9 +66,9 @@ TeamCamera::update(const sf::Time &deltaTime)
 void TeamCamera::handleScroll(int delta)
 {
     //zooming in and out with the mouse wheel
-    float zoomSpeed = 0.5;
+    float zoomSpeed = -0.5;
     int maxZoom = 1;
-    int minZoom = -3.5;
+    int minZoom = -5.5;
     m_zoomLevel += delta * zoomSpeed;
     if (m_zoomLevel > maxZoom)
     {
