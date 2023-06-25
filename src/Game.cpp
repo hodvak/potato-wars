@@ -295,7 +295,7 @@ void Game::handleScroll(int delta)
     m_teamCamera.handleScroll(delta);
 }
 
-void Game::setTarget(const sf::RenderTarget *target)
+void Game::setWindow(const sf::RenderWindow &window)
 {
-    m_map.setTarget(target);
+    m_helperData.setWindow(window);
 }

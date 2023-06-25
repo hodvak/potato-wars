@@ -13,7 +13,8 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
 {
     window.create(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Potato War!");
     window.setFramerateLimit(60);
-    m_game.setTarget(&window);
+    m_game.setWindow(window);
+    
     sf::Clock clock;
     sf::Time previousTime = clock.getElapsedTime();
     sf::Time currentTime;
@@ -34,7 +35,8 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
                 }
                 if(event.type == sf::Event::MouseWheelScrolled)
                 {
-                    m_game.handleScroll(event.mouseWheelScroll.delta);
+                    // todo: is it really int? maybe float?
+                    m_game.handleScroll((int)event.mouseWheelScroll.delta);
                 }
             }
 

@@ -14,6 +14,10 @@
 #include "GameHelperData.h"
 
 /**
+ * todo: error when player dies in his turn
+ */
+
+/**
  * a class that handle the game (the main class in the project)
  */
 class Game: public sf::Drawable
@@ -49,8 +53,17 @@ public:
      * @param states the states to draw with
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    
+    /**
+     * handle the mice scrolled event
+     * @param delta the delta of the scroll
+     */
     void handleScroll(int delta);
-    void setTarget(const sf::RenderTarget *target);
+    
+    /**
+     * set the RenderWindow of the game
+     */
+    void setWindow(const sf::RenderWindow &window);
 
     
 private:
