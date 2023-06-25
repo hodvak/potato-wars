@@ -62,6 +62,18 @@ namespace resources_manager
     const std::string IMG_LAYER3_PATH = "resources/Images/MapImages/mountain/Layer3.png";
     const std::string IMG_LAYER4_PATH = "resources/Images/MapImages/mountain/Layer4.png";
 
+    const std::string IMG_SUNSET1_PATH  = "resources/Images/MapImages/sunset/1.png";
+    const std::string IMG_SUNSET2_PATH  = "resources/Images/MapImages/sunset/2.png";
+    const std::string IMG_SUNSET3_PATH  = "resources/Images/MapImages/sunset/3.png";
+    const std::string IMG_SUNSET4_PATH  = "resources/Images/MapImages/sunset/4.png";
+    const std::string IMG_SUNSET5_PATH  = "resources/Images/MapImages/sunset/5.png";
+    const std::string IMG_SUNSET6_PATH  = "resources/Images/MapImages/sunset/6.png";
+    const std::string IMG_SUNSET7_PATH  = "resources/Images/MapImages/sunset/7.png";
+    const std::string IMG_SUNSET8_PATH  = "resources/Images/MapImages/sunset/8.png";
+    const std::string IMG_SUNSET9_PATH  = "resources/Images/MapImages/sunset/9.png";
+
+
+
 
 
     // 1 * 4

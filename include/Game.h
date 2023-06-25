@@ -12,7 +12,7 @@
 #include "CrateDropper.h"
 #include "TeamCamera.h"
 #include "GameHelperData.h"
-
+#include "SoundPlayer.h"
 /**
  * todo: error when player dies in his turn 
  * (dont know where the to do should be)
@@ -143,4 +143,5 @@ private:
      */
     CrateDropper m_crateDropper;
     TeamCamera m_teamCamera;
+    SoundPlayer m_soundPlayer;
 };

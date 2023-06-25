@@ -19,9 +19,10 @@
 Game::Game(int levelNumber) :
         m_map(levelNumber),
         m_helperData(m_map, m_bombHandler),
-        
-        m_camera((float)m_map.getMask().getSize().x,
-                 (float)m_map.getMask().getSize().y),
+        m_soundPlayer(),
+
+        m_camera((float) m_map.getMask().getSize().x,
+                 (float) m_map.getMask().getSize().y),
 
         m_teamTurnIndex(0),
         m_teams{Team(PlayerColor::YELLOW, m_helperData),
@@ -29,7 +30,7 @@ Game::Game(int levelNumber) :
                 Team(PlayerColor::RED, m_helperData),
                 Team(PlayerColor::BLUE, m_helperData)},
 
-        m_crateDropper((int)m_map.getMask().getSize().x,
+        m_crateDropper((int) m_map.getMask().getSize().x,
                        [this](std::unique_ptr<MovingMapObject> &&object)
                        {
                            addMovingObject(
@@ -37,12 +38,12 @@ Game::Game(int levelNumber) :
                        },
                        m_map,
                        m_bombHandler),
-        m_teamCamera((float)m_map.getMask().getSize().x,
-                     (float)m_map.getMask().getSize().y),
+        m_teamCamera((float) m_map.getMask().getSize().x,
+                     (float) m_map.getMask().getSize().y),
         m_allStopped(false)
 {
     const sf::Image &mask = *resources_manager::getImage(
-            std::vformat(resources_manager::PATH_LEVELS, 
+            std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(levelNumber)));
 
     for (int x = 0; x < mask.getSize().x; ++x)
@@ -53,8 +54,8 @@ Game::Game(int levelNumber) :
             {
                 if (mask.getPixel(x, y) == getColor((PlayerColor) i))
                 {
-                    addCharacter(PlayerColor(i), MapVector((float)x,
-                                                           (float)y));
+                    addCharacter(PlayerColor(i), MapVector((float) x,
+                                                           (float) y));
                 }
             }
         }
@@ -91,6 +92,8 @@ void Game::update(const sf::Time &deltaTime)
 
     // update bombs
     m_bombHandler.update(&m_map, m_movingObjects);
+    m_soundPlayer.play();
+
 
 
     // remove dead objects
@@ -148,6 +151,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.setView(m_teamCamera.getView());
     target.draw(m_map, states);
+
     for (const auto &movingObject: m_movingObjects)
     {
         target.draw(*movingObject, states);
@@ -169,6 +173,7 @@ void Game::updateObjects(const sf::Time &time)
         if (!bounds.getGlobalBounds().contains(movingObject->getPosition()))
         {
             movingObject->kill();
+
         }
 
     }
@@ -195,6 +200,7 @@ void Game::handleMousePressed()
 
 
 //    m_movingObjects.emplace_back(std::move(crate));
+    m_soundPlayer.addSound("resources/Sounds/eatGift.wav");
     m_teams[m_teamTurnIndex].onMouseClick();
 }
 
@@ -219,6 +225,7 @@ void Game::stopMovingObjects()
         {
             object->stop();
         }
+
     }
     int x = 3;
     std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(
@@ -295,4 +302,5 @@ void Game::handleScroll(int delta)
 void Game::setWindow(const sf::RenderWindow &window)
 {
     m_helperData.setWindow(window);
+    m_map.setTarget(&window);
 }
