@@ -75,4 +75,6 @@ private:
      * the layers of the map
      */
     std::vector<ParallaxLayer> m_layers;
+
+    sf::RenderTarget const *m_target;
 };
