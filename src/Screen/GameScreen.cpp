@@ -3,7 +3,7 @@
 #include <memory>
 
 const sf::Vector2u GameScreen::WINDOW_SIZE = {1080, 720};
-GameScreen::GameScreen(int levelNumber) :
+GameScreen::GameScreen(const Level &levelNumber) :
         m_game(levelNumber)
 {
 

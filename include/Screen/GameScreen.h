@@ -2,18 +2,19 @@
 
 #include "Screen.h"
 #include "Game.h"
-
+#include "level.h"
 /**
  * the main game screen, the game itself plays from here
  */
 class GameScreen : public Screen
 {
 public:
+
     /**
      * constructor for the game screen with a level name to load
      * @param levelNumber the number of the level to load
      */
-    explicit GameScreen(int levelNumber);
+    explicit GameScreen(const Level &levelNumber);
     
     /**
      * the main loop of the game

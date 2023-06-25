@@ -13,6 +13,7 @@
 #include "TeamCamera.h"
 #include "GameHelperData.h"
 #include "SoundPlayer.h"
+#include "level.h"
 /**
  * todo: error when player dies in his turn 
  * (dont know where the to do should be)
@@ -28,7 +29,7 @@ public:
      * regular constructor
      * @param levelNumber the name of the level to load
      */
-    explicit Game(int levelNumber);
+    explicit Game(const Level &level);
     
     /**
      * update the game

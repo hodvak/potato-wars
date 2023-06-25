@@ -1,7 +1,7 @@
 
 #include "Button/TextureButton.h"
 
-TextureButton::TextureButton(const sf::Vector2f &pos, 
+TextureButton::TextureButton(const sf::Vector2f &pos,
                              const sf::Vector2f &size,
                              const std::function<void()> &function,
                              const sf::Texture &texture) :
@@ -9,8 +9,8 @@ TextureButton::TextureButton(const sf::Vector2f &pos,
         m_sprite(texture)
 {
     m_sprite.setPosition(Button::getPosition());
-    m_sprite.setScale(Button::getSize().x / (float)texture.getSize().x,
-                      Button::getSize().y / (float)texture.getSize().y);
+    m_sprite.setScale(Button::getSize().x / (float) texture.getSize().x,
+                      Button::getSize().y / (float) texture.getSize().y);
 
 }
 

@@ -16,8 +16,8 @@
 #include <functional>
 #include <format>
 
-Game::Game(int levelNumber) :
-        m_map(levelNumber),
+Game::Game(const Level &level) :
+        m_map(level),
         m_helperData(m_map, m_bombHandler),
         m_soundPlayer(),
 
@@ -44,7 +44,7 @@ Game::Game(int levelNumber) :
 {
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS,
-                         std::make_format_args(levelNumber)));
+                         std::make_format_args(level.levelNumber)));
 
     for (int x = 0; x < mask.getSize().x; ++x)
     {
@@ -291,6 +291,7 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
     ));
 
     m_movingObjects.emplace_back(character);
+
     m_teams[color].addCharacter(character);
 }
 
