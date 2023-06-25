@@ -14,7 +14,8 @@
 #include "GameHelperData.h"
 
 /**
- * todo: error when player dies in his turn
+ * todo: error when player dies in his turn 
+ * (dont know where the to do should be)
  */
 
 /**
@@ -35,17 +36,12 @@ public:
      */
     virtual void update(const sf::Time &deltaTime);
     
-    /**
-     * handle the mouse moved event
-     * @param mousePosition the mouse position
-     */
-    void handleMouseMoved(const MapVector &mousePosition,const sf::Window &window);
     
     /**
      * handle the mouse pressed event
      * @param mousePosition the mouse position
      */
-    void handleMousePressed(const MapVector &mousePosition);
+    void handleMousePressed();
 
     /**
      * draw the game on the target
@@ -141,7 +137,7 @@ private:
     /**
      * if all object stopped moving
      */
-    bool m_allStopped;
+    bool m_allStopped{};
     /**
      * the crate dropper
      */

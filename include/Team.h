@@ -5,19 +5,20 @@
 #include "MapObject/Character.h"
 #include "Weapon/Weapon.h"
 #include "CrateDropper.h"
+#include "GameHelperData.h"
 
 class Team : public sf::Drawable
 {
 public:
-    explicit Team(const PlayerColor &color);
+    explicit Team(const PlayerColor &color,
+                  GameHelperData &helperData);
     
     void removeDeadCharacters();
     
     // return true if done with their turn
     // called when it's their turn
     bool update(const sf::Time &deltaTime,bool allStopped);
-    bool onMouseClick(const MapVector &mousePosition);
-    bool onMouseMove(const MapVector &mousePosition);
+    bool onMouseClick();
     
     
     void addCharacter(Character* character);
@@ -29,11 +30,11 @@ public:
     [[nodiscard]] bool isDead() const;
 
 private:
+    GameHelperData &m_helperData;
     PlayerColor m_color;
     std::vector<Character*> m_characters;
     Character *m_currentCharacter;
     std::unique_ptr<Weapon> m_weapon;
-    MapVector m_mousePosition;
-    bool m_drwaingContainer = false;
+    bool m_drawingContainer = false;
 
 };

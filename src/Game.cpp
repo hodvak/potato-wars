@@ -24,12 +24,12 @@ Game::Game(int levelNumber) :
                  (float)m_map.getMask().getSize().y),
 
         m_teamTurnIndex(0),
-        m_teams{Team(PlayerColor::YELLOW),
-                Team(PlayerColor::GREEN),
-                Team(PlayerColor::RED),
-                Team(PlayerColor::BLUE)},
+        m_teams{Team(PlayerColor::YELLOW, m_helperData),
+                Team(PlayerColor::GREEN, m_helperData),
+                Team(PlayerColor::RED, m_helperData),
+                Team(PlayerColor::BLUE, m_helperData)},
 
-        m_crateDropper(m_map.getMask().getSize().x,
+        m_crateDropper((int)m_map.getMask().getSize().x,
                        [this](std::unique_ptr<MovingMapObject> &&object)
                        {
                            addMovingObject(
@@ -37,8 +37,9 @@ Game::Game(int levelNumber) :
                        },
                        m_map,
                        m_bombHandler),
-        m_teamCamera(m_map.getMask().getSize().x,
-                     m_map.getMask().getSize().y)
+        m_teamCamera((float)m_map.getMask().getSize().x,
+                     (float)m_map.getMask().getSize().y),
+        m_allStopped(false)
 {
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS, 
@@ -52,7 +53,8 @@ Game::Game(int levelNumber) :
             {
                 if (mask.getPixel(x, y) == getColor((PlayerColor) i))
                 {
-                    addCharacter(PlayerColor(i), MapVector(x, y));
+                    addCharacter(PlayerColor(i), MapVector((float)x,
+                                                           (float)y));
                 }
             }
         }
@@ -118,6 +120,8 @@ void Game::update(const sf::Time &deltaTime)
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
     m_teamCamera.update(deltaTime);
+
+    m_teamCamera.handleMouseMoved(m_helperData.getMousePositionInWindow());
 }
 
 void
@@ -181,15 +185,8 @@ void Game::updateCollision()
     }
 }
 
-void
-Game::handleMouseMoved(const MapVector &mousePosition, const sf::Window &window)
-{
-    m_teamCamera.handleMouseMoved(sf::Mouse::getPosition(window));
-    m_teams[m_teamTurnIndex].onMouseMove(mousePosition);
 
-}
-
-void Game::handleMousePressed(const MapVector &mousePosition)
+void Game::handleMousePressed()
 {
 
 
@@ -198,7 +195,7 @@ void Game::handleMousePressed(const MapVector &mousePosition)
 
 
 //    m_movingObjects.emplace_back(std::move(crate));
-    m_teams[m_teamTurnIndex].onMouseClick(mousePosition);
+    m_teams[m_teamTurnIndex].onMouseClick();
 }
 
 void Game::addMovingObject(std::unique_ptr<MovingMapObject> &&object)
