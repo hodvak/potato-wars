@@ -31,15 +31,22 @@ Game::Game(const Level &level) :
 
         m_crateDropper((int) m_map.getMask().getSize().x,
                        m_helperData),
-        m_teamCamera((float) m_map.getMask().getSize().x,
-                     (float) m_map.getMask().getSize().y),
+        m_teamCamera({
+                             -80.f,
+                             -80.f,
+                             (float) m_map.getMask().getSize().x + 160.f,
+                             (float) m_map.getMask().getSize().y + 160.f
+                     },
+                     {(float) m_map.getMask().getSize().x,
+                      (float) m_map.getMask().getSize().y},
+                     m_helperData),
         m_allStopped(false)
 {
-    m_helperData.setAddObjectFunc([this] (auto object)
+    m_helperData.setAddObjectFunc([this](auto object)
                                   {
                                       addMovingObject(std::move(object));
                                   });
-    
+
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(level.levelNumber)));
@@ -67,6 +74,8 @@ Game::Game(const Level &level) :
 void Game::update(const sf::Time &deltaTime)
 {
     //update objects
+    m_teamCamera.update(deltaTime);
+    
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
     stopMovingObjects();
     m_map.update(deltaTime);
@@ -120,7 +129,6 @@ void Game::update(const sf::Time &deltaTime)
     }
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
-    m_teamCamera.update(deltaTime);
 
     m_teamCamera.handleMouseMoved(m_helperData.getMousePositionInWindow());
 }
@@ -147,7 +155,9 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.setView(m_teamCamera.getView());
+    sf::View view = m_teamCamera.getView();
+    std::cout << view.getCenter().x << " " << view.getCenter().y << std::endl;
+    target.setView(view);
     target.draw(m_map, states);
 
     for (const auto &movingObject: m_movingObjects)
@@ -228,7 +238,7 @@ void Game::stopMovingObjects()
     }
     int x = 3;
     std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(
-            MapVector(0, 0),m_helperData);
+            MapVector(0, 0), m_helperData);
     std::unique_ptr<Crate> crate = std::make_unique<HealthCrate>(
             MapVector{float(x), 0}, m_helperData);
     std::vector<std::unique_ptr<Crate>> crates;
