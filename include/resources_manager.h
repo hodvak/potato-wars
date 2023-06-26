@@ -125,7 +125,7 @@ namespace resources_manager
     const std::string IMG_BUTTON_HELP_PATH = "resources/Images/Textures/button_help.png";
     const std::string IMG_BUTTON_SETTINGS_PATH = "resources/Images/Textures/button_settings.png";
     const std::string IMG_BACKGROUND_MAIN_PATH = "resources/Images/Textures/logo-color.png";
-
+    const std::string IMG_BACKGROUND_END_PATH = "resources/Images/Textures/endGameBackGround.png";
     const std::string IMG_BUTTON_BACK_PATH = "resources/Images/Textures/button_back .png";
     const std::string IMG_BUTTON_LEFT_PATH = "resources/Images/Textures/button_left_arrow.png";
     const std::string IMG_BUTTON_RIGHT_PATH = "resources/Images/Textures/button_right_arrow.png";
@@ -133,10 +133,7 @@ namespace resources_manager
     // all the levels will be in the format of:
     // std::format(PATH_LEVELS,int levelNumber) 
     const std::string PATH_LEVELS = "resources/Levels/lvl{}/map.bmp";
-    const int NUM_OF_LEVELS = 2;
-    
-    const int SCREEN_WIDTH = 1080;
-    const int SCREEN_HEIGHT = 720;
+
 
 
     template<class T>

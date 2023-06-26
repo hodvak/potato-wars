@@ -126,6 +126,7 @@ bool Team::update(const sf::Time &deltaTime, bool allStopped)
     {
         // handle the character's weapons collection
     }
+
     return false;
 }
 
@@ -143,5 +144,10 @@ void Team::addCharacter(Character *character)
 bool Team::isDead() const
 {
     return m_characters.empty();
+}
+
+int Team::getCharactersCount() const
+{
+    return m_characters.size();
 }
 

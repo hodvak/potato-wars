@@ -1,7 +1,8 @@
 #include "Screen/GameScreen.h"
 #include "GameMap.h"
 #include <memory>
-
+#include "resources_manager.h"
+#include "Screen/EndGameScreen.h"
 const sf::Vector2u GameScreen::WINDOW_SIZE = {1080, 720};
 GameScreen::GameScreen(const Level &level) :
         m_game(level)
@@ -42,7 +43,12 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
 
         }
         sf::Time delta = clock.restart();
-        m_game.update(delta);
+        PlayerColor updateResult = m_game.update(
+                delta);
+       if (updateResult!=PlayerColor::SIZE)
+       {
+              return std::make_unique<EndGameScreen>(updateResult);
+       }
         // maybe for online game use this: 
         // m_game.update(sf::seconds(1.0f/60.0f));
         // all computers will end with the same result,

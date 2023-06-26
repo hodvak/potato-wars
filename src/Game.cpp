@@ -63,7 +63,7 @@ Game::Game(const Level &level) :
     }
 }
 
-void Game::update(const sf::Time &deltaTime)
+PlayerColor Game::update(const sf::Time &deltaTime)
 {
     //update objects
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
@@ -80,6 +80,7 @@ void Game::update(const sf::Time &deltaTime)
 
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         }
+
 
         m_crateDropper.dropCrate();
 
@@ -122,8 +123,9 @@ void Game::update(const sf::Time &deltaTime)
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
     m_teamCamera.update(deltaTime);
-
     m_teamCamera.handleMouseMoved(m_helperData.getMousePositionInWindow());
+
+    return winingTeam();
 }
 
 void
@@ -277,4 +279,23 @@ void Game::setWindow(const sf::RenderWindow &window)
 {
     m_helperData.setWindow(window);
     m_map.setTarget(&window);
+}
+
+PlayerColor Game::winingTeam() const
+{
+    PlayerColor winingTeam = PlayerColor::SIZE;
+    int amount =0;
+    for(auto &team: m_teams)
+    {
+        if(!team.isDead())
+        {
+            winingTeam = team.getColor();
+            amount++;
+        }
+    }
+    if (amount > 1)
+    {
+        return PlayerColor::SIZE;
+    }
+    return winingTeam;
 }

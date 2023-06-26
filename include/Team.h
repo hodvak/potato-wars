@@ -29,6 +29,8 @@ public:
 
     [[nodiscard]] bool isDead() const;
 
+   int getCharactersCount() const;
+
 private:
     GameHelperData &m_helperData;
     PlayerColor m_color;

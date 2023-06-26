@@ -35,7 +35,7 @@ public:
      * update the game
      * @param deltaTime the time passed since the last update
      */
-    virtual void update(const sf::Time &deltaTime);
+    virtual PlayerColor update(const sf::Time &deltaTime);
     
     
     /**
@@ -143,6 +143,8 @@ private:
     /**
      * the crate dropper
      */
+     PlayerColor winingTeam() const;
     CrateDropper m_crateDropper;
     TeamCamera m_teamCamera;
+
 };
