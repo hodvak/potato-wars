@@ -10,12 +10,19 @@ Team::Team(const PlayerColor &color, GameHelperData &helperData) :
 }
 
 
-void Team::removeDeadCharacters()
+bool Team::removeDeadCharacters()
 {
-    std::erase_if(m_characters, [](Character *character)
+    bool courentCharacterIsDead = false;
+    std::erase_if(m_characters, [&](Character *character)
     {
+        if (m_currentCharacter == character && !character->isAlive())
+        {
+            m_currentCharacter = nullptr;
+            courentCharacterIsDead = true;
+        }
         return !character->isAlive();
     });
+    return courentCharacterIsDead;
 }
 
 void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const

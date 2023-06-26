@@ -13,7 +13,7 @@ public:
     explicit Team(const PlayerColor &color,
                   GameHelperData &helperData);
     
-    void removeDeadCharacters();
+    bool removeDeadCharacters();
     
     // return true if done with their turn
     // called when it's their turn

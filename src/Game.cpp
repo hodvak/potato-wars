@@ -17,8 +17,8 @@
 
 Game::Game(const Level &level) :
         m_map(level),
-        m_soundPlayer(),
-        m_helperData(m_map, m_bombHandler,m_soundPlayer),
+        m_soundPlayer(false, 100),
+        m_helperData(m_map, m_bombHandler, m_soundPlayer),
 
         m_camera((float) m_map.getMask().getSize().x,
                  (float) m_map.getMask().getSize().y),
@@ -34,11 +34,11 @@ Game::Game(const Level &level) :
         m_teamCamera(m_helperData),
         m_allStopped(false)
 {
-    m_helperData.setAddObjectFunc([this] (auto object)
+    m_helperData.setAddObjectFunc([this](auto object)
                                   {
                                       addMovingObject(std::move(object));
                                   });
-    
+
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(level.levelNumber)));
@@ -80,10 +80,9 @@ void Game::update(const sf::Time &deltaTime)
 
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         }
-        for (int i = 0; i < 5; ++i)
-        {
-            m_crateDropper.dropCrate();
-        }
+
+        m_crateDropper.dropCrate();
+
 
     }
 
@@ -97,7 +96,10 @@ void Game::update(const sf::Time &deltaTime)
     // from teams
     for (auto &team: m_teams)
     {
-        team.removeDeadCharacters();
+       if (team.removeDeadCharacters())
+       {
+           m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+       }
     }
 
     // from moving objects (must be last because the unique_ptr)
@@ -227,7 +229,7 @@ void Game::stopMovingObjects()
     }
     int x = 3;
     std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(
-            MapVector(0, 0),m_helperData);
+            MapVector(0, 0), m_helperData);
     std::unique_ptr<Crate> crate = std::make_unique<HealthCrate>(
             MapVector{float(x), 0}, m_helperData);
     std::vector<std::unique_ptr<Crate>> crates;
