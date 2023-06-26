@@ -5,7 +5,7 @@
 #include "Screen/GameScreen.h"
 #include "resources_manager.h"
 #include "Screen/HelpScreen.h"
-
+#include "Screen/MapSelectionScreen.h"
 const sf::Vector2u MainScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
 const sf::Vector2f MainScreen::BUTTONS_SIZE = sf::Vector2f(150, 50);
 const unsigned int MainScreen::NUM_OF_BUTTONS = 3;
@@ -123,7 +123,7 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 
 void MainScreen::startGame()
 {
-    m_nextScreen = std::make_unique<GameScreen>(2);
+    m_nextScreen = std::make_unique<MapSelectionScreen>();
 }
 
 void MainScreen::help()

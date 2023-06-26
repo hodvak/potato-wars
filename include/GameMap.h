@@ -3,11 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include "MapVector.h"
 #include "ParallaxLayer.h"
-
+#include "level.h"
 /**
  * a class that represents the map of the game
  * using for both:
- * 
+ *
  * 1. calculate the collision of the objects with the map
  * 2. draw the map on the window
  */
@@ -18,7 +18,7 @@ public:
      * regular constructor
      * @param levelName the name of the level to load
      */
-    explicit GameMap(int levelNumber);
+    explicit GameMap(const Level &level);
 
     /**
      * get the mask of the map, used for collision detection
@@ -44,28 +44,28 @@ public:
 
 
 private:
-    
+    Level m_level;
 /**
      * the width of the map
      */
     unsigned int m_width;
-    
+
     /**
      * the height of the map
      */
     unsigned int m_height;
-    
+
     /**
      * the mask of the map
      */
     sf::Image m_mask;
-    
+
     /**
      * image of the sky and the ground
      */
     const sf::Image *m_sky;
     const sf::Image *m_ground;
-    
+
     /**
      * image to display on 'draw' function
      */

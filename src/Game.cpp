@@ -4,7 +4,6 @@
 #include "MapObject/Character.h"
 #include "MapObject/Rock.h"
 
-#include "Weapon/Creators/RifleWeaponCreator.h"
 #include "MapObject/Crates/WeaponCrate.h"
 #include "Weapon/Creators/StoneThrowCreator.h"
 #include "Weapon/Creators/JumpCreator.h"
@@ -16,11 +15,9 @@
 #include <functional>
 #include <format>
 
-Game::Game(int levelNumber) :
-        m_map(levelNumber),
-        m_helperData(m_map,
-                     m_bombHandler),
-        
+Game::Game(const Level &level) :
+        m_map(level),
+        m_helperData(m_map, m_bombHandler),
         m_soundPlayer(),
 
         m_camera((float) m_map.getMask().getSize().x,
@@ -45,7 +42,7 @@ Game::Game(int levelNumber) :
     
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS,
-                         std::make_format_args(levelNumber)));
+                         std::make_format_args(level.levelNumber)));
 
     for (int x = 0; x < mask.getSize().x; ++x)
     {
