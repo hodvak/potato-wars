@@ -54,21 +54,11 @@ std::unique_ptr<Screen> MapSelectionScreen::run(sf::RenderWindow &window)
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                m_buttonsGroup.onClick(
-                        {
-                                (float) event.mouseButton.x,
-                                (float) event.mouseButton.y
-                        }
-                );
+                m_buttonsGroup.onClick(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
             }
             if (event.type == sf::Event::MouseMoved)
             {
-                m_buttonsGroup.onHover(
-                        {
-                                (float) event.mouseMove.x,
-                                (float) event.mouseMove.y
-                        }
-                );
+                m_buttonsGroup.onHover(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
             }
         }
 
