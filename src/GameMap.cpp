@@ -17,9 +17,9 @@ GameMap::GameMap(const Level &level) : m_level(level)
     m_height = m_mask.getSize().y;
 
     m_display.create(m_width, m_height);
-    for (int x = 0; x < m_width; ++x)
+    for (unsigned int x = 0; x < m_width; ++x)
     {
-        for (int y = 0; y < m_height; ++y)
+        for (unsigned y = 0; y < m_height; ++y)
         {
             sf::Color maskColor = m_mask.getPixel(x, y);
             if (maskColor == sf::Color::White)
@@ -36,18 +36,19 @@ GameMap::GameMap(const Level &level) : m_level(level)
     }
     for (int i = 1; i <= level.numberOfLayers; ++i)
     {
-        const sf::Texture *texture = resources_manager::getTexture(
-                "resources/Images/MapImages/" + level.layersDir +"/"+
+        auto &texture = resources_manager::get<sf::Texture>(
+                "resources/Images/MapImages/" + level.layersDir + "/" +
                 std::to_string(i) + ".png"
         );
         m_layers.emplace_back(
-
                 texture,
-                sf::Vector2f{(float) texture->getSize().x,
-                             (float) texture->getSize().y},
-                sf::Vector2f{(float) m_mask.getSize().x,
-                             (float) m_mask.getSize().y},
-                (0.9-i*0.1)
+                sf::FloatRect (
+                    -200.f,
+                    -200.f,
+                    (float) m_width + 400.f,
+                    (float) m_height + 400.f
+                ),
+                (0.9 - i * 0.1)
 
         );
     }
@@ -99,11 +100,7 @@ const sf::Image &GameMap::getMask() const
 
 void GameMap::update(const sf::Time &deltaTime)
 {
-    for (auto &layer: m_layers)
-    {
-        layer.setPosition(m_target->getView().getCenter());
-        layer.update(deltaTime);
-    }
+    
 }
 
 void GameMap::setTarget(const sf::RenderTarget *target)

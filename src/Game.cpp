@@ -31,6 +31,7 @@ Game::Game(const Level &level) :
 
         m_crateDropper((int) m_map.getMask().getSize().x,
                        m_helperData),
+
         m_teamCamera(m_helperData),
         m_allStopped(false)
 {
@@ -63,9 +64,11 @@ Game::Game(const Level &level) :
     }
 }
 
-PlayerColor Game::update(const sf::Time &deltaTime)
+void Game::update(const sf::Time &deltaTime)
 {
     //update objects
+    m_teamCamera.update(deltaTime);
+
     updateObjectsInterval(deltaTime, sf::seconds(0.001f));
     stopMovingObjects();
     m_map.update(deltaTime);
@@ -80,7 +83,6 @@ PlayerColor Game::update(const sf::Time &deltaTime)
 
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         }
-
 
         m_crateDropper.dropCrate();
 
@@ -122,7 +124,7 @@ PlayerColor Game::update(const sf::Time &deltaTime)
     }
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
-    m_teamCamera.update(deltaTime);
+
     m_teamCamera.handleMouseMoved(m_helperData.getMousePositionInWindow());
 
     return winingTeam();
@@ -150,7 +152,9 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.setView(m_teamCamera.getView());
+    sf::View view = m_teamCamera.getView();
+    std::cout << view.getCenter().x << " " << view.getCenter().y << std::endl;
+    target.setView(view);
     target.draw(m_map, states);
 
     for (const auto &movingObject: m_movingObjects)

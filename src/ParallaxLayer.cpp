@@ -1,42 +1,35 @@
 #include "ParallaxLayer.h"
 #include "MapVector.h"
 
-ParallaxLayer::ParallaxLayer(const sf::Texture *texture,
-                             const sf::Vector2f &size,
-                             const sf::Vector2f &position,
+ParallaxLayer::ParallaxLayer(const sf::Texture &texture,
+                             const sf::FloatRect &mapRect,
                              float speed) :
-        m_sprite(*texture),
-        m_size(size),
-        m_position(position.x / 2, position.y / 2),
-        m_direction(m_position),
-        m_speed(speed)
+        m_texture(texture),
+        m_speed(speed),
+        m_mapRect(mapRect)
 {
-    m_sprite.setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
-    m_sprite.setPosition(m_position);
-    m_sprite.setScale(size.x / texture->getSize().x,
-                      size.y / texture->getSize().y);
+
 }
 
 void
 ParallaxLayer::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-
-    target.draw(m_sprite, states);
-}
-
-void ParallaxLayer::update(const sf::Time &deltaTime)
-{
-
-    MapVector delta = m_position - m_direction;
-    m_sprite.setPosition(m_position.x+delta.x*m_speed,
-                         m_position.y+delta.y*m_speed);
-    //std::cout<<m_position.x+delta.x*m_speed*deltaTime.asSeconds()<<std::endl;
-
-
-
-}
-
-void ParallaxLayer::setPosition(const sf::Vector2f &position)
-{
-    m_direction = position;
+    sf::Sprite sprite;
+    sprite.setTexture(m_texture);
+    sprite.setOrigin((float) m_texture.getSize().x / 2.0f,
+                     (float) m_texture.getSize().y / 2.0f);
+    
+    
+    sprite.setScale(m_mapRect.width / (float) m_texture.getSize().x,
+                    m_mapRect.height / (float) m_texture.getSize().y);
+    
+    MapVector center = {m_mapRect.width / 2.0f + m_mapRect.left, m_mapRect.height / 2.0f + m_mapRect.top};
+    
+    
+    MapVector camera = target.getView().getCenter();
+    MapVector offset = camera - center;
+    offset *= -m_speed;
+    sprite.setPosition(center + 
+                       offset );
+    target.draw(sprite, states);
 }
