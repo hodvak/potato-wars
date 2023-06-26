@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameMap.h"
 #include "BombHandler.h"
-
+#include "SoundPlayer.h"
 /**
  * this class represent the data that every object in the game need to live
  * every game will hold one instance of this class
@@ -22,6 +22,7 @@ public:
     GameHelperData(
             GameMap &map,
             BombHandler &bombHandler,
+            SoundPlayer &soundPlayer,
             sf::RenderWindow *window = nullptr,
             sf::Time deltaTime = sf::Time::Zero
     );
@@ -82,6 +83,8 @@ public:
      */
     void setWindow(const sf::RenderWindow &window);
 
+    const sf::View &getView() const;
+
 private:
     sf::Time m_deltaTime;
     /**
@@ -91,5 +94,6 @@ private:
     const sf::RenderWindow *m_window;
     GameMap &m_map;
     BombHandler &m_bombHandler;
+    SoundPlayer &m_soundPlayer;
     std::function<void (std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
 };

@@ -30,7 +30,7 @@ void ParallaxLayer::update(const sf::Time &deltaTime)
     MapVector delta = m_position - m_direction;
     m_sprite.setPosition(m_position.x+delta.x*m_speed,
                          m_position.y+delta.y*m_speed);
-    std::cout<<m_position.x+delta.x*m_speed*deltaTime.asSeconds()<<std::endl;
+    //std::cout<<m_position.x+delta.x*m_speed*deltaTime.asSeconds()<<std::endl;
 
 
 

@@ -17,8 +17,8 @@
 
 Game::Game(const Level &level) :
         m_map(level),
-        m_helperData(m_map, m_bombHandler),
         m_soundPlayer(),
+        m_helperData(m_map, m_bombHandler,m_soundPlayer),
 
         m_camera((float) m_map.getMask().getSize().x,
                  (float) m_map.getMask().getSize().y),
@@ -31,8 +31,7 @@ Game::Game(const Level &level) :
 
         m_crateDropper((int) m_map.getMask().getSize().x,
                        m_helperData),
-        m_teamCamera((float) m_map.getMask().getSize().x,
-                     (float) m_map.getMask().getSize().y),
+        m_teamCamera(m_helperData),
         m_allStopped(false)
 {
     m_helperData.setAddObjectFunc([this] (auto object)

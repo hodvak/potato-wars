@@ -64,42 +64,43 @@ public:
 
     
 private:
+    SoundPlayer m_soundPlayer;
     /**
      * the helper data of the game
      */
     GameHelperData m_helperData;
-    
+
     /**
      * the map of the game
      */
     GameMap m_map;
-    
+
     /**
      * all the objects in the game that can move
      */
     std::vector<std::unique_ptr<MovingMapObject>> m_movingObjects;
-    
+
     /**
      * explosion handler of the game
      */
     BombHandler m_bombHandler;
-    
+
     /**
      * camera of the game
      */
     ActionCamera m_camera;
-    
+
     /**
-     * the team that play the game (all team exists in every game, team that 
+     * the team that play the game (all team exists in every game, team that
      * doesn't play is empty)
      */
     Team m_teams[PlayerColor::SIZE];
-    
+
     /**
      * the index of the team that play the game
      */
     int m_teamTurnIndex;
-    
+
     /**
      * make small updates to the objects in the game
      * until the time passed is equal than the interval
@@ -130,7 +131,7 @@ private:
      * stop the objects in the game if all need to stop
      */
     void stopMovingObjects();
-    
+
     /**
      * add a character to the game
      */
@@ -144,5 +145,4 @@ private:
      */
     CrateDropper m_crateDropper;
     TeamCamera m_teamCamera;
-    SoundPlayer m_soundPlayer;
 };

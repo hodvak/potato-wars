@@ -1,11 +1,12 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
+#include "SoundPlayer.h"
+#include "GameHelperData.h"
 class TeamCamera
 {
 public:
-    TeamCamera(float width, float height);
+    TeamCamera(GameHelperData &gameHelperData);
     void reset();
     void update(const sf::Time &deltaTime);
     void handleMouseMoved(const sf::Vector2<int> &mousePosition);
@@ -14,7 +15,8 @@ public:
     [[nodiscard]] const sf::View &getView() const;
 
 private:
-    const sf::FloatRect m_originalViewRect;
+    GameHelperData &m_gameHelperData;
+    sf::FloatRect m_originalViewRect;
     float m_zoomLevel = 0;
     sf::View m_view;
     sf::Vector2<int> m_mousePosition;
