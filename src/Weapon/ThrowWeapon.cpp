@@ -3,10 +3,9 @@
 
 ThrowWeapon::ThrowWeapon(const Character &character,
                          std::unique_ptr<MovingMapObject> &&weapon,
-                         const std::function<void(std::unique_ptr<MovingMapObject> &&)> &
-                         addMapObjectFunc)
-        :
-        m_addMapObjectFunc(addMapObjectFunc),
+                         GameHelperData &gameHelperData)
+        : 
+        Weapon(gameHelperData),
         m_weapon(std::move(weapon)),
         m_startVelocity(1, 0),
         m_character(character),
@@ -40,7 +39,7 @@ void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
     m_texture.setDirection(m_startVelocity);
     fixPosition();
     m_weapon->setVelocity(m_startVelocity * 3);
-    m_addMapObjectFunc(std::move(m_weapon));
+    getGameHelperData().addMapObject(std::move(m_weapon));
     die();
 }
 

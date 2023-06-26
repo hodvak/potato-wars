@@ -3,16 +3,11 @@
 #include "Resources_manager.h"
 
 Minigun::Minigun(const Character &owner,
-                 const std::function<void(std::unique_ptr<MovingMapObject> &&)>
-                 &addMapObjectFunc,
-                 const GameMap &map,
-                 BombHandler &bombHandler) :
+                 GameHelperData &gameHelperData) :
         Gun(owner,
-            addMapObjectFunc,
-            map,
-            bombHandler,
             resources_manager::IMG_MINIGUN_PATH,
-            resources_manager::IMG_MINIGUN_SIZE),
+            resources_manager::IMG_MINIGUN_SIZE,
+            gameHelperData),
         m_character(owner),
         m_aimPosition(0, 0),
         m_timePassed(sf::Time::Zero),

@@ -11,11 +11,9 @@ class Gun : public Weapon
 {
 public:
     Gun(const Character &owner,
-        const std::function<void(std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-        const GameMap &map,
-        BombHandler &bombHandler,
         const std::string &texturePath,
-        const sf::Vector2u &rectTextureSize);
+        const sf::Vector2u &rectTextureSize,
+        GameHelperData &gameHelperData);
 
 
     void handleMouseMoved(const MapVector &mousePosition) override;
@@ -33,7 +31,4 @@ protected:
 private:
     GunTexture m_texture;
     const Character &m_character;
-    std::function<void(std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
-    const GameMap &m_map;
-    BombHandler &m_bombHandler;
 };

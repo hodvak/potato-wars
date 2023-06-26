@@ -7,9 +7,7 @@
 class CrateDropper
 {
 public:
-    CrateDropper(int mapRange, const std::function<void(
-            std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-                 const GameMap &map, BombHandler &bombHandler);
+    CrateDropper(int mapRange, GameHelperData &gameHelperData);
 
     ~CrateDropper() = default;
 
@@ -17,9 +15,8 @@ public:
 
 private:
     int m_mapRange;
-    const GameMap &m_map;
-    BombHandler &m_bombHandler;
-    std::function<void(std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
+    GameHelperData &m_gameHelperData;
+    
     static const std::map<int, std::function<std::unique_ptr<Crate> (int x,const CrateDropper &crateDropper)>>
             m_crateCrates;
 

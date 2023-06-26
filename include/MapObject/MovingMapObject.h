@@ -6,6 +6,7 @@
 #include "BombHandler.h"
 #include "MapVector.h"
 #include "GameMap.h"
+#include "GameHelperData.h"
 
 class Character;
 
@@ -32,16 +33,14 @@ public:
      * @param pos the start position of the object
      * @param radius the radius of the object
      * @param weight the weight of the object
-     * @param map the game map
-     * @param bomb_handler the BOMB handler of the game
-     * @param start_velocity the start velocity of the object
+     * @param gameHelperData the gameHelperData of the game
+     * @param startVelocity the start velocity of the object
      */
     MovingMapObject(const MapVector &pos,
                     float radius,
                     float weight,
-                    const GameMap &map,
-                    BombHandler &bomb_handler, // not const, can add bombs
-                    const MapVector &start_velocity = {0, 0});
+                    GameHelperData &gameHelperData,
+                    const MapVector &startVelocity = {0, 0});
 
 
     /**
@@ -77,15 +76,16 @@ public:
      */
     [[nodiscard]] float getRotation() const;
 
-    /**
-     * getter for the map
-     */
-    [[nodiscard]] const GameMap &getMap() const;
 
     /**
      * getter for the stuck point
      */
     [[nodiscard]] const MapVector &getStuckPoint() const;
+    
+    /**
+     * get the GameHelperData of the game
+     */
+    [[nodiscard]] GameHelperData &getGameHelperData() const;
     
     /**
      * is the object still alive
@@ -207,11 +207,6 @@ public:
 
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    /***
-     * get the bomb handler
-     * @return the bomb handler
-     */
-    [[nodiscard]] BombHandler &getBombHandler() const;
 
     void unrest();
 
@@ -266,12 +261,6 @@ protected:
      */
     void setRotation(float rotation);
 
-    /**
-     * add a BOMB to the BOMB handler
-     * @param bomb the BOMB to add
-     */
-    void addBomb(const Explosion &bomb);
-
 
 private:
 
@@ -286,11 +275,11 @@ private:
      * the rotation of the object (in radians)
      */
     float m_rotation;
-
+    
     /**
-     * the BOMB handler of the game
+     * the data of the game
      */
-    BombHandler &m_bombHandler;
+    GameHelperData &m_gameHelperData;
 
     /**
      * the weight of the object
@@ -322,10 +311,6 @@ private:
      */
     bool m_alive;
 
-    /**
-     * the map that the object is on
-     */
-    const GameMap &m_map;
     /**
      * a point that follows the object
      * and stops it when it get stacks

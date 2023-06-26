@@ -26,8 +26,7 @@ public:
     Rock(const MapVector &position,
          const MapVector &speed,
          const std::optional<PlayerColor> &color,
-         const GameMap &map,
-         BombHandler &bombHandler);
+         GameHelperData &gameHelperData);
     
     void update(const sf::Time &deltaTime) override;
     

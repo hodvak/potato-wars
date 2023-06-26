@@ -2,23 +2,15 @@
 #include "Weapon/ThrowWeapon.h"
 #include "resources_manager.h"
 
-BombThrowCreator::BombThrowCreator(int amount, const std::function<void(
-        std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-                                   const GameMap &map, BombHandler &bombHandler)
+BombThrowCreator::BombThrowCreator(int amount, GameHelperData &gameHelperData)
         :
-        WeaponCreator(amount),
-        m_map(map),
-        m_bombHandler(bombHandler),
-        m_addMapObjectFunc(addMapObjectFunc)
+        WeaponCreator(amount, gameHelperData)
 {
 
 }
 
 BombThrowCreator::BombThrowCreator(const BombThrowCreator &other) :
-        WeaponCreator(other.getAmount()),
-        m_map(other.m_map),
-        m_bombHandler(other.m_bombHandler),
-        m_addMapObjectFunc(other.m_addMapObjectFunc)
+        WeaponCreator(other.getAmount(), other.getGameHelperData())
 {
 
 }
@@ -29,10 +21,9 @@ BombThrowCreator::createWeaponImpl(Character &character)
     return std::make_unique<ThrowWeapon>(character,
                                          std::make_unique<Bomb>(
                                                  character.getPosition(),
-                                                 m_map,
-                                                 m_bombHandler
+                                                 getGameHelperData()
                                          ),
-                                         m_addMapObjectFunc);
+                                         getGameHelperData());
 }
 
 const sf::Texture &BombThrowCreator::getTexture() const
@@ -44,11 +35,6 @@ const sf::Texture &BombThrowCreator::getTexture() const
 sf::IntRect BombThrowCreator::getTextureRect() const
 {
     const sf::Texture &texture = getTexture();
-    return sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y);
+    return {0, 0, (int)texture.getSize().x, (int)texture.getSize().y};
 }
 
-std::unique_ptr<WeaponCreator> BombThrowCreator::copy() const
-{
-    return std::unique_ptr<WeaponCreator>(
-            std::make_unique<BombThrowCreator>(*this));
-}

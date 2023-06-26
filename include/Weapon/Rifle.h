@@ -19,10 +19,8 @@ public:
      * @param map the game map
      * @param bombHandler the bomb handler
      */
-    Rifle(const Character &owner, 
-          const std::function<void(std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-          const GameMap &map,
-          BombHandler &bombHandler);
+    Rifle(const Character &owner,
+          GameHelperData &gameHelperData);
     
     /**
      * handle the mouse pressed event (shoot)

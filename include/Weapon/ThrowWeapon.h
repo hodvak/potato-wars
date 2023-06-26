@@ -24,8 +24,7 @@ public:
      */
     ThrowWeapon(const Character &character,
                 std::unique_ptr<MovingMapObject> &&weapon,
-                const std::function<void(std::unique_ptr<MovingMapObject> &&)>
-                &addMapObjectFunc
+                GameHelperData &gameHelperData
     );
 
     /**
@@ -74,11 +73,6 @@ private:
      * the start velocity of the weapon if it's thrown
      */
     MapVector m_startVelocity;
-    
-    /**
-     * the function to add map objects to the map (to add the thrown weapon)
-     */
-    std::function<void(std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
     
     /**
      * the texture of the weapon

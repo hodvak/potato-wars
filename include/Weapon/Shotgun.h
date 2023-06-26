@@ -12,10 +12,7 @@ class Shotgun : public Gun
 public:
     
     Shotgun(const Character &owner,
-            const std::function<void(std::unique_ptr<MovingMapObject> &&)>
-            &addMapObjectFunc,
-            const GameMap &map,
-            BombHandler &bombHandler);
+            GameHelperData &gameHelperData);
 
     
     void handleMousePressed(const MapVector &mousePosition) override;

@@ -17,9 +17,8 @@ public:
     const static Explosion BOMB; // the explosion BOMB
     
     Bomb(const MapVector &pos,
-         const GameMap &map,
-         BombHandler &bomb_handler);
-
+         GameHelperData &gameHelperData);
+    
     void update(const sf::Time &deltaTime) override;
 
     bool collideDD1(MovingMapObject &other_object) override;

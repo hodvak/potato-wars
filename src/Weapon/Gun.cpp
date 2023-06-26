@@ -3,15 +3,12 @@
 #include "resources_manager.h"
 
 Gun::Gun(const Character &owner,
-         const std::function<void(std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-         const GameMap &map,
-         BombHandler &bombHandler,
-         const std::string &texturePath, 
-         const sf::Vector2u &rectTextureSize):
+         const std::string &texturePath,
+         const sf::Vector2u &rectTextureSize,
+         GameHelperData &gameHelperData):
+         
+        Weapon(gameHelperData),
         m_character(owner),
-        m_addMapObjectFunc(addMapObjectFunc),
-        m_map(map),
-        m_bombHandler(bombHandler),
         m_texture(owner.getPosition(),
                   1.5f* owner.getRadius(),
                   resources_manager::get<sf::Texture>(texturePath),
@@ -51,13 +48,11 @@ void Gun::shot(const MapVector &power, float damage, float weight, float radius)
     
     startPosition += m_character.getPosition();
 
-    m_addMapObjectFunc(
+    getGameHelperData().addMapObject(
             std::make_unique<Projectile>(weight,
                                          startPosition,
                                          radius,
                                          damage,
                                          power,
-                                         m_map,
-                                         m_bombHandler)
-                                         );
+                                         getGameHelperData()));
 }

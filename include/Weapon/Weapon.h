@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "MapVector.h"
+#include "GameHelperData.h"
 
 
 /**
@@ -12,7 +13,7 @@ public:
     /**
      * regular constructor
      */
-    Weapon();
+    Weapon(GameHelperData &gameHelperData);
     
     /**
      * handle the mouse moved event
@@ -39,6 +40,8 @@ public:
     [[nodiscard]] bool isAlive() const;
 
     [[nodiscard]] virtual bool turnEnder() const;
+    
+    [[nodiscard]] GameHelperData &getGameHelperData() const;
 
 protected:
     /**
@@ -52,4 +55,6 @@ private:
      * is the weapon alive
      */
     bool m_isAlive;
+    
+    GameHelperData &m_gameHelperData;
 };

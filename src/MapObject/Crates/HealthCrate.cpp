@@ -2,17 +2,16 @@
 #include "resources_manager.h"
 
 // todo: add consts for number and texture path
+
 HealthCrate::HealthCrate(const MapVector &pos,
-                         const GameMap &map,
-                         BombHandler &bombHandler) :
+                         GameHelperData &gameHelperData):
         Crate(pos,
               resources_manager::get<sf::Texture>("resources/images/Textures/health2.png"),
               sf::IntRect(0, 
                           0,
-                          resources_manager::get<sf::Texture>("resources/images/Textures/health2.png").getSize().x,
-                          resources_manager::get<sf::Texture>("resources/images/Textures/health2.png").getSize().y),
-                          map,
-                          bombHandler),
+                          (int)resources_manager::get<sf::Texture>("resources/images/Textures/health2.png").getSize().x,
+                          (int)resources_manager::get<sf::Texture>("resources/images/Textures/health2.png").getSize().y),
+                          gameHelperData),
         health(50) // todo: health unused?
 {
     

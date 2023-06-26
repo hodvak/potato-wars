@@ -1,14 +1,13 @@
 #include "Weapon/Jump.h"
 
 Jump::Jump(Character &character,
-           const std::function<void(std::unique_ptr<MovingMapObject> &&)>
-           &addMapObjectFunc) :
+           GameHelperData &gameHelperData) :
         ThrowWeapon(character,
                     std::make_unique<Character>(character.getPosition(),
-                                                character.getMap(),
-                                                character.getBombHandler(),
+                                                gameHelperData,
                                                 character.getColor()),
-                    addMapObjectFunc), m_character(character)
+                    gameHelperData),
+                    m_character(character)
 {
 
 }

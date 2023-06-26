@@ -5,14 +5,8 @@
 
 
 RifleWeaponCreator::RifleWeaponCreator(int amount,
-                                       const std::function<void(
-                                               std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-                                       const GameMap &map,
-                                       BombHandler &bombHandler) :
-        WeaponCreator(amount),
-        m_map(map),
-        m_addMapObjectFunc(addMapObjectFunc),
-        m_bombHandler(bombHandler)
+                                       GameHelperData &gameHelperData) :
+        WeaponCreator(amount, gameHelperData)
 {
 
 }
@@ -21,9 +15,7 @@ std::unique_ptr<Weapon>
 RifleWeaponCreator::createWeaponImpl(Character &character)
 {
     return std::make_unique<Rifle>(character, 
-                                   m_addMapObjectFunc,
-                                   m_map,
-                                   m_bombHandler);
+                                   getGameHelperData());
 }
 
 const sf::Texture &RifleWeaponCreator::getTexture() const
@@ -34,21 +26,16 @@ const sf::Texture &RifleWeaponCreator::getTexture() const
 sf::IntRect RifleWeaponCreator::getTextureRect() const
 {
     sf::IntRect rect;
-    rect.width = resources_manager::IMG_RIFLE_SIZE.x;
-    rect.height = resources_manager::IMG_RIFLE_SIZE.y;
+    rect.width = (int)resources_manager::IMG_RIFLE_SIZE.x;
+    rect.height = (int)resources_manager::IMG_RIFLE_SIZE.y;
     rect.left = rect.width * (PlayerColor::SIZE);
     rect.top = 0;
     return rect;
 }
 
-std::unique_ptr<WeaponCreator> RifleWeaponCreator::copy() const
-{
-    return std::make_unique<RifleWeaponCreator>(*this);
-}
 
 RifleWeaponCreator::RifleWeaponCreator(const RifleWeaponCreator &other) :
-        WeaponCreator(other.getAmount()), m_map(other.m_map),
-        m_bombHandler(other.m_bombHandler)
+        WeaponCreator(other.getAmount(),other.getGameHelperData())
 {
 
 }

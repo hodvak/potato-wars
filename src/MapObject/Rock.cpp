@@ -9,14 +9,12 @@ const float Rock::WEIGHT = 60;
 Rock::Rock(const MapVector &position,
            const MapVector &speed,
            const std::optional<PlayerColor> &color,
-           const GameMap &map,
-           BombHandler &bombHandler)
+           GameHelperData &gameHelperData)
         :
         MovingMapObject(position,
                         Rock::RADIUS,
                         Rock::WEIGHT,
-                        map,
-                        bombHandler,
+                        gameHelperData,
                         speed),
         m_life(3),
         m_color(color),

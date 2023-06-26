@@ -6,14 +6,12 @@ const sf::Time Bomb::TIME_TO_EXPLODE = sf::seconds(10);
 const Explosion Bomb::BOMB = Explosion({0, 0}, 50, 50000);
 
 Bomb::Bomb(const MapVector &pos,
-           const GameMap &map,
-           BombHandler &bomb_handler) :
+           GameHelperData &gameHelperData) :
         MovingMapObject(
                 pos,
                 Bomb::RADIUS,
                 Bomb::WEIGHT,
-                map,
-                bomb_handler
+                gameHelperData
         ),
 
         m_texture(Bomb::RADIUS,
@@ -33,7 +31,7 @@ void Bomb::update(const sf::Time &deltaTime)
     {
         Explosion bomb = Bomb::BOMB;
         bomb.pos = getPosition();
-        addBomb(bomb);
+        getGameHelperData().getBombHandler().addBomb(bomb);
         kill();
     }
     m_texture.setAngle(getRotation());
@@ -48,7 +46,7 @@ bool Bomb::collideDD2(Character &other_object)
 {
     Explosion bomb = Bomb::BOMB;
     bomb.pos = getPosition();
-    addBomb(bomb);
+    getGameHelperData().getBombHandler().addBomb(bomb);
     kill();
     return true;
 }

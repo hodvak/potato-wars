@@ -6,8 +6,7 @@
 MovingMapObject::MovingMapObject(const MapVector &pos,
                                  float radius,
                                  float weight,
-                                 const GameMap &map,
-                                 BombHandler &bombHandler,
+                                 GameHelperData &gameHelperData,
                                  const MapVector &startVelocity)
         : m_weight(weight),
           m_velocity(startVelocity),
@@ -16,8 +15,7 @@ MovingMapObject::MovingMapObject(const MapVector &pos,
           m_forces(0, m_weight * Physics::GRAVITY),
           m_resting(false),
           m_alive(true),
-          m_map(map),
-          m_bombHandler(bombHandler),
+          m_gameHelperData(gameHelperData),
           m_rotation(0),
           m_stuckPoint(pos),
           m_movementTime(sf::Time::Zero)
@@ -77,8 +75,6 @@ void MovingMapObject::update(const sf::Time &deltaTime)
         updatePosition(deltaTime);
         updateRotation(deltaTime);
         collisionMap();
-
-
     }
 
 }
@@ -130,6 +126,7 @@ std::optional<float> MovingMapObject::collisionMap()
     float hitAngle = 0;
     int numOfPixels = 0;
 
+    const sf::Image &mask = m_gameHelperData.getMap().getMask();
     for (int i = (int) -m_radius; i < (int) m_radius; ++i)
     {
         for (int j = (int) -m_radius; j < (int) m_radius; ++j)
@@ -142,12 +139,12 @@ std::optional<float> MovingMapObject::collisionMap()
                                     (int) m_pos.y + j};
                 if (pos.x < 0 ||
                     pos.y < 0 ||
-                    pos.x >= (int) m_map.getMask().getSize().x ||
-                    pos.y >= (int) m_map.getMask().getSize().y)
+                    pos.x >= (int) mask.getSize().x ||
+                    pos.y >= (int) mask.getSize().y)
                 {
                     continue;
                 }
-                if (m_map.getMask().getPixel(pos.x, pos.y) ==
+                if (mask.getPixel(pos.x, pos.y) ==
                     sf::Color::White)
                 {
                     if (i * i + j * j <
@@ -166,6 +163,7 @@ std::optional<float> MovingMapObject::collisionMap()
 
     if (numOfPixels == 0)
     {
+        // no collision with the map
         return std::nullopt;
     }
 
@@ -191,7 +189,7 @@ std::optional<float> MovingMapObject::collisionMap()
     else
     {
         float ang = tang.getAngle();
-        float mag =
+        float mag = // todo: fix fraction on rolling
                 tang.getMagnitude() - norm.getMagnitude() * Physics::FRICTION;
         tang = MapVector::getVectorFromAngle(ang, mag);
     }
@@ -254,12 +252,6 @@ void MovingMapObject::collideGeneric(MovingMapObject &otherObject)
                                           otherObject.m_radius);
 }
 
-
-const GameMap &MovingMapObject::getMap() const
-{
-    return m_map;
-}
-
 void MovingMapObject::exploded(const Explosion &bomb)
 {
     MapVector diff = m_pos - bomb.pos;
@@ -272,12 +264,6 @@ void MovingMapObject::exploded(const Explosion &bomb)
         m_resting = false;
     }
 }
-
-void MovingMapObject::addBomb(const Explosion &bomb)
-{
-    m_bombHandler.addBomb(bomb);
-}
-
 void
 MovingMapObject::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
@@ -377,12 +363,12 @@ const MapVector &MovingMapObject::getStuckPoint() const
     return m_stuckPoint;
 }
 
-BombHandler &MovingMapObject::getBombHandler() const
-{
-    return m_bombHandler;
-}
-
 void MovingMapObject::unrest()
 {
     m_resting = false;
+}
+
+GameHelperData &MovingMapObject::getGameHelperData() const
+{
+    return m_gameHelperData;
 }

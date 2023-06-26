@@ -9,8 +9,8 @@ public:
     Crate(const MapVector &pos,
           const sf::Texture &texture,
           const sf::IntRect &overShape,
-          const GameMap &map,
-          BombHandler &bombHandler);
+          GameHelperData &gameHelperData);
+    
     ~Crate() override = default;
     void update(const sf::Time &deltaTime) override;
 

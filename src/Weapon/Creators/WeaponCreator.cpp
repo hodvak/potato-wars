@@ -1,7 +1,9 @@
 #include "Weapon/Creators/WeaponCreator.h"
 
-WeaponCreator::WeaponCreator(int amount) :
-        m_amount(amount)
+WeaponCreator::WeaponCreator(int amount,
+                             GameHelperData &gameHelperData) :
+        m_amount(amount),
+        m_gameHelperData(gameHelperData)
 {
 }
 
@@ -39,4 +41,9 @@ void WeaponCreator::addAmount(int amount)
         return;
     }
     m_amount += amount;
+}
+
+GameHelperData &WeaponCreator::getGameHelperData() const
+{
+    return m_gameHelperData;
 }

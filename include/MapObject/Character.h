@@ -11,35 +11,16 @@
  */
 class Character : public MovingMapObject
 {
-private:
-    /**
-     * radius of the Character
-     */
-    static const float RADIUS;
-    
-    /**
-     * weight of the Character
-     */
-    static const float WEIGHT;
-
-
-    /**
-     * explosion damage constant (the higher the const, the more damage the Character
-     * will deal on explosion)
-     */
-    static const float EXPLOSION_DAMAGE;
-    
 public:
     /**
      * create a Character in the given position
      * @param pos the position of the Character
      * @param map the map that the Character is in
-     * @param bomb_handler BombHandler to add bombs to
+     * @param gameHelperData the GameHelperData of the game
      * @param color the color of the Character (Character)
      */
     Character(const MapVector &pos,
-              const GameMap &map,
-              BombHandler &bomb_handler,
+              GameHelperData &gameHelperData,
               const PlayerColor &color);
     
     /**
@@ -103,6 +84,22 @@ public:
 
 
 private:
+    /**
+     * radius of the Character
+     */
+    static const float RADIUS;
+
+    /**
+     * weight of the Character
+     */
+    static const float WEIGHT;
+
+
+    /**
+     * explosion damage constant (the higher the const, the more damage the Character
+     * will deal on explosion)
+     */
+    static const float EXPLOSION_DAMAGE;
     
     /**
      * texture of the Character

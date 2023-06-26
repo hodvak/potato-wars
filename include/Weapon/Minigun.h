@@ -11,10 +11,8 @@
 class Minigun : public Gun
 {
 public:
-    Minigun(const Character &owner, 
-          const std::function<void(std::unique_ptr<MovingMapObject> &&)> &addMapObjectFunc,
-          const GameMap &map,
-          BombHandler &bombHandler);
+    Minigun(const Character &owner,
+            GameHelperData &gameHelperData);
 
     
     void handleMouseMoved(const MapVector &mousePosition) override;

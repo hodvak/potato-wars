@@ -18,7 +18,9 @@
 
 Game::Game(int levelNumber) :
         m_map(levelNumber),
-        m_helperData(m_map, m_bombHandler),
+        m_helperData(m_map,
+                     m_bombHandler),
+        
         m_soundPlayer(),
 
         m_camera((float) m_map.getMask().getSize().x,
@@ -31,17 +33,16 @@ Game::Game(int levelNumber) :
                 Team(PlayerColor::BLUE, m_helperData)},
 
         m_crateDropper((int) m_map.getMask().getSize().x,
-                       [this](std::unique_ptr<MovingMapObject> &&object)
-                       {
-                           addMovingObject(
-                                   std::move(object));
-                       },
-                       m_map,
-                       m_bombHandler),
+                       m_helperData),
         m_teamCamera((float) m_map.getMask().getSize().x,
                      (float) m_map.getMask().getSize().y),
         m_allStopped(false)
 {
+    m_helperData.setAddObjectFunc([this] (auto object)
+                                  {
+                                      addMovingObject(std::move(object));
+                                  });
+    
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(levelNumber)));
@@ -200,13 +201,14 @@ void Game::handleMousePressed()
 
 
 //    m_movingObjects.emplace_back(std::move(crate));
+    // todo: sound to resources manager
     m_soundPlayer.addSound("resources/Sounds/eatGift.wav");
     m_teams[m_teamTurnIndex].onMouseClick();
 }
 
 void Game::addMovingObject(std::unique_ptr<MovingMapObject> &&object)
 {
-    m_movingObjects.emplace_back(std::move(object));
+    m_movingObjects.push_back(std::move(object));
 }
 
 void Game::stopMovingObjects()
@@ -229,69 +231,43 @@ void Game::stopMovingObjects()
     }
     int x = 3;
     std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(
-            MapVector(0, 0), m_map, m_bombHandler);
+            MapVector(0, 0),m_helperData);
     std::unique_ptr<Crate> crate = std::make_unique<HealthCrate>(
-            MapVector{float(x), 0}, m_map, m_bombHandler);
+            MapVector{float(x), 0}, m_helperData);
     std::vector<std::unique_ptr<Crate>> crates;
-    crates.emplace_back(std::make_unique<HealthCrate>(MapVector(0, 0), m_map,
-                                                      m_bombHandler));
+    crates.emplace_back(new HealthCrate(MapVector(0, 0), m_helperData));
 }
 
 void Game::addCharacter(const PlayerColor &color, const MapVector &position)
 {
     auto *character = new Character(
             position,
-            m_map,
-            m_bombHandler,
+            m_helperData,
             color
     );
 
 
     character->addWeaponCreator(std::make_unique<StoneThrowCreator>(
             -1,
-            [&](std::unique_ptr<MovingMapObject> &&object)
-            {
-                addMovingObject(std::move(object));
-            },
-            m_map,
-            m_bombHandler
+            m_helperData
     ));
 
     character->addWeaponCreator(std::make_unique<MinigunWeaponCreator>(
             1,
-            [&](std::unique_ptr<MovingMapObject> &&object)
-            {
-                addMovingObject(std::move(object));
-            },
-            m_map,
-            m_bombHandler
+            m_helperData
     ));
 
     character->addWeaponCreator(std::make_unique<JumpCreator>(
             -1,
-            [&](std::unique_ptr<MovingMapObject> &&object)
-            {
-                addMovingObject(
-                        std::move(
-                                object));
-            }
-
+            m_helperData
     ));
     character->addWeaponCreator(std::make_unique<BombThrowCreator>(
             1,
-            [&](std::unique_ptr<MovingMapObject> &&object)
-            {
-                addMovingObject(
-                        std::move(
-                                object));
-            },
-            m_map,
-            m_bombHandler
-
+            m_helperData
     ));
 
-    m_movingObjects.emplace_back(character);
     m_teams[color].addCharacter(character);
+    m_movingObjects.emplace_back(character);
 }
 
 void Game::handleScroll(int delta)

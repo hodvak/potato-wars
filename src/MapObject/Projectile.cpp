@@ -6,13 +6,11 @@ Projectile::Projectile(float weight,
                        float radius,
                        float damage,
                        const MapVector &startVelocity,
-                       const GameMap &map,
-                       BombHandler &bombHandler):
+                       GameHelperData &gameHelperData):
     MovingMapObject(pos,
                     radius,
                     weight,
-                    map,
-                    bombHandler,
+                    gameHelperData,
                     startVelocity),
     m_damage(damage)
 {
@@ -26,7 +24,7 @@ void Projectile::update(const sf::Time &deltaTime)
     {
         kill();
         // todo: maybe change to a parameter instead of those magic numbers
-        addBomb({getPosition(),3*(int)getRadius(),100});
+        getGameHelperData().getBombHandler().addBomb({getPosition(),3*(int)getRadius(),100});
     }
 }
 
@@ -38,7 +36,7 @@ bool Projectile::collideDD1(MovingMapObject &otherObject)
 bool Projectile::collideDD2(Character &otherObject)
 {
     collideGeneric(otherObject);
-    addBomb({getPosition(),3*(int)getRadius(),0});
+    getGameHelperData().getBombHandler().addBomb({getPosition(),3*(int)getRadius(),0});
     otherObject.damage(m_damage);
     kill();
     return true;

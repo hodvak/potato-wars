@@ -5,13 +5,14 @@
 #include "Physics.h"
 
 
+
+// todo: path as const !!!!!
 Crate::Crate(const MapVector &pos,
              const sf::Texture &texture,
              const sf::IntRect &overShape,
-             const GameMap &map,
-             BombHandler &bombHandler):
+             GameHelperData &gameHelperData):
              //todo: make const 10, 100
-        MovingMapObject(pos, 10, 100, map, bombHandler),
+        MovingMapObject(pos, 10, 100, gameHelperData),
         m_overTexture(texture),
         m_overShape(overShape),
         m_onGround(false)

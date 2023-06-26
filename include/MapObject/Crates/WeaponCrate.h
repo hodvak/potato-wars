@@ -8,8 +8,7 @@ class WeaponCrate : public Crate
 public:
     WeaponCrate(const MapVector &pos,
                 std::unique_ptr<WeaponCreator> &&weaponCreator,
-                const GameMap &map,
-                BombHandler &bombHandler);
+                GameHelperData &gameHelperData);
 
     bool collideDD1(MovingMapObject &otherObject) override;
     bool collideDD2(Character &otherObject) override;

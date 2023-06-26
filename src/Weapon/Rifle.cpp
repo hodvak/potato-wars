@@ -3,16 +3,11 @@
 #include "resources_manager.h"
 
 Rifle::Rifle(const Character &owner,
-             const std::function<void(std::unique_ptr<MovingMapObject> &&)>
-             &addMapObjectFunc,
-             const GameMap &map,
-             BombHandler &bombHandler) :
+             GameHelperData &gameHelperData) :
         Gun(owner,
-            addMapObjectFunc,
-            map,
-            bombHandler,
             resources_manager::IMG_RIFLE_PATH,
-            resources_manager::IMG_RIFLE_SIZE),
+            resources_manager::IMG_RIFLE_SIZE,
+            gameHelperData),
         m_character(owner)
 {
 

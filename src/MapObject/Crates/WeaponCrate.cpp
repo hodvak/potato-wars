@@ -4,14 +4,12 @@
 
 WeaponCrate::WeaponCrate(const MapVector &pos,
                          std::unique_ptr<WeaponCreator> &&weaponCreator,
-                         const GameMap &map,
-                         BombHandler &bombHandler) :
+                         GameHelperData &gameHelperData) :
                          
         Crate(pos,
               weaponCreator->getTexture(),
               weaponCreator->getTextureRect(),
-              map,
-              bombHandler
+              gameHelperData
               ),
         m_weaponCreator(std::move(weaponCreator))
 {
@@ -23,9 +21,9 @@ bool WeaponCrate::collideDD1(MovingMapObject &otherObject)
     return otherObject.collideDD2(*this);
 }
 
-bool WeaponCrate::collideDD2(Character &other_object)
+bool WeaponCrate::collideDD2(Character &otherObject)
 {
-    other_object.addWeaponCreator(std::move(m_weaponCreator));
+    otherObject.addWeaponCreator(std::move(m_weaponCreator));
     kill();
     return true;
 }

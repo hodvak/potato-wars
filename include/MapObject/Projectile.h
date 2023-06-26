@@ -17,16 +17,14 @@ public:
      * @param radius the radius of the projectile 
      * @param damage the damage that the projectile will deal
      * @param startVelocity the start velocity of the projectile
-     * @param map the map that the projectile is in
-     * @param bombHandler the bomb handler of the game 
+     * @param gameHelperData the GameHelperData of the game
      */
     Projectile(float weight,
                const MapVector &pos,
                float radius,
                float damage,
                const MapVector &startVelocity,
-               const GameMap &map,
-               BombHandler &bombHandler);
+               GameHelperData &gameHelperData);
 
     /**
      * update the projectile according to the time that passed

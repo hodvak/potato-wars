@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <SFML/Graphics.hpp>
 #include "GameMap.h"
 #include "BombHandler.h"
@@ -19,11 +20,15 @@ public:
      * @param bombHandler the bomb handler of the game
      */
     GameHelperData(
-            GameMap &m_map,
-            BombHandler &m_bombHandler,
-            sf::RenderWindow *m_window = nullptr,
-            sf::Time m_deltaTime = sf::Time::Zero
+            GameMap &map,
+            BombHandler &bombHandler,
+            sf::RenderWindow *window = nullptr,
+            sf::Time deltaTime = sf::Time::Zero
     );
+    /**
+     * setter for the add object function
+     */
+     void setAddObjectFunc(const std::function<void (std::unique_ptr<MovingMapObject> &&)> &func);
 
     /**
      * get the delta time of the game
@@ -46,6 +51,8 @@ public:
      * get the size of the window
      */
     [[nodiscard]] sf::Vector2u getWindowSize() const;
+    
+    void addMapObject(std::unique_ptr<MovingMapObject> &&mapObject);
 
 
     /**
@@ -84,4 +91,5 @@ private:
     const sf::RenderWindow *m_window;
     GameMap &m_map;
     BombHandler &m_bombHandler;
+    std::function<void (std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
 };

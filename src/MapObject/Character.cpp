@@ -6,24 +6,22 @@ const float Character::WEIGHT = 200;
 const float Character::EXPLOSION_DAMAGE = 0.00002f;
 
 Character::Character(const MapVector &pos,
-                     const GameMap &map,
-                     BombHandler &bomb_handler,
+                     GameHelperData &gameHelperData,
                      const PlayerColor &color
 ) :
         MovingMapObject(pos,
                         Character::RADIUS,
                         Character::WEIGHT,
-                        map,
-                        bomb_handler
+                        gameHelperData
         ),
         m_life(1), // start with full life
         m_texture(color, Character::RADIUS),
         m_color(color),
         m_weaponCreatorContainer(
-                sf::Vector2f((float) map.getMask().getSize().x / 2.0f,
-                             (float) map.getMask().getSize().y / 2.0f),
-                sf::Vector2f((float) getPosition().x,
-                             (float) getPosition().y +50)
+                sf::Vector2f((float) gameHelperData.getMap().getMask().getSize().x / 2.0f,
+                             (float) gameHelperData.getMap().getMask().getSize().y / 2.0f),
+                sf::Vector2f((float) pos.x,
+                             (float) pos.y +50)
         )
 {
 

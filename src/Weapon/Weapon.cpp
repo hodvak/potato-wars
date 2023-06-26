@@ -1,6 +1,7 @@
 #include "Weapon/Weapon.h"
 
-Weapon::Weapon():
+Weapon::Weapon(GameHelperData &gameHelperData):
+    m_gameHelperData(gameHelperData),
     m_isAlive(true)
 {
 
@@ -19,6 +20,11 @@ bool Weapon::isAlive() const
 bool Weapon::turnEnder() const
 {
     return true;
+}
+
+GameHelperData &Weapon::getGameHelperData() const
+{
+    return m_gameHelperData;
 }
 
 
