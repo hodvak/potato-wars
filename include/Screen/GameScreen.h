@@ -12,9 +12,9 @@ public:
 
     /**
      * constructor for the game screen with a level name to load
-     * @param levelNumber the number of the level to load
+     * @param level the number of the level to load
      */
-    explicit GameScreen(const Level &levelNumber);
+    explicit GameScreen(const Level &level);
     
     /**
      * the main loop of the game

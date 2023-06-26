@@ -33,10 +33,9 @@ private:
     static const unsigned int NUM_OF_BUTTONS;
     
     /**
-     * start the game and set the next screen to the game screen
-     * todo: make it a `select map` screen instead
+     * set the next screen to the level selection screen
      */
-    void startGame();
+    void selectLevelScreen();
 
     /**
      * set the next screen to the help screen

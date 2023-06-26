@@ -2,7 +2,7 @@
 #include <string>
 struct Level
 {
-    std::string levelNumber;
+    int levelNumber;
     std::string groundTexture;
     std::string layersDir;
     int numberOfLayers;

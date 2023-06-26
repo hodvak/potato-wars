@@ -5,8 +5,12 @@
 #include "GameMap.h"
 #include "Button/TextureButton.h"
 #include "Screen/GameScreen.h"
+#include "Screen/MainScreen.h"
+#include "Screen/ErrorScreen.h"
 
 const sf::Vector2u MapSelectionScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
+const sf::Vector2f MapSelectionScreen::BUTTON_SIZE = sf::Vector2f(200, 200);
+const sf::Vector2u MapSelectionScreen::GRID_SIZE = sf::Vector2u(2, 2);
 
 MapSelectionScreen::MapSelectionScreen() :
         m_levels()
@@ -46,26 +50,31 @@ std::unique_ptr<Screen> MapSelectionScreen::run(sf::RenderWindow &window)
             if (event.type == sf::Event::Closed ||
                 sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
-                window.close();
-                return nullptr;
-
+                return std::make_unique<MainScreen>();
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 m_buttonsGroup.onClick(
-                        sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+                        {
+                                (float) event.mouseButton.x,
+                                (float) event.mouseButton.y
+                        }
+                );
             }
             if (event.type == sf::Event::MouseMoved)
             {
                 m_buttonsGroup.onHover(
-                        sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
+                        {
+                                (float) event.mouseMove.x,
+                                (float) event.mouseMove.y
+                        }
+                );
             }
         }
+
         window.clear();
         window.draw(background);
         window.draw(m_buttonsGroup);
-
-
         window.display();
     }
     return std::move(m_nextScreen);
@@ -74,13 +83,11 @@ std::unique_ptr<Screen> MapSelectionScreen::run(sf::RenderWindow &window)
 void MapSelectionScreen::readLevels()
 {
     std::ifstream file;
-    try
+    file.open("resources/Levels/lvl_index.txt");
+    if (!file.is_open())
     {
-        file.open("resources/Levels/lvl_index.txt");
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << "failed to open level_index.txt" << std::endl;
+        m_nextScreen = std::make_unique<ErrorScreen>(
+                "failed to open level_index.txt");
         return;
     }
     std::string line;
@@ -88,7 +95,7 @@ void MapSelectionScreen::readLevels()
     while (std::getline(file, line))
     {
         std::stringstream ss(line);
-        std::string levelNumber;
+        int levelNumber;
         std::string groundTexture;
         std::string layersDir;
         int numberOfLayers;
@@ -100,26 +107,39 @@ void MapSelectionScreen::readLevels()
 
 void MapSelectionScreen::makeButtons()
 {
-    for (auto &level: m_levels)
+    m_buttonsTextures.resize(m_levels.size());
+    sf::RenderTexture renderTexture;
+    for (unsigned i = 0; i < m_levels.size(); i++)
     {
-        GameMap gameMap(level);
-        m_buttonsTextures.emplace_back(std::make_unique<sf::RenderTexture>());
-        m_buttonsTextures.back()->create(gameMap.getMask().getSize().x,
-                                         gameMap.getMask().getSize().y);
-        //sf::RenderTexture renderTexture;
-        gameMap.draw(*m_buttonsTextures.back(), sf::RenderStates::Default);
-        // m_buttonsTextures.back()->update(renderTexture.getTexture());
+        GameMap gameMap(m_levels[i]);
+        sf::Vector2u mapSize = gameMap.getMask().getSize();
+
+        renderTexture.create(mapSize.x, mapSize.y);
+        
+        renderTexture.clear(sf::Color::Transparent);
+        renderTexture.draw(gameMap);
+        renderTexture.display();
+
+        m_buttonsTextures[i] = renderTexture.getTexture();
         m_buttonsGroup.add(
                 std::make_unique<TextureButton>(
-                        sf::Vector2f{
-                                (float )(std::stoi(level.levelNumber)-1)*400,
-                                (float )WINDOW_SIZE.y / 2 - 100},
-                        sf::Vector2f{300, -200},
-                        [this, level]()
+                        sf::Vector2f(
+                                ((float) (i % GRID_SIZE.x) + 0.5f) *
+                                (float) WINDOW_SIZE.x /
+                                (float) GRID_SIZE.x -
+                                BUTTON_SIZE.x / 2,
+                                ((float) (i / GRID_SIZE.x) + 0.5f) *
+                                (float) WINDOW_SIZE.y /
+                                (float) GRID_SIZE.y -
+                                BUTTON_SIZE.y / 2
+                        ),
+                        BUTTON_SIZE,
+                        [this, i]()
                         {
-                            m_nextScreen = std::make_unique<GameScreen>(level);
+                            m_nextScreen = std::make_unique<GameScreen>(
+                                    m_levels[i]);
                         },
-                        m_buttonsTextures.back()->getTexture()
+                        m_buttonsTextures[i]
                 ));
     }
 }

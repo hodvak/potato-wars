@@ -20,7 +20,7 @@ MainScreen::MainScreen() :
                          (float) WINDOW_SIZE.y * 0.75f -
                          (float) BUTTONS_SIZE.y / 2),
             MainScreen::BUTTONS_SIZE,
-            [this] { startGame(); },
+            [this] { selectLevelScreen(); },
             resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_NEW_GAME_PATH)
     ));
@@ -121,7 +121,7 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
     return std::move(m_nextScreen);
 }
 
-void MainScreen::startGame()
+void MainScreen::selectLevelScreen()
 {
     m_nextScreen = std::make_unique<MapSelectionScreen>();
 }
