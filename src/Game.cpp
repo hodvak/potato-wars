@@ -64,7 +64,7 @@ Game::Game(const Level &level) :
     }
 }
 
-void Game::update(const sf::Time &deltaTime)
+PlayerColor Game::update(const sf::Time &deltaTime)
 {
     //update objects
     m_teamCamera.update(deltaTime);
