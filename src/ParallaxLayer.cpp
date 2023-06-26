@@ -28,7 +28,7 @@ ParallaxLayer::draw(sf::RenderTarget &target, sf::RenderStates states) const
     
     MapVector camera = target.getView().getCenter();
     MapVector offset = camera - center;
-    offset *= m_speed;
+    offset *= -m_speed;
     sprite.setPosition(center + 
                        offset );
     target.draw(sprite, states);

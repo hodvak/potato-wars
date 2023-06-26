@@ -43,10 +43,10 @@ GameMap::GameMap(const Level &level) : m_level(level)
         m_layers.emplace_back(
                 texture,
                 sf::FloatRect (
-                    -80.f,
-                    -80.f,
-                    (float) m_width + 160.f,
-                    (float) m_height + 160.f
+                    -200.f,
+                    -200.f,
+                    (float) m_width + 400.f,
+                    (float) m_height + 400.f
                 ),
                 (0.9 - i * 0.1)
 

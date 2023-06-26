@@ -3,10 +3,12 @@
 
 GameHelperData::GameHelperData(GameMap &map,
                                BombHandler &bombHandler,
+                                 SoundPlayer &soundPlayer,
                                sf::RenderWindow *window,
                                sf::Time deltaTime) :
         m_map(map),
         m_bombHandler(bombHandler),
+        m_soundPlayer(soundPlayer),
         m_window(window),
         m_deltaTime(deltaTime)
 {
@@ -65,6 +67,11 @@ void GameHelperData::setAddObjectFunc(
         const std::function<void(std::unique_ptr<MovingMapObject> &&)> &func)
 {
     m_addMapObjectFunc = func;
+}
+
+const sf::View &GameHelperData::getView() const
+{
+   return m_window->getView();
 }
 
 

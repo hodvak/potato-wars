@@ -17,8 +17,8 @@
 
 Game::Game(const Level &level) :
         m_map(level),
-        m_helperData(m_map, m_bombHandler),
-        m_soundPlayer(),
+        m_soundPlayer(false, 100),
+        m_helperData(m_map, m_bombHandler, m_soundPlayer),
 
         m_camera((float) m_map.getMask().getSize().x,
                  (float) m_map.getMask().getSize().y),
@@ -31,15 +31,8 @@ Game::Game(const Level &level) :
 
         m_crateDropper((int) m_map.getMask().getSize().x,
                        m_helperData),
-        m_teamCamera({
-                             -80.f,
-                             -80.f,
-                             (float) m_map.getMask().getSize().x + 160.f,
-                             (float) m_map.getMask().getSize().y + 160.f
-                     },
-                     {(float) m_map.getMask().getSize().x,
-                      (float) m_map.getMask().getSize().y},
-                     m_helperData),
+
+        m_teamCamera(m_helperData),
         m_allStopped(false)
 {
     m_helperData.setAddObjectFunc([this](auto object)
@@ -90,10 +83,9 @@ void Game::update(const sf::Time &deltaTime)
 
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
         }
-        for (int i = 0; i < 5; ++i)
-        {
-            m_crateDropper.dropCrate();
-        }
+
+        m_crateDropper.dropCrate();
+
 
     }
 
@@ -107,7 +99,10 @@ void Game::update(const sf::Time &deltaTime)
     // from teams
     for (auto &team: m_teams)
     {
-        team.removeDeadCharacters();
+       if (team.removeDeadCharacters())
+       {
+           m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+       }
     }
 
     // from moving objects (must be last because the unique_ptr)

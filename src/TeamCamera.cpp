@@ -3,20 +3,13 @@
 #include "MapVector.h"
 #include "resources_manager.h"
 
-TeamCamera::TeamCamera(sf::FloatRect mapRect,
-                       sf::Vector2f originalViewSize,
-                       GameHelperData &gameHelperData) :
-        m_mapRect(mapRect),
-        m_originalViewSize(originalViewSize),
+TeamCamera::TeamCamera(GameHelperData &gameHelperData) :
         m_gameHelperData(gameHelperData),
-        m_zoomLevel(0),
-        m_position(mapRect.left + mapRect.width / 2.0f,
-                   mapRect.top + mapRect.height / 2.0f),
-        m_viewRect(m_position.x - originalViewSize.x / 2.0f,
-                   m_position.y - originalViewSize.y / 2.0f,
-                   originalViewSize.x,
-                   originalViewSize.y)
-                   
+        m_originalViewRect(
+                {0, 0, 0,
+                 0}),
+        m_view(m_originalViewRect),
+        m_zoomLevel(0)
 {
 
 }
@@ -24,108 +17,96 @@ TeamCamera::TeamCamera(sf::FloatRect mapRect,
 void TeamCamera::reset()
 {
     m_zoomLevel = 0;
-    m_position = {m_mapRect.left + m_mapRect.width / 2.0f,
-                  m_mapRect.top + m_mapRect.height / 2.0f};
+
+    m_view.reset(m_originalViewRect);
 }
 
 void
 TeamCamera::update(const sf::Time &deltaTime)
 {
-    sf::Vector2i mousePosition = m_gameHelperData.getMousePositionInWindow();
-    if(mousePosition.x < 0 ||
-            mousePosition.y < 0 ||
-            mousePosition.x > m_gameHelperData.getWindowSize().x ||
-            mousePosition.y > m_gameHelperData.getWindowSize().y)
+    m_originalViewRect.width = m_gameHelperData.getWindowSize().x;
+    m_originalViewRect.height = m_gameHelperData.getWindowSize().y;
+    //moving the camera with the mouse
+    m_view.getCenter();
+    sf::Vector2u mapSize = {m_gameHelperData.getMap().getMask().getSize().x,
+                            m_gameHelperData.getMap().getMask().getSize().y};
+    int maxBorder = 100;
+    sf::Vector2u windowSize = m_gameHelperData.getWindowSize();
+    float cameraSpeed = 0.5;
+    //moving the camera with the mouse
+    if (m_mousePosition.x < 10)
     {
-        return;
+        m_view.move(-cameraSpeed * deltaTime.asMilliseconds(), 0);
     }
-    
-    if (mousePosition.x <
-        m_gameHelperData.getWindowSize().x * 0.05f)
+    else if (m_mousePosition.x > windowSize.x - 10)
     {
-        std::cout << "left" << std::endl;
-        m_position.x -= 1000 * deltaTime.asSeconds();
-        fixBorders();
-        std::cout << m_viewRect.left + m_viewRect.width / 2.0f << " " << m_viewRect.top + m_viewRect.height / 2.0f << std::endl;
-
-
+        m_view.move(cameraSpeed * deltaTime.asMilliseconds(), 0);
     }
-    else if (mousePosition.x >
-             m_gameHelperData.getWindowSize().x * 0.95f)
+    if (m_mousePosition.y < 10)
     {
-        m_position.x += 1000 * deltaTime.asSeconds();
+        m_view.move(0, -cameraSpeed * deltaTime.asMilliseconds());
     }
-    if (mousePosition.y <
-        m_gameHelperData.getWindowSize().y * 0.05f)
+    else if (m_mousePosition.y > windowSize.y - 10)
     {
-        m_position.y -= 1000 * deltaTime.asSeconds();
+        m_view.move(0, cameraSpeed * deltaTime.asMilliseconds());
     }
-    else if (mousePosition.y >
-             m_gameHelperData.getWindowSize().y * 0.95f)
+//    limiting the camera to the map+maxBorder
+    if (m_view.getCenter().x - m_view.getSize().x / 2 < -maxBorder)
     {
-        m_position.y += 1000 * deltaTime.asSeconds();
+        m_view.setCenter(-maxBorder + m_view.getSize().x / 2,
+                         m_view.getCenter().y);
     }
-    
-    m_viewRect.left = m_position.x - m_viewRect.width / 2.0f;
-    m_viewRect.top = m_position.y - m_viewRect.height / 2.0f;
-    fixBorders();
+    else if (m_view.getCenter().x + m_view.getSize().x / 2 >
+            mapSize.x + maxBorder)
+    {
+        m_view.setCenter(mapSize.x + maxBorder -
+                         m_view.getSize().x / 2, m_view.getCenter().y);
+    }
+    if (m_view.getCenter().y - m_view.getSize().y / 2 < -maxBorder)
+    {
+        m_view.setCenter(m_view.getCenter().x,
+                         -maxBorder + m_view.getSize().y / 2);
+    }
+    else if (m_view.getCenter().y + m_view.getSize().y / 2 >
+            mapSize.y + maxBorder)
+    {
+        m_view.setCenter(m_view.getCenter().x,
+                         mapSize.y + maxBorder - m_view.getSize().y / 2);
+    }
+    m_view.setSize(m_originalViewRect.width * std::pow(1.1, m_zoomLevel),
+                   m_originalViewRect.height * std::pow(1.1, m_zoomLevel));
+    std::cout<<m_gameHelperData.getMousePositionInMap()<<std::endl;
 
 
 }
 
-void TeamCamera::handleScroll(float delta)
+void TeamCamera::handleScroll(int delta)
 {
-    m_zoomLevel += delta * ZOOM_SPEED;
-    if (m_zoomLevel > MAX_ZOOM)
+    //zooming in and out with the mouse wheel
+    float zoomSpeed = -0.5;
+    float maxZoom = 1;
+    float minZoom = -5.5;
+    m_zoomLevel += delta * zoomSpeed;
+    if (m_zoomLevel > maxZoom)
     {
-        m_zoomLevel = MAX_ZOOM;
+        m_zoomLevel = maxZoom;
     }
-    else if (m_zoomLevel < MIN_ZOOM)
+    else if (m_zoomLevel < minZoom)
     {
-        m_zoomLevel = MIN_ZOOM;
+        m_zoomLevel = minZoom;
     }
-    m_viewRect.width = m_originalViewSize.x * std::pow(0.9f, m_zoomLevel);
-    m_viewRect.height = m_originalViewSize.y * std::pow(0.9f, m_zoomLevel);
-    m_viewRect.left = m_position.x - m_viewRect.width / 2.0f;
-    m_viewRect.top = m_position.y - m_viewRect.height / 2.0f;
-    fixBorders();
+    m_view.setSize(m_originalViewRect.width * std::pow(1.1, m_zoomLevel),
+                   m_originalViewRect.height * std::pow(1.1, m_zoomLevel));
+
 
 }
 
-sf::View TeamCamera::getView() const
+const sf::View &TeamCamera::getView() const
 {
-    sf::View view;
-    view.setCenter(m_viewRect.left + m_viewRect.width / 2.0f,
-                   m_viewRect.top + m_viewRect.height / 2.0f);
-    std::cout << m_viewRect.left + m_viewRect.width / 2.0f << " " << m_viewRect.top + m_viewRect.height / 2.0f << std::endl;
-    view.setSize(m_viewRect.width, m_viewRect.height);
-    return view;
+    return m_view;
 }
 
 void TeamCamera::handleMouseMoved(const sf::Vector2<int> &mousePosition)
 {
-//    m_mousePosition = mousePosition;
-}
-
-void TeamCamera::fixBorders()
-{
-    if (m_viewRect.left < m_mapRect.left)
-    {
-        m_viewRect.left = m_mapRect.left;
-    }
-    else if (m_viewRect.left + m_viewRect.width >
-             m_mapRect.left + m_mapRect.width)
-    {
-        m_viewRect.left = m_mapRect.left + m_mapRect.width - m_viewRect.width;
-    }
-
-    if (m_viewRect.top < m_mapRect.top)
-    {
-        m_viewRect.top = m_mapRect.top;
-    }
-    else if (m_viewRect.top + m_viewRect.height >
-             m_mapRect.top + m_mapRect.height)
-    {
-        m_viewRect.top = m_mapRect.top + m_mapRect.height - m_viewRect.height;
-    }
+    m_mousePosition = mousePosition;
 }

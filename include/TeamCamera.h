@@ -1,34 +1,25 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "SoundPlayer.h"
 #include "GameHelperData.h"
-
 class TeamCamera
 {
 public:
-    TeamCamera(sf::FloatRect mapRect,
-               sf::Vector2f originalViewSize,
-               GameHelperData &gameHelperData);
-    
+    TeamCamera(GameHelperData &gameHelperData);
     void reset();
     void update(const sf::Time &deltaTime);
     void handleMouseMoved(const sf::Vector2<int> &mousePosition);
-    void handleScroll(float delta);
+    void handleScroll(int delta);
 
-    [[nodiscard]] sf::View getView() const;
+    [[nodiscard]] const sf::View &getView() const;
 
 private:
-    constexpr static const float MAX_ZOOM = 6;
-    constexpr static const float MIN_ZOOM = 0;
-    constexpr static const float ZOOM_SPEED = 0.5f;
-    
-    
-    void fixBorders();
-    
-    const sf::FloatRect m_mapRect;
-    const sf::Vector2f m_originalViewSize;
-    sf::FloatRect m_viewRect;
     GameHelperData &m_gameHelperData;
-    float m_zoomLevel;
-    sf::Vector2f m_position;
+    sf::FloatRect m_originalViewRect;
+    float m_zoomLevel = 0;
+    sf::View m_view;
+    sf::Vector2<int> m_mousePosition;
+    sf::Vector2<int> m_screenSize;
+
 };
