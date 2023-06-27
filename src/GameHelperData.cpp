@@ -28,7 +28,7 @@ sf::Vector2f GameHelperData::getMousePositionInWindow() const
     return m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window), m_window->getDefaultView());
 }
 
-sf::Vector2f GameHelperData::getMousePositionInMap() const
+MapVector GameHelperData::getMousePositionInMap() const
 {
     return m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window));
 }

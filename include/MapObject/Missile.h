@@ -17,6 +17,8 @@ public:
 
     void update(const sf::Time &deltaTime) override;
     
+    void setAngle(float angle);
+    
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     
     bool collideDD1(MovingMapObject &otherObject) override;
@@ -31,5 +33,5 @@ private:
     static const float SPEED;
     static const float MASS;
     static const Explosion EXPLOSION;
-    
+
 };

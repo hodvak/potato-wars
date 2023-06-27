@@ -114,6 +114,8 @@ namespace resources_manager
     const std::string IMG_BAZOOKA_PATH = "resources/Images/Textures/bazooka.png";
     const sf::Vector2u IMG_BAZOOKA_SIZE = {100, 100};
     
+    const std::string IMG_TARGET_BAZOOKA_PATH = "resources/Images/Textures/targetBazooka.png";
+    const sf::Vector2u IMG_TARGET_BAZOOKA_SIZE = {100, 100};
     // 5 * 5
     // arr[y][x] is the missile in the:
     // color x (`PlayerColor`) and arr[y][4] is a missile without color

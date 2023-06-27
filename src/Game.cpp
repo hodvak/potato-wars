@@ -10,6 +10,7 @@
 #include "MapObject/Crates/HealthCrate.h"
 #include "MapObject/Missile.h"
 #include "Weapon/Creators/BazookaCreator.h"
+#include "Weapon/Creators/TargetBazookaCreator.h"
 
 
 #include <functional>
@@ -272,6 +273,11 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
     ));
 
     character->addWeaponCreator(std::make_unique<BazookaCreator>(
+            1,
+            m_helperData
+    ));
+
+    character->addWeaponCreator(std::make_unique<TargetBazookaCreator>(
             1,
             m_helperData
     ));
