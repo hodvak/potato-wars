@@ -1,8 +1,6 @@
 #include "Screen.h"
 #include "Button/ButtonsGroup.h"
 
-// todo: think about `on exit go to main menu screen or exit?`
-//       for now its `exit`
 
 /**
  * the help screen of the game

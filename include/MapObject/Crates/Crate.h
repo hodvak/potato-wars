@@ -18,6 +18,7 @@ public:
     void updateVelocity(const sf::Time &deltaTime) override;
 
     [[nodiscard]] bool collisionObject() const override;
+
 private:
     bool m_onGround;
     const sf::Texture &m_overTexture;
