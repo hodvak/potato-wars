@@ -1,4 +1,5 @@
 #include "Team.h"
+#include "Weapon/Creators/JumpCreator.h"
 
 Team::Team(const PlayerColor &color, GameHelperData &helperData) :
         m_currentCharacter(nullptr),
@@ -42,7 +43,7 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         shape.setPosition(m_helperData.getMousePositionInMap());
     }
-    
+
     if (m_weapon)
     {
         target.draw(*m_weapon, states);
@@ -59,7 +60,7 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     }
 
     target.draw(shape, states);
-    
+
 }
 
 bool Team::onMouseClick()
@@ -87,10 +88,13 @@ bool Team::onMouseClick()
         {
 
             if ((character->getPosition() -
-                 MapVector(m_helperData.getMousePositionInMap())).getMagnitude() <
+                 MapVector(
+                         m_helperData.getMousePositionInMap())).getMagnitude() <
                 character->getRadius())
             {
                 m_currentCharacter = character;
+                m_currentCharacter->addJumpCreator(
+                        std::make_unique<JumpCreator>(1,m_helperData));
                 break;
             }
         }
@@ -151,5 +155,10 @@ bool Team::isDead() const
 int Team::getCharactersCount() const
 {
     return m_characters.size();
+}
+
+bool Team::takeFocus() const
+{
+    return (!m_drawingContainer && !m_currentCharacter);
 }
 

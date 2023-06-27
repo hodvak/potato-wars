@@ -14,7 +14,7 @@ public:
     std::unique_ptr<Weapon> createWeapon(Character &character);
     virtual ~WeaponCreator() = default;
     [[nodiscard]] int getAmount() const;
-    void addAmount(int amount);
+    virtual void addAmount(int amount);
     [[nodiscard]] virtual const sf::Texture &getTexture() const = 0;
     [[nodiscard]] virtual sf::IntRect getTextureRect() const = 0;
     [[nodiscard]] GameHelperData &getGameHelperData() const;

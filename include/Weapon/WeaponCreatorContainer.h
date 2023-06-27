@@ -25,7 +25,7 @@ public:
      * @param weaponCreator the weapon creator to add
      */
     void addWeaponCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
-    
+    void addJumpCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
     /**
      * get the weapon creator that the mouse is on
      */
@@ -45,6 +45,7 @@ private:
      * list of weapon creators
      */
     std::vector<std::unique_ptr<WeaponCreator>> m_weaponCreators;
+
 
     GameHelperData &m_gameHelperData;
 

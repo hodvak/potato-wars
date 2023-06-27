@@ -92,3 +92,8 @@ void Character::exploded(const Explosion &bomb)
     }
 }
 
+void Character::addJumpCreator(std::unique_ptr<WeaponCreator> &&weaponCreator)
+{
+    m_weaponCreatorContainer.addJumpCreator(std::move(weaponCreator));
+}
+

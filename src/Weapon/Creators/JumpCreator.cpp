@@ -29,3 +29,10 @@ JumpCreator::createWeaponImpl(Character &character)
 {
     return std::make_unique<Jump>(character, getGameHelperData());
 }
+
+void JumpCreator::addAmount(int amount)
+{
+    if (WeaponCreator::getAmount()>=1)
+        return;
+    WeaponCreator::addAmount(amount);
+}

@@ -56,7 +56,7 @@ public:
      * @param weaponCreator 
      */
     void addWeaponCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
-
+    void  addJumpCreator(std::unique_ptr<WeaponCreator> &&weaponCreator);
     /**
      * get the WeaponCreatorContainer of the Character
      */

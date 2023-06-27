@@ -99,10 +99,10 @@ PlayerColor Game::update(const sf::Time &deltaTime)
     // from teams
     for (auto &team: m_teams)
     {
-       if (team.removeDeadCharacters())
-       {
-           m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
-       }
+        if (team.removeDeadCharacters())
+        {
+            m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+        }
     }
 
     // from moving objects (must be last because the unique_ptr)
@@ -125,8 +125,9 @@ PlayerColor Game::update(const sf::Time &deltaTime)
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
 
-    m_teamCamera.handleMouseMoved({(int)m_helperData.getMousePositionInWindow().x,
-                                  (int)m_helperData.getMousePositionInWindow().y});
+    m_teamCamera.handleMouseMoved(
+            {(int) m_helperData.getMousePositionInWindow().x,
+             (int) m_helperData.getMousePositionInWindow().y});
 
     return winingTeam();
 }
@@ -153,7 +154,15 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    sf::View view = m_teamCamera.getView();
+    sf::View view;
+    if (!m_teams[m_teamTurnIndex].takeFocus())
+    {
+        view = m_teamCamera.getView();
+    }
+    else
+    {
+        view = m_camera.getView();
+    }
     target.setView(view);
     target.draw(m_map, states);
 
@@ -256,15 +265,8 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_helperData
     ));
 
-    character->addWeaponCreator(std::make_unique<MinigunWeaponCreator>(
-            1,
-            m_helperData
-    ));
 
-    character->addWeaponCreator(std::make_unique<JumpCreator>(
-            -1,
-            m_helperData
-    ));
+
     character->addWeaponCreator(std::make_unique<BombThrowCreator>(
             1,
             m_helperData
@@ -288,10 +290,10 @@ void Game::setWindow(const sf::RenderWindow &window)
 PlayerColor Game::winingTeam() const
 {
     PlayerColor winingTeam = PlayerColor::SIZE;
-    int amount =0;
-    for(auto &team: m_teams)
+    int amount = 0;
+    for (auto &team: m_teams)
     {
-        if(!team.isDead())
+        if (!team.isDead())
         {
             winingTeam = team.getColor();
             amount++;

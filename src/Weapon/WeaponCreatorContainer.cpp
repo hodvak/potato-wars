@@ -128,3 +128,19 @@ WeaponCreatorContainer::getWeaponCreator()
     }
     return m_weaponCreators[index].get();
 }
+
+void WeaponCreatorContainer::addJumpCreator(
+        std::unique_ptr<WeaponCreator> &&weaponCreator)
+{
+    for (auto &creator: m_weaponCreators)
+    {
+        if (&creator->getTexture() == &weaponCreator->getTexture() &&
+            creator->getTextureRect() == weaponCreator->getTextureRect())
+        {
+            creator->addAmount(weaponCreator->getAmount());
+            return;
+        }
+    }
+    //add to the first place
+    m_weaponCreators.insert(m_weaponCreators.begin(), std::move(weaponCreator));
+}
