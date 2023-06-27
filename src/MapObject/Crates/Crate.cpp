@@ -85,9 +85,11 @@ void Crate::update(const sf::Time &deltaTime)
         std::optional<float> rot = collisionMap();
         if (rot)
         {
+            getGameHelperData().addSound(resources_manager::SOUND_CRATEIMPACT_PATH);
             setVelocity({0, 0});
             stop();
             m_onGround = true;
+
             setRotation(*rot - std::numbers::pi_v<float> / 2);
         }
 

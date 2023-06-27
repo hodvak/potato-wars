@@ -25,6 +25,7 @@ bool HealthCrate::collideDD2(Character &otherObject)
 {
 
     otherObject.damage(-health/100);
+    Crate::getGameHelperData().addSound(resources_manager::SOUND_PICKHEALTH_PATH);
     kill();
     return true;
 }

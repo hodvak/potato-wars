@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <unordered_map>
 /**
  * a class that manages the textures in the game.
@@ -137,7 +138,16 @@ namespace resources_manager
     const std::string PATH_LEVELS = "resources/Levels/lvl{}/map.bmp";
 
     //sounds
-    const std::string SOUND_JUMP_PATH = "resources/Sounds/eatGift.wav";
+    const std::string SOUND_WEAPONCHOOSE_PATH = "resources/Sounds/weaponChoosing.wav";
+    const std::string SOUND_SNIPERSHOT_PATH = "resources/Sounds/SniperShhot.wav";
+    const std::string SOUND_MINIGUNSHOT_PATH = "resources/Sounds/miniGunShoot.wav";
+    const std::string SOUND_PICKCRATE_PATH = "resources/Sounds/pickCrate.wav";
+    const std::string SOUND_PICKHEALTH_PATH = "resources/Sounds/HealthUP.wav";
+    const std::string SOUND_WEAPONTHROW_PATH = "resources/Sounds/WeapenThrow.wav";
+    const std::string SOUND_ROCKBOUNCE_PATH = "resources/Sounds/rockBounce.wav";
+    const std::string SOUND_CAMERASWITCH_PATH = "resources/Sounds/CameraPan.wav";
+    const std::string SOUND_CRATEIMPACT_PATH = "resources/Sounds/CrateImpact.wav";
+    const std::string SOUND_BOMBEXPLOSION_PATH = "resources/Sounds/Explosion2.wav";
 
 
 

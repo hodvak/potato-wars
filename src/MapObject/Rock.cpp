@@ -1,7 +1,7 @@
 #include "MapObject/Rock.h"
 #include "MapObject/Character.h"
 #include "MapObject/Projectile.h"
-
+#include "resources_manager.h"
 const float Rock::RADIUS = 7;
 const float Rock::WEIGHT = 60;
 
@@ -44,6 +44,7 @@ bool Rock::collideDD2(Character &otherObject)
     if (!m_color || otherObject.getColor() != *m_color)
     {
         otherObject.damage(0.3);
+        getGameHelperData().addSound(resources_manager::SOUND_ROCKBOUNCE_PATH);
         m_life--;
         if (m_life <= 0)
         {

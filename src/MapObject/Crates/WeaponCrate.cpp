@@ -1,6 +1,6 @@
 #include "MapObject/Crates/WeaponCrate.h"
 
-
+#include "resources_manager.h"
 
 WeaponCrate::WeaponCrate(const MapVector &pos,
                          std::unique_ptr<WeaponCreator> &&weaponCreator,
@@ -24,6 +24,7 @@ bool WeaponCrate::collideDD1(MovingMapObject &otherObject)
 bool WeaponCrate::collideDD2(Character &otherObject)
 {
     otherObject.addWeaponCreator(std::move(m_weaponCreator));
+    Crate::getGameHelperData().addSound(resources_manager::SOUND_PICKCRATE_PATH);
     kill();
     return true;
 }

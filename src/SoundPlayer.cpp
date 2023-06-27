@@ -1,5 +1,5 @@
 #include "SoundPlayer.h"
-
+#include "resources_manager.h"
 
 SoundPlayer::SoundPlayer(bool mute, float volume) :
         m_buffer(),
@@ -18,8 +18,8 @@ void SoundPlayer::play()
     {
         for (auto &sound: m_sounds)
         {
-            m_buffer.loadFromFile(sound);
-            m_sound.setBuffer(m_buffer);
+
+            m_sound.setBuffer(resources_manager::get<sf::SoundBuffer>(sound));
             m_sound.setVolume(m_volume);
             m_sound.play();
         }

@@ -5,6 +5,7 @@
 #include "GameMap.h"
 #include "BombHandler.h"
 #include "SoundPlayer.h"
+
 /**
  * this class represent the data that every object in the game need to live
  * every game will hold one instance of this class
@@ -26,10 +27,12 @@ public:
             sf::RenderWindow *window = nullptr,
             sf::Time deltaTime = sf::Time::Zero
     );
+
     /**
      * setter for the add object function
      */
-     void setAddObjectFunc(const std::function<void (std::unique_ptr<MovingMapObject> &&)> &func);
+    void setAddObjectFunc(const std::function<void(
+            std::unique_ptr<MovingMapObject> &&)> &func);
 
     /**
      * get the delta time of the game
@@ -52,7 +55,7 @@ public:
      * get the size of the window
      */
     [[nodiscard]] sf::Vector2f getWindowSize() const;
-    
+
     void addMapObject(std::unique_ptr<MovingMapObject> &&mapObject);
 
 
@@ -83,7 +86,9 @@ public:
      */
     void setWindow(const sf::RenderWindow &window);
 
-    const sf::View &getView() const;
+    [[nodiscard]] const sf::View &getView() const;
+
+    void addSound(const std::string &soundName);
 
 private:
     sf::Time m_deltaTime;
@@ -95,5 +100,5 @@ private:
     GameMap &m_map;
     BombHandler &m_bombHandler;
     SoundPlayer &m_soundPlayer;
-    std::function<void (std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
+    std::function<void(std::unique_ptr<MovingMapObject> &&)> m_addMapObjectFunc;
 };

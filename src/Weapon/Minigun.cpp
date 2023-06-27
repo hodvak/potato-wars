@@ -21,6 +21,7 @@ void Minigun::handleMousePressed(const MapVector &mousePosition)
 {
     m_aimPosition = mousePosition;
     m_firing = true;
+    Weapon::getGameHelperData().addSound(resources_manager::SOUND_MINIGUNSHOT_PATH);
 }
 
 void Minigun::update(const sf::Time &deltaTime)
