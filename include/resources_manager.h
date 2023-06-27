@@ -136,6 +136,9 @@ namespace resources_manager
     // std::format(PATH_LEVELS,int levelNumber) 
     const std::string PATH_LEVELS = "resources/Levels/lvl{}/map.bmp";
 
+    //sounds
+    const std::string SOUND_JUMP_PATH = "resources/Sounds/eatGift.wav";
+
 
 
     template<class T>

@@ -1,6 +1,6 @@
 #include "MapObject/Crates/WeaponCrate.h"
 
-// todo: understand why the warning about non-virtual destructor
+
 
 WeaponCrate::WeaponCrate(const MapVector &pos,
                          std::unique_ptr<WeaponCreator> &&weaponCreator,

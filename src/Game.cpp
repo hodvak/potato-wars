@@ -207,8 +207,8 @@ void Game::updateCollision()
 
 void Game::handleMousePressed()
 {
-    // todo: sound to resources manager
-    m_soundPlayer.addSound("resources/Sounds/eatGift.wav");
+
+
     m_teams[m_teamTurnIndex].onMouseClick();
 }
 
@@ -257,7 +257,6 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             -1,
             m_helperData
     ));
-
 
 
     character->addWeaponCreator(std::make_unique<BombThrowCreator>(
