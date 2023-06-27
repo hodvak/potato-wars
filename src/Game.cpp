@@ -6,10 +6,10 @@
 
 #include "MapObject/Crates/WeaponCrate.h"
 #include "Weapon/Creators/StoneThrowCreator.h"
-#include "Weapon/Creators/JumpCreator.h"
 #include "Weapon/Creators/BombThrowCreator.h"
 #include "MapObject/Crates/HealthCrate.h"
-#include "Weapon/Creators/MinigunWeaponCreator.h"
+#include "MapObject/Missile.h"
+#include "Weapon/Creators/BazookaCreator.h"
 
 
 #include <functional>
@@ -208,7 +208,6 @@ void Game::updateCollision()
 void Game::handleMousePressed()
 {
 
-
     //m_teamCamera.reset();
     // TODO: understand the non virtual destructor warning
 
@@ -272,6 +271,11 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_helperData
     ));
 
+    character->addWeaponCreator(std::make_unique<BazookaCreator>(
+            1,
+            m_helperData
+    ));
+    
     m_teams[color].addCharacter(character);
     m_movingObjects.emplace_back(character);
 }

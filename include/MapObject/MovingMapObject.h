@@ -20,6 +20,8 @@ class HealthCrate;
 
 class WeaponCrate;
 
+class Missile;
+
 /**
  * all object in the game are derived from this class.
  * this class know to draw the object, and to update it's position according to
@@ -149,9 +151,9 @@ public:
      * collideDD1 function for double dispatch
      * mus be implemented in the derived class as follows:
      * ```
-     * bool collideDD1(ClassName *other_object)
+     * bool collideDD1(MovingMapObject &otherObject)
      * {
-     *     return other_object->collideDD2(this);
+     *     return otherObject.collideDD2(*this);
      * }
      * ```
      */
@@ -177,6 +179,9 @@ public:
     
     // with WeaponCrate
     virtual bool collideDD2(WeaponCrate &otherObject);
+    
+    // with Missile
+    virtual bool collideDD2(Missile &otherObject);
 
     /**
      * handle the collision physically with the other object
