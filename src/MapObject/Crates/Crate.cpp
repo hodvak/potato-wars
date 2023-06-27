@@ -12,7 +12,7 @@ Crate::Crate(const MapVector &pos,
              const sf::Texture &texture,
              const sf::IntRect &overShape,
              GameHelperData &gameHelperData):
-             //todo: make const 10, 100
+
         MovingMapObject(pos, RADIUS, MASS, gameHelperData),
         m_overTexture(texture),
         m_overShape(overShape),

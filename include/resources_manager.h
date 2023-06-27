@@ -120,6 +120,7 @@ namespace resources_manager
     const std::string IMG_CRATE_PATH = "resources/Images/Textures/CrateTexture.png";
     const std::string IMG_CRATENP_PATH = "resources/Images/Textures/CrateTextureNP.png";
     const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
+    const std::string IMG_HEALTH_PATH = "resources/images/Textures/health2.png";
 
     //buttons
     const std::string IMG_BUTTON_NEW_GAME_PATH = "resources/Images/Textures/button_new-game.png";

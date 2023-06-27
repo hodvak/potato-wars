@@ -1,18 +1,18 @@
 #include "MapObject/Crates/HealthCrate.h"
 #include "resources_manager.h"
 
-// todo: add consts for number and texture path
+
 
 HealthCrate::HealthCrate(const MapVector &pos,
-                         GameHelperData &gameHelperData):
+                         GameHelperData &gameHelperData,float health):
         Crate(pos,
-              resources_manager::get<sf::Texture>("resources/images/Textures/health2.png"),
+              resources_manager::get<sf::Texture>(resources_manager::IMG_HEALTH_PATH),
               sf::IntRect(0, 
                           0,
-                          (int)resources_manager::get<sf::Texture>("resources/images/Textures/health2.png").getSize().x,
-                          (int)resources_manager::get<sf::Texture>("resources/images/Textures/health2.png").getSize().y),
+                          (int)resources_manager::get<sf::Texture>(resources_manager::IMG_HEALTH_PATH).getSize().x,
+                          (int)resources_manager::get<sf::Texture>(resources_manager::IMG_HEALTH_PATH).getSize().y),
                           gameHelperData),
-        health(50) // todo: health unused?
+        health(health)
 {
     
 }
@@ -23,8 +23,8 @@ bool HealthCrate::collideDD1(MovingMapObject &otherObject)
 }
 bool HealthCrate::collideDD2(Character &otherObject)
 {
-    // todo: add consts
-    otherObject.damage(-0.5);
+
+    otherObject.damage(-health/100);
     kill();
     return true;
 }
