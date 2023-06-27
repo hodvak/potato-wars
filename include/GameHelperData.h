@@ -51,7 +51,7 @@ public:
     /**
      * get the size of the window
      */
-    [[nodiscard]] sf::Vector2u getWindowSize() const;
+    [[nodiscard]] sf::Vector2f getWindowSize() const;
     
     void addMapObject(std::unique_ptr<MovingMapObject> &&mapObject);
 

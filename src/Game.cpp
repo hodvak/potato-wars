@@ -153,7 +153,6 @@ Game::updateObjectsInterval(const sf::Time &deltaTime, const sf::Time &interval)
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::View view = m_teamCamera.getView();
-    std::cout << view.getCenter().x << " " << view.getCenter().y << std::endl;
     target.setView(view);
     target.draw(m_map, states);
 

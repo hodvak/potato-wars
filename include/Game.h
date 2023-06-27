@@ -14,10 +14,7 @@
 #include "GameHelperData.h"
 #include "SoundPlayer.h"
 #include "level.h"
-/**
- * todo: error when player dies in his turn 
- * (dont know where the to do should be)
- */
+
 
 /**
  * a class that handle the game (the main class in the project)

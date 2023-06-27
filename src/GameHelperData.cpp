@@ -33,9 +33,10 @@ sf::Vector2f GameHelperData::getMousePositionInMap() const
     return m_window->mapPixelToCoords(getMousePositionInWindow());
 }
 
-sf::Vector2u GameHelperData::getWindowSize() const
+sf::Vector2f GameHelperData::getWindowSize() const
 {
-    return m_window->getSize();
+
+    return m_window->mapPixelToCoords({(int)m_window->getSize().x, (int)m_window->getSize().y},m_window->getDefaultView());
 }
 
 GameMap &GameHelperData::getMap() const

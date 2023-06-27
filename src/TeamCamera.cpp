@@ -31,7 +31,7 @@ TeamCamera::update(const sf::Time &deltaTime)
     sf::Vector2u mapSize = {m_gameHelperData.getMap().getMask().getSize().x,
                             m_gameHelperData.getMap().getMask().getSize().y};
     int maxBorder = 100;
-    sf::Vector2u windowSize = m_gameHelperData.getWindowSize();
+    sf::Vector2f windowSize = m_gameHelperData.getWindowSize();
     float cameraSpeed = 0.5;
     //moving the camera with the mouse
     if (m_mousePosition.x < 10)
@@ -75,7 +75,6 @@ TeamCamera::update(const sf::Time &deltaTime)
     }
     m_view.setSize(m_originalViewRect.width * std::pow(1.1, m_zoomLevel),
                    m_originalViewRect.height * std::pow(1.1, m_zoomLevel));
-    std::cout<<m_gameHelperData.getMousePositionInMap()<<std::endl;
 
 
 }
@@ -95,6 +94,7 @@ void TeamCamera::handleScroll(int delta)
     {
         m_zoomLevel = minZoom;
     }
+    std::cout << m_zoomLevel << "--" << m_gameHelperData.getView().getSize()<<  std::endl;
     m_view.setSize(m_originalViewRect.width * std::pow(1.1, m_zoomLevel),
                    m_originalViewRect.height * std::pow(1.1, m_zoomLevel));
 
