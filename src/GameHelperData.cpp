@@ -75,4 +75,10 @@ const sf::View &GameHelperData::getView() const
    return m_window->getView();
 }
 
+void GameHelperData::addSound(const std::string &soundName)
+{
+    m_soundPlayer.addSound(soundName);
+}
+
+
 

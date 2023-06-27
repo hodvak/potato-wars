@@ -1,6 +1,6 @@
 #include "Weapon/ThrowWeapon.h"
 #include "MapObject/Character.h"
-
+#include "resources_manager.h"
 ThrowWeapon::ThrowWeapon(const Character &character,
                          std::unique_ptr<MovingMapObject> &&weapon,
                          GameHelperData &gameHelperData)
@@ -40,6 +40,7 @@ void ThrowWeapon::handleMousePressed(const MapVector &mousePosition)
     fixPosition();
     m_weapon->setVelocity(m_startVelocity * 3);
     getGameHelperData().addMapObject(std::move(m_weapon));
+    getGameHelperData().addSound(resources_manager::SOUND_WEAPONTHROW_PATH);
     die();
 }
 

@@ -24,7 +24,8 @@ public:
                float radius,
                float damage,
                const MapVector &startVelocity,
-               GameHelperData &gameHelperData);
+               GameHelperData &gameHelperData,
+               float blastRadius = 30);
 
     /**
      * update the projectile according to the time that passed
@@ -62,4 +63,6 @@ private:
      * the damage that the projectile will deal
      */
     float m_damage;
+    float m_blastRadius;
+    float m_blastForce = 100;
 };

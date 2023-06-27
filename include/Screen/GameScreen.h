@@ -20,7 +20,7 @@ public:
      * the main loop of the game
      * @param window the window to draw on
      * @return nullptr for now
-     * todo: add a return value for the next screen when there is one
+     *
      */
     std::unique_ptr<Screen> run(sf::RenderWindow &window) override;
 private:

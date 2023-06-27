@@ -15,18 +15,13 @@ public:
 
 private:
     int m_mapRange;
+
     GameHelperData &m_gameHelperData;
     
-    static const std::map<int, std::function<std::unique_ptr<Crate> (int x,const CrateDropper &crateDropper)>>
-            m_crateCrates;
+    std::vector<std::function<std::unique_ptr<Crate>(int)>> m_crateCrates;
 
-    static std::unique_ptr<Crate>
-    rifleCreator(int x, const CrateDropper &crateDropper);
 
-    static std::unique_ptr<Crate> rockCreator(int x, const CrateDropper &crateDropper);
 
-    static std::unique_ptr<Crate> bombCreator(int x, const CrateDropper &crateDropper);
 
-    static std::unique_ptr<Crate>
-    healthCreator(int x,const CrateDropper &crateDropper);
+
 };

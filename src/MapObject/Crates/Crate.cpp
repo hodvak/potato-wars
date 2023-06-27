@@ -6,13 +6,14 @@
 
 
 
-// todo: path as const !!!!!
+static const int RADIUS = 10;
+static const int MASS = 100;
 Crate::Crate(const MapVector &pos,
              const sf::Texture &texture,
              const sf::IntRect &overShape,
              GameHelperData &gameHelperData):
-             //todo: make const 10, 100
-        MovingMapObject(pos, 10, 100, gameHelperData),
+
+        MovingMapObject(pos, RADIUS, MASS, gameHelperData),
         m_overTexture(texture),
         m_overShape(overShape),
         m_onGround(false)
@@ -35,7 +36,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
                           m_overShape.height / 2);
     overTexture.setRotation(getRotation());
     const sf::Texture *texture = &resources_manager::get<sf::Texture>(
-            "resources/images/Textures/CrateTextureNP.png");
+            resources_manager::IMG_CRATENP_PATH);
     sf::Vector2f scale = {
             getRadius() * 2 / texture->getSize().x,
             getRadius() * 2 / texture->getSize().y
@@ -44,7 +45,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
     if (m_onGround || isRest())
     {
-        sprite.setTexture(resources_manager::get<sf::Texture>("resources/images/Textures/CrateTextureNP.png"));
+        sprite.setTexture(resources_manager::get<sf::Texture>(resources_manager::IMG_CRATENP_PATH));
         sprite.setOrigin(sprite.getTexture()->getSize().x / 2,
                          sprite.getTexture()->getSize().y / 2);
 
@@ -54,7 +55,7 @@ void Crate::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
 
         sprite.setTexture(resources_manager::get<sf::Texture>(
-                "resources/images/Textures/CrateTexture.png"));
+                resources_manager::IMG_CRATE_PATH));
         sprite.setOrigin(sprite.getTexture()->getSize().x / 2,
                          sprite.getTexture()->getSize().y - getRadius());
         overTexture.setPosition(0, -getRadius());
@@ -84,9 +85,11 @@ void Crate::update(const sf::Time &deltaTime)
         std::optional<float> rot = collisionMap();
         if (rot)
         {
+            getGameHelperData().addSound(resources_manager::SOUND_CRATEIMPACT_PATH);
             setVelocity({0, 0});
             stop();
             m_onGround = true;
+
             setRotation(*rot - std::numbers::pi_v<float> / 2);
         }
 

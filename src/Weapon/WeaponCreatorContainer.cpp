@@ -126,6 +126,7 @@ WeaponCreatorContainer::getWeaponCreator()
     {
         return nullptr;
     }
+    m_gameHelperData.addSound(resources_manager::SOUND_WEAPONCHOOSE_PATH);
     return m_weaponCreators[index].get();
 }
 

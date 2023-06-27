@@ -14,6 +14,7 @@ public:
     bool collideDD2(Character &otherObject) override;
 
 
+
 private:
     std::unique_ptr<WeaponCreator> m_weaponCreator;
 };

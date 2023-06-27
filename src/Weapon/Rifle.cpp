@@ -22,6 +22,7 @@ void Rifle::handleMousePressed(const MapVector &mousePosition)
     power.normalize(700);
     
     shot(power, 0.9, 30, 3);
+    Weapon::getGameHelperData().addSound(resources_manager::SOUND_SNIPERSHOT_PATH);
     // todo: magic numbers? 30, 3, 0.6 ?
     die();
 }

@@ -36,8 +36,8 @@ std::unique_ptr<Screen> GameScreen::run(sf::RenderWindow &window)
                 }
                 if(event.type == sf::Event::MouseWheelScrolled)
                 {
-                    // todo: is it really int? maybe float?
-                    m_game.handleScroll((int)event.mouseWheelScroll.delta);
+
+                    m_game.handleScroll(event.mouseWheelScroll.delta);
                 }
             }
 
