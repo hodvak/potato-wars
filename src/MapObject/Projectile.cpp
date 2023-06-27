@@ -6,13 +6,14 @@ Projectile::Projectile(float weight,
                        float radius,
                        float damage,
                        const MapVector &startVelocity,
-                       GameHelperData &gameHelperData):
+                       GameHelperData &gameHelperData,float blastRadius):
     MovingMapObject(pos,
                     radius,
                     weight,
                     gameHelperData,
                     startVelocity),
-    m_damage(damage)
+    m_damage(damage),
+    m_blastForce(blastRadius)
 {
 
 }
@@ -23,8 +24,7 @@ void Projectile::update(const sf::Time &deltaTime)
     if(collisionMap())
     {
         kill();
-        // todo: maybe change to a parameter instead of those magic numbers
-        getGameHelperData().getBombHandler().addBomb({getPosition(),3*(int)getRadius(),100});
+       getGameHelperData().getBombHandler().addBomb({getPosition(),static_cast<int>(m_blastRadius),m_blastForce});
     }
 }
 

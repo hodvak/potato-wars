@@ -207,13 +207,6 @@ void Game::updateCollision()
 
 void Game::handleMousePressed()
 {
-
-
-    //m_teamCamera.reset();
-    // TODO: understand the non virtual destructor warning
-
-
-//    m_movingObjects.emplace_back(std::move(crate));
     // todo: sound to resources manager
     m_soundPlayer.addSound("resources/Sounds/eatGift.wav");
     m_teams[m_teamTurnIndex].onMouseClick();
@@ -276,7 +269,7 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
     m_movingObjects.emplace_back(character);
 }
 
-void Game::handleScroll(int delta)
+void Game::handleScroll(float delta)
 {
     m_teamCamera.handleScroll(delta);
 }

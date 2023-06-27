@@ -52,8 +52,7 @@ private:
     
     /**
      * the buttons in the group
-     * todo: maybe a unordered_map will be better, though we are not going to
-     *       search for a button in the group, so it doesn't really matter 
+
      */
     std::vector<std::unique_ptr<Button>> m_buttons;
 };

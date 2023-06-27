@@ -117,7 +117,8 @@ namespace resources_manager
     const std::string IMG_JUMP_PATH = "resources/Images/Textures/jump.png";
     const sf::Vector2u IMG_JUMP_SIZE = {100, 100};
 
-
+    const std::string IMG_CRATE_PATH = "resources/Images/Textures/CrateTexture.png";
+    const std::string IMG_CRATENP_PATH = "resources/Images/Textures/CrateTextureNP.png";
     const std::string IMG_SLINGSHOT_PATH = "resources/Images/Textures/slingshot.png";
 
     //buttons

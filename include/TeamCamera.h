@@ -10,7 +10,7 @@ public:
     void reset();
     void update(const sf::Time &deltaTime);
     void handleMouseMoved(const sf::Vector2<int> &mousePosition);
-    void handleScroll(int delta);
+    void handleScroll(float delta);
 
     [[nodiscard]] const sf::View &getView() const;
 

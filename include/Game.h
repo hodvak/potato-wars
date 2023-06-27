@@ -52,7 +52,7 @@ public:
      * handle the mice scrolled event
      * @param delta the delta of the scroll
      */
-    void handleScroll(int delta);
+    void handleScroll(float delta);
     
     /**
      * set the RenderWindow of the game
