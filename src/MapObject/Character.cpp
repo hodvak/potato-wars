@@ -17,12 +17,8 @@ Character::Character(const MapVector &pos,
         m_life(1), // start with full life
         m_texture(color, Character::RADIUS),
         m_color(color),
-        m_weaponCreatorContainer(
-                sf::Vector2f((float) gameHelperData.getMap().getMask().getSize().x / 2.0f,
-                             (float) gameHelperData.getMap().getMask().getSize().y / 2.0f),
-                sf::Vector2f((float) pos.x,
-                             (float) pos.y +50)
-        )
+        m_weaponCreatorContainer(gameHelperData)
+
 {
 
 }

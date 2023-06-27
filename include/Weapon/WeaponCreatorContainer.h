@@ -17,10 +17,8 @@ class WeaponCreatorContainer : public sf::Drawable
 public:
     /**
      * regular constructor
-     * @param size the size of the container
-     * @param position the position of the container
      */
-    WeaponCreatorContainer(const MapVector &size, const MapVector &position);
+    WeaponCreatorContainer(GameHelperData &gameHelperData);
     
     /**
      * add a weapon creator to the container
@@ -31,7 +29,7 @@ public:
     /**
      * get the weapon creator that the mouse is on
      */
-    WeaponCreator * getWeaponCreator(sf::Vector2f mousePosition);
+    WeaponCreator * getWeaponCreator();
     
     /**
      * draw the container on the target
@@ -40,7 +38,6 @@ public:
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    void setPosition(const MapVector &pos);
     
 private:
     
@@ -48,15 +45,13 @@ private:
      * list of weapon creators
      */
     std::vector<std::unique_ptr<WeaponCreator>> m_weaponCreators;
-    
-    /**
-     * the size of the container
-     */
-    MapVector m_size;
-    
-    /**
-     * the position of the container (left top corner)
-     */
-    MapVector m_position;
-    
+
+    GameHelperData &m_gameHelperData;
+
+
+    static const sf::Vector2u TABLE_SIZE;
+    static const MapVector RECT_PERCENTAGE;
+
+
+
 };

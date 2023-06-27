@@ -23,14 +23,14 @@ const sf::Time &GameHelperData::getDeltaTime() const
     return m_deltaTime;
 }
 
-sf::Vector2i GameHelperData::getMousePositionInWindow() const
+sf::Vector2f GameHelperData::getMousePositionInWindow() const
 {
-    return sf::Mouse::getPosition(*m_window);
+    return m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window), m_window->getDefaultView());
 }
 
 sf::Vector2f GameHelperData::getMousePositionInMap() const
 {
-    return m_window->mapPixelToCoords(getMousePositionInWindow());
+    return m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window));
 }
 
 sf::Vector2f GameHelperData::getWindowSize() const

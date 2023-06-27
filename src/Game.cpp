@@ -125,7 +125,8 @@ PlayerColor Game::update(const sf::Time &deltaTime)
     m_camera.setToFollow(std::move(objectsToWatch));
     m_camera.update(deltaTime);
 
-    m_teamCamera.handleMouseMoved(m_helperData.getMousePositionInWindow());
+    m_teamCamera.handleMouseMoved({(int)m_helperData.getMousePositionInWindow().x,
+                                  (int)m_helperData.getMousePositionInWindow().y});
 
     return winingTeam();
 }

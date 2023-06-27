@@ -41,7 +41,7 @@ public:
     /**
      * get the position of the mouse in the window
      */
-    [[nodiscard]] sf::Vector2i getMousePositionInWindow() const;
+    [[nodiscard]] sf::Vector2f getMousePositionInWindow() const;
 
     /**
      * get the position of the mouse in the map

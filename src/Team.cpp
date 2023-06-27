@@ -50,12 +50,14 @@ void Team::draw(sf::RenderTarget &target, sf::RenderStates states) const
     else if (m_currentCharacter && m_drawingContainer)
     {
 
-        m_currentCharacter->getWeaponCreatorContainer().setPosition(target.getView().getCenter());
+        //m_currentCharacter->getWeaponCreatorContainer().setPosition(target.getView().getCenter());
+
         target.draw(m_currentCharacter->getWeaponCreatorContainer(),
                     states);
         shape.setPosition(m_currentCharacter->getPosition());
         // draw the character's weapons collection
     }
+
     target.draw(shape, states);
     
 }
@@ -72,7 +74,7 @@ bool Team::onMouseClick()
         WeaponCreator *weaponCreator =
                 m_currentCharacter->
                         getWeaponCreatorContainer().
-                        getWeaponCreator(m_helperData.getMousePositionInMap());
+                        getWeaponCreator();
         if (weaponCreator)
         {
             m_weapon = weaponCreator->createWeapon(*m_currentCharacter);
