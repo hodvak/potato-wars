@@ -4,7 +4,7 @@
 #include <vector>
 #include "GameMap.h"
 #include "Explosion.h"
-
+#include <functional>
 class MovingMapObject;
 
 /**
@@ -34,9 +34,11 @@ public:
     void update(GameMap *map,
                 std::vector<std::unique_ptr<MovingMapObject>> &objects);
 
+    void setAddFragments(std::function<void(MapVector ,MapVector)> addFragments);
 private:
     /**
      * the bombs in the handler
      */
     std::vector<Explosion> m_bombs;
+    std::function<void(MapVector ,MapVector)> m_addFragments;
 };

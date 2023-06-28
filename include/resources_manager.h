@@ -111,7 +111,7 @@ namespace resources_manager
     // damage y (the arr[0][x] is the rock that was not damaged at all)
     const std::string IMG_ROCK_PATH = "resources/Images/Textures/rocks.png";
     const sf::Vector2u IMG_ROCK_SIZE = {100, 100};
-
+    const std::string IMG_FRAGMENTS_PATH = "resources/Images/Textures/fragments.png";
     // 1 * 5
     // arr[a] is the jump image in the color a (`PlayerColor`) and
     // arr[4] is jump image without color

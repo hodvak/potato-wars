@@ -20,6 +20,8 @@ class HealthCrate;
 
 class WeaponCrate;
 
+class Fragments;
+
 /**
  * all object in the game are derived from this class.
  * this class know to draw the object, and to update it's position according to
@@ -81,12 +83,12 @@ public:
      * getter for the stuck point
      */
     [[nodiscard]] const MapVector &getStuckPoint() const;
-    
+
     /**
      * get the GameHelperData of the game
      */
     [[nodiscard]] GameHelperData &getGameHelperData() const;
-    
+
     /**
      * is the object still alive
      */
@@ -174,9 +176,12 @@ public:
 
     // with HealthCrate
     virtual bool collideDD2(HealthCrate &otherObject);
-    
+
     // with WeaponCrate
     virtual bool collideDD2(WeaponCrate &otherObject);
+
+    //WITH Fragments
+    virtual bool collideDD2(Fragments &otherObject);
 
     /**
      * handle the collision physically with the other object
@@ -209,7 +214,6 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void unrest();
-
 
 
 protected:
@@ -255,7 +259,7 @@ protected:
     virtual void updateRotation(const sf::Time &deltaTime);
 
 
-    /**
+    virtual /**
      * set the rotation of the object
      * @param rotation the new rotation of the object
      */
@@ -275,7 +279,7 @@ private:
      * the rotation of the object (in radians)
      */
     float m_rotation;
-    
+
     /**
      * the data of the game
      */

@@ -59,7 +59,7 @@ public:
      */
     void setWindow(const sf::RenderWindow &window);
 
-    
+
 private:
     SoundPlayer m_soundPlayer;
     /**
@@ -122,8 +122,9 @@ private:
      * add a moving object to the game
      * @param object the object to add
      */
-    void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
+    void addFragments(MapVector pos,MapVector velocity);
 
+    void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
     /**
      * stop the objects in the game if all need to stop
      */

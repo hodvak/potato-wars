@@ -372,3 +372,8 @@ GameHelperData &MovingMapObject::getGameHelperData() const
 {
     return m_gameHelperData;
 }
+
+bool MovingMapObject::collideDD2(Fragments &otherObject)
+{
+    return true;
+}
