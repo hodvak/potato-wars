@@ -301,6 +301,12 @@ bool MovingMapObject::collideDD2(Rock &otherObject)
     return false;
 }
 
+bool MovingMapObject::collideDD2(Missile &otherObject)
+{
+    return false;
+}
+
+
 void MovingMapObject::collide(MovingMapObject &otherObject)
 {
     // no collision if one of the objects is dead

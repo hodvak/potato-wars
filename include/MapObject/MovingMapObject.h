@@ -20,6 +20,8 @@ class HealthCrate;
 
 class WeaponCrate;
 
+class Missile;
+
 class Fragments;
 
 /**
@@ -151,9 +153,9 @@ public:
      * collideDD1 function for double dispatch
      * mus be implemented in the derived class as follows:
      * ```
-     * bool collideDD1(ClassName *other_object)
+     * bool collideDD1(MovingMapObject &otherObject)
      * {
-     *     return other_object->collideDD2(this);
+     *     return otherObject.collideDD2(*this);
      * }
      * ```
      */
@@ -176,9 +178,12 @@ public:
 
     // with HealthCrate
     virtual bool collideDD2(HealthCrate &otherObject);
-
+    
     // with WeaponCrate
     virtual bool collideDD2(WeaponCrate &otherObject);
+
+    // with Missile
+    virtual bool collideDD2(Missile &otherObject);
 
     //WITH Fragments
     virtual bool collideDD2(Fragments &otherObject);
@@ -259,7 +264,7 @@ protected:
     virtual void updateRotation(const sf::Time &deltaTime);
 
 
-    virtual /**
+    /**
      * set the rotation of the object
      * @param rotation the new rotation of the object
      */
@@ -279,7 +284,7 @@ private:
      * the rotation of the object (in radians)
      */
     float m_rotation;
-
+    
     /**
      * the data of the game
      */

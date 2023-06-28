@@ -111,6 +111,24 @@ namespace resources_manager
     // damage y (the arr[0][x] is the rock that was not damaged at all)
     const std::string IMG_ROCK_PATH = "resources/Images/Textures/rocks.png";
     const sf::Vector2u IMG_ROCK_SIZE = {100, 100};
+
+    const std::string IMG_BAZOOKA_PATH = "resources/Images/Textures/bazooka.png";
+    const sf::Vector2u IMG_BAZOOKA_SIZE = {100, 100};
+
+    const std::string IMG_TARGET_BAZOOKA_PATH = "resources/Images/Textures/targetBazooka.png";
+    const sf::Vector2u IMG_TARGET_BAZOOKA_SIZE = {100, 100};
+    // 5 * 5
+    // arr[y][x] is the missile in the:
+    // color x (`PlayerColor`) and arr[y][4] is a missile without color
+    // and the animation is in the y-axis (arr[0][x] is the first image
+    // in the animation, and it continues to arr[4][x])
+    const std::string IMG_MISSILE_PATH = "resources/Images/Textures/missile.png";
+    const sf::Vector2u IMG_MISSILE_SIZE = {110, 40};
+    const int IMG_MISSILE_ANIMATIONS = 5;
+    const float IMG_MISSILE_RADIUS = 20.f;
+    const sf::Vector2f IMG_MISSILE_ORIGIN = {80, 20};
+
+
     const std::string IMG_FRAGMENTS_PATH = "resources/Images/Textures/fragments.png";
     // 1 * 5
     // arr[a] is the jump image in the color a (`PlayerColor`) and

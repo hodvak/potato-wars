@@ -6,9 +6,12 @@
 
 #include "MapObject/Crates/WeaponCrate.h"
 #include "Weapon/Creators/StoneThrowCreator.h"
-#include "Weapon/Creators/JumpCreator.h"
 #include "Weapon/Creators/BombThrowCreator.h"
 #include "MapObject/Crates/HealthCrate.h"
+#include "MapObject/Missile.h"
+#include "Weapon/Creators/BazookaCreator.h"
+#include "Weapon/Creators/TargetBazookaCreator.h"
+
 #include "Weapon/Creators/MinigunWeaponCreator.h"
 #include "MapObject/Fragments.h"
 
@@ -211,8 +214,6 @@ void Game::updateCollision()
 
 void Game::handleMousePressed()
 {
-
-
     m_teams[m_teamTurnIndex].onMouseClick();
 }
 
@@ -259,6 +260,16 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
 
 
     character->addWeaponCreator(std::make_unique<BombThrowCreator>(
+            1,
+            m_helperData
+    ));
+
+    character->addWeaponCreator(std::make_unique<BazookaCreator>(
+            1,
+            m_helperData
+    ));
+
+    character->addWeaponCreator(std::make_unique<TargetBazookaCreator>(
             1,
             m_helperData
     ));
