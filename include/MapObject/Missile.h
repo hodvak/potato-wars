@@ -29,7 +29,7 @@ public:
 
 private:
     MissileTexture m_texture;
-    
+    sf::Time m_time;
     static const float SPEED;
     static const float MASS;
     static const Explosion EXPLOSION;

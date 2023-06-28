@@ -166,6 +166,12 @@ namespace resources_manager
     const std::string SOUND_CAMERASWITCH_PATH = "resources/Sounds/CameraPan.wav";
     const std::string SOUND_CRATEIMPACT_PATH = "resources/Sounds/CrateImpact.wav";
     const std::string SOUND_BOMBEXPLOSION_PATH = "resources/Sounds/Explosion2.wav";
+    const std::string SOUND_BAZOOKASHOT_PATH = "resources/Sounds/BazookaShoot.wav";
+    const std::string SOUND_BAZOOKAEXPLOSION_PATH = "resources/Sounds/BazookaExplosion.wav";
+    const std::string SOUND_BAZOKAFLY_PATH = "resources/Sounds/JetPackLoop1.wav";
+    const std::string SOUND_SHOTGUN_PATH = "resources/Sounds/ShotGunFire.wav";
+    const std::string SOUND_GROUNDIMPAT_PATH = "resources/Sounds/WormLanding.WAV";
+    const std::string SOUND_WIN_PATH = "resources/Sounds/FrenchAnthem.wav";
 
 
 
