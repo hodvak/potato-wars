@@ -64,7 +64,7 @@ void WeaponCreatorContainer::draw(sf::RenderTarget &target,
         target.draw(sprite, states);
         sf::Text text;
         text.setFont(
-                *resources_manager::getFont(resources_manager::FONT_ARCADE_PATH)
+                resources_manager::get<sf::Font>(resources_manager::FONT_ARCADE_PATH)
         );
         if (m_weaponCreators[i]->getAmount() == -1)
         {

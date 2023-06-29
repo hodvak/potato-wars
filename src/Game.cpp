@@ -47,7 +47,7 @@ Game::Game(const Level &level) :
                                   {
                                       addFragments(pos, dir);
                                   });
-    const sf::Image &mask = *resources_manager::getImage(
+    const sf::Image mask = resources_manager::get<sf::Image>(
             std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(level.levelNumber)));
 
@@ -270,15 +270,6 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             m_helperData
     ));
 
-    character->addWeaponCreator(std::make_unique<BazookaCreator>(
-            1,
-            m_helperData
-    ));
-
-    character->addWeaponCreator(std::make_unique<TargetBazookaCreator>(
-            1,
-            m_helperData
-    ));
 
     m_teams[color].addCharacter(character);
     m_movingObjects.emplace_back(character);

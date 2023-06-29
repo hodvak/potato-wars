@@ -49,7 +49,7 @@ HelpScreen::HelpScreen() : m_helpTextIndex(0)
     m_helpText.emplace_back(
             "Your goal is to eliminate all the enemy potatoes and be the last team standing.\n"
             "Use a variety of weapons and tactics to strategically defeat your opponents.",
-            *resources_manager::getFont(
+            resources_manager::get<sf::Font>(
                     resources_manager::FONT_CALIBRI_PATH),
             20);
 
@@ -62,7 +62,7 @@ HelpScreen::HelpScreen() : m_helpTextIndex(0)
             "Each Potato has a limited amount of health represented by a health bar.\nWhen the health reaches zero, the Potato is eliminated.\n"
             "Terrain and obstacles can affect the trajectory and outcome of your attacks, so plan your moves carefully.\n"
             "Collect crates that appear on the battlefield to gain advantages, such as extra weapons, health boosts.\n",
-            *resources_manager::getFont(
+            resources_manager::get<sf::Font>(
                     resources_manager::FONT_CALIBRI_PATH),
             20);
 
@@ -77,7 +77,7 @@ HelpScreen::HelpScreen() : m_helpTextIndex(0)
                             "3. Shotgun - a weapon that can be used to inflict damage on the enemy.\n"
                             "4. Cluster Bomb - a weapon that can be used to inflict damage on the enemy.\n"
                             "5. Homing Missile - a weapon that can be used to inflict damage on the enemy.\n",
-                            *resources_manager::getFont(
+                            resources_manager::get<sf::Font>(
                                     resources_manager::FONT_CALIBRI_PATH),
                             20);
     for (auto &header: m_helpTextsHeader)

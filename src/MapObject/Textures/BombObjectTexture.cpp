@@ -16,7 +16,7 @@ BombObjectTexture::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::Text timeText;
     timeText.setFont(
-            *resources_manager::getFont(resources_manager::FONT_ARCADE_PATH)
+            resources_manager::get<sf::Font>(resources_manager::FONT_ARCADE_PATH)
     );
 
     timeText.setCharacterSize(20);

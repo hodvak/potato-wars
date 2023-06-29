@@ -3,10 +3,12 @@
 #include "MapObject/Crates/HealthCrate.h"
 #include "MapObject/Crates/Crate.h"
 #include "Weapon/Creators/RifleWeaponCreator.h"
-#include "Weapon/Creators/StoneThrowCreator.h"
+
 #include "Weapon/Creators/BombThrowCreator.h"
 #include "Weapon/Creators/MinigunWeaponCreator.h"
 #include "Weapon/Creators/ShotgunWeaponCreator.h"
+#include "Weapon/Creators/BazookaCreator.h"
+#include "Weapon/Creators/TargetBazookaCreator.h"
 
 
 CrateDropper::CrateDropper(int mapRange, GameHelperData &gameHelperData) :
@@ -26,17 +28,7 @@ CrateDropper::CrateDropper(int mapRange, GameHelperData &gameHelperData) :
                         m_gameHelperData
                 );
             },
-            [&](int mapRange)
-            {
-                return std::make_unique<WeaponCrate>(
-                        MapVector{(float) mapRange, 0},
-                        std::make_unique<StoneThrowCreator>(
-                                1,
-                                m_gameHelperData
-                        ),
-                        m_gameHelperData
-                );
-            },
+
             [&](int mapRange)
             {
                 return std::make_unique<WeaponCrate>(
@@ -76,8 +68,31 @@ CrateDropper::CrateDropper(int mapRange, GameHelperData &gameHelperData) :
                         MapVector{(float) mapRange, 0},
                         m_gameHelperData
                 );
-            }
+            },
+            [&](int mapRange)
+            {
+                return std::make_unique<WeaponCrate>(
+                        MapVector{(float) mapRange, 0},
+                        std::make_unique<BazookaCreator>(
+                                1,
+                                m_gameHelperData
+                        ),
+                        m_gameHelperData
+                );
+            },
+            [&](int mapRange)
+            {
+                return std::make_unique<WeaponCrate>(
+                        MapVector{(float) mapRange, 0},
+                        std::make_unique<TargetBazookaCreator>(
+                                1,
+                                m_gameHelperData
+                        ),
+                        m_gameHelperData
+                );
+            },
     };
+
 
 }
 

@@ -5,11 +5,11 @@
 GameMap::GameMap(const Level &level) : m_level(level)
 {
 
-    m_mask = *resources_manager::getImage(
+    m_mask = resources_manager::get<sf::Image>(
             std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(level.levelNumber)));
 
-    m_ground = resources_manager::getImage(
+    m_ground = &resources_manager::get<sf::Image>(
             "resources/Images/MapImages/" + level.groundTexture
     );
 

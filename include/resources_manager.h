@@ -9,29 +9,6 @@
  */
 namespace resources_manager
 {
-    /**
-     * get a texture from the manager.
-     * if the texture is not loaded, load it.
-     * @param path the path to the texture
-     * @return the texture
-     */
-    const sf::Texture *getTexture(const std::string &path);
-
-    /**
-     * get a font from the manager.
-     * if the font is not loaded, load it.
-     * @param path the path to the font
-     * @return the font
-     */
-    const sf::Font *getFont(const std::string &path);
-
-    /**
-     * get an image from the manager.
-     * if the image is not loaded, load it.
-     * @param path the path to the image
-     * @return the image
-     */
-    const sf::Image *getImage(const std::string &path);
 
     /**
      * consts for the resources

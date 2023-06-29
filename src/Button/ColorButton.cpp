@@ -18,7 +18,7 @@ ColorButton::ColorButton(const sf::Vector2f &pos,
     m_text.setFillColor(sf::Color::Black);
     m_text.setCharacterSize(20);
     m_text.setFont(
-            *resources_manager::getFont(resources_manager::FONT_ARCADE_PATH)
+            resources_manager::get<sf::Font>(resources_manager::FONT_ARCADE_PATH)
     );
 
 

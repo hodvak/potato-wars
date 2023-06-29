@@ -49,7 +49,7 @@ void ThrowWeaponTexture::draw(sf::RenderTarget &target,
     target.draw(shape, states);
     
     sf::Sprite slingshot;
-    slingshot.setTexture(*resources_manager::getTexture(
+    slingshot.setTexture(resources_manager::get<sf::Texture>(
             resources_manager::IMG_SLINGSHOT_PATH));
     
     slingshot.scale((m_character.getRadius() * 2 * 2) /
