@@ -9,7 +9,7 @@ public:
      * constructor for the end game screen
      * @param winner the winner of the game
      */
-    explicit EndGameScreen(PlayerColor winner);
+    explicit EndGameScreen(PlayerColor winner,const Settings &settings);
     std::unique_ptr<Screen> run(sf::RenderWindow &window) override;
 
 private:

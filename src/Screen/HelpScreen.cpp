@@ -187,5 +187,5 @@ void HelpScreen::prevHelpText()
 
 void HelpScreen::exitToMainMenu()
 {
-    m_nextScreen = std::make_unique<MainScreen>();
+    m_nextScreen = std::make_unique<MainScreen>(getSettings());
 }

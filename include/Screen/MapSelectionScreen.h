@@ -9,7 +9,7 @@ class MapSelectionScreen : public Screen
 {
 public:
 
-    MapSelectionScreen();
+    MapSelectionScreen(const Settings &settings);
 
     ~MapSelectionScreen() override = default;
 

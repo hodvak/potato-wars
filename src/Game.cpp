@@ -312,3 +312,14 @@ void Game::addFragments(MapVector pos, MapVector velocity)
 {
     m_movingObjects.emplace_back(new Fragments(pos, m_helperData, velocity));
 }
+
+
+void Game::m_ChangeVolume(float volume)
+{
+    m_soundPlayer.setVolume(volume);
+}
+
+void Game::m_setMute(bool mute)
+{
+    m_soundPlayer.setMute(mute);
+}

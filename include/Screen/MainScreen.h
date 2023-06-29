@@ -13,7 +13,7 @@ public:
     /**
      * regular constructor
      */
-    MainScreen();
+    MainScreen(const Settings &settings);
     
     /**
      * run the screen
@@ -25,6 +25,7 @@ public:
 
 
 private:
+
     /**
      * static consts data about the screen
      */

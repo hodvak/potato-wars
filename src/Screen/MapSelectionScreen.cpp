@@ -12,9 +12,10 @@ const sf::Vector2u MapSelectionScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
 const sf::Vector2f MapSelectionScreen::BUTTON_SIZE = sf::Vector2f(200, 200);
 const sf::Vector2u MapSelectionScreen::GRID_SIZE = sf::Vector2u(2, 2);
 
-MapSelectionScreen::MapSelectionScreen() :
+MapSelectionScreen::MapSelectionScreen(const Settings &settings):
         m_levels()
 {
+    setSettings(settings);
     readLevels();
     makeButtons();
 }
@@ -50,7 +51,7 @@ std::unique_ptr<Screen> MapSelectionScreen::run(sf::RenderWindow &window)
             if (event.type == sf::Event::Closed ||
                 sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
-                return std::make_unique<MainScreen>();
+                return std::make_unique<MainScreen>(getSettings());
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
@@ -127,7 +128,7 @@ void MapSelectionScreen::makeButtons()
                         [this, i]()
                         {
                             m_nextScreen = std::make_unique<GameScreen>(
-                                    m_levels[i]);
+                                    m_levels[i],getSettings());
                         },
                         m_buttonsTextures[i]
                 ));

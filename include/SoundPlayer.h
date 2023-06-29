@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Audio.hpp>
 
 class SoundPlayer
@@ -7,9 +8,15 @@ public:
     SoundPlayer(bool mute, float volume);
 
     void play();
-    void addSound(const std::string& path);
+
+    void addSound(const std::string &path);
+
     void setVolume(float volume);
+
     void setMute(bool mute);
+
+    void changeVolume(float delta);
+
 private:
     sf::SoundBuffer m_buffer;
     std::vector<std::string> m_sounds;

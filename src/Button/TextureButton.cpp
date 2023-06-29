@@ -34,3 +34,10 @@ TextureButton::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_sprite, states);
 
 }
+
+void TextureButton::setTexture(const sf::Texture &texture)
+{
+    m_sprite.setTexture(texture);
+    m_sprite.setScale(Button::getSize().x / (float) texture.getSize().x,
+                      Button::getSize().y / (float) texture.getSize().y);
+}

@@ -6,13 +6,15 @@
 #include "resources_manager.h"
 #include "Screen/HelpScreen.h"
 #include "Screen/MapSelectionScreen.h"
+
 const sf::Vector2u MainScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
 const sf::Vector2f MainScreen::BUTTONS_SIZE = sf::Vector2f(150, 50);
-const unsigned int MainScreen::NUM_OF_BUTTONS = 3;
+const unsigned int MainScreen::NUM_OF_BUTTONS = 2;
 
-MainScreen::MainScreen() :
+MainScreen::MainScreen(const Settings &settings) :
         m_nextScreen(nullptr)
 {
+    setSettings(settings);
     m_buttonsGroup.add(std::make_unique<TextureButton>(
             sf::Vector2f((float) WINDOW_SIZE.x * 1 /
                          (float) (NUM_OF_BUTTONS + 1) -
@@ -37,18 +39,6 @@ MainScreen::MainScreen() :
                     resources_manager::IMG_BUTTON_HELP_PATH)
     ));
 
-    m_buttonsGroup.add(std::make_unique<TextureButton>(
-            sf::Vector2f((float) WINDOW_SIZE.x * 3 /
-                         (float) (NUM_OF_BUTTONS + 1) -
-                         (float) BUTTONS_SIZE.x / 2,
-                         (float) WINDOW_SIZE.y * 0.75f -
-                         (float) BUTTONS_SIZE.y / 2),
-            BUTTONS_SIZE,
-            [this] { std::cout << "todo: setting screen\n"; },
-            resources_manager::get<sf::Texture>(
-                    resources_manager::IMG_BUTTON_SETTINGS_PATH)
-    ));
-
 
 }
 
@@ -62,7 +52,7 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
                   sf::Style::Default,
                   settings);
     window.setFramerateLimit(60);
-    
+
     sf::Sprite background;
     background.setTexture(
             resources_manager::get<sf::Texture>(
@@ -123,7 +113,7 @@ std::unique_ptr<Screen> MainScreen::run(sf::RenderWindow &window)
 
 void MainScreen::selectLevelScreen()
 {
-    m_nextScreen = std::make_unique<MapSelectionScreen>();
+    m_nextScreen = std::make_unique<MapSelectionScreen>(getSettings());
 }
 
 void MainScreen::help()
