@@ -1,5 +1,5 @@
 #include "MapObject/Missile.h"
-
+#include "resources_manager.h"
 const float Missile::SPEED = 300.0f;
 const float Missile::RADIUS = 7.0f;
 const float Missile::MASS = 50.0f;
@@ -11,7 +11,7 @@ Missile::Missile(const MapVector &position,
                  PlayerColor color) :
         MovingMapObject(position, RADIUS, MASS, data,
                         MapVector::getVectorFromAngle(angle, SPEED)),
-        m_texture(color, angle, RADIUS)
+        m_texture(color, angle, RADIUS),m_time(sf::Time::Zero)
 {
 
 }
@@ -25,15 +25,24 @@ void Missile::setAngle(float angle)
 void Missile::update(const sf::Time &deltaTime)
 {
     MovingMapObject::updatePosition(deltaTime);
-    m_texture.update(deltaTime);
+    m_time += deltaTime;
+
+
     std::optional angle = MovingMapObject::collisionMap();
     if (angle)
     {
         Explosion explosion = EXPLOSION;
         explosion.pos = getPosition();
         getGameHelperData().getBombHandler().addBomb(explosion);
+        getGameHelperData().addSound(resources_manager::SOUND_BOMBEXPLOSION_PATH);
         kill();
     }
+    else if (m_time.asSeconds()>=0.3)
+    {
+        getGameHelperData().addSound(resources_manager::SOUND_BAZOKAFLY_PATH);
+        m_time = sf::Time::Zero;
+    }
+    m_texture.update(deltaTime);
 }
 
 bool Missile::collideDD1(MovingMapObject &otherObject)

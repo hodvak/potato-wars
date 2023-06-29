@@ -1,7 +1,7 @@
 #include "MapObject/MovingMapObject.h"
 #include <numbers>
 #include "Physics.h"
-
+#include "resources_manager.h"
 
 MovingMapObject::MovingMapObject(const MapVector &pos,
                                  float radius,
@@ -203,7 +203,7 @@ std::optional<float> MovingMapObject::collisionMap()
     }
 
     m_velocity = norm + tang;
-
+    //getGameHelperData().addSound(resources_manager::SOUND_GROUNDIMPAT_PATH);
     return hitAngle;
 }
 
@@ -379,3 +379,7 @@ GameHelperData &MovingMapObject::getGameHelperData() const
     return m_gameHelperData;
 }
 
+bool MovingMapObject::collideDD2(Fragments &otherObject)
+{
+    return true;
+}

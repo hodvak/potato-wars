@@ -12,6 +12,8 @@
 #include "Weapon/Creators/BazookaCreator.h"
 #include "Weapon/Creators/TargetBazookaCreator.h"
 
+#include "Weapon/Creators/MinigunWeaponCreator.h"
+#include "MapObject/Fragments.h"
 
 #include <functional>
 #include <format>
@@ -19,6 +21,7 @@
 Game::Game(const Level &level) :
         m_map(level),
         m_soundPlayer(false, 100),
+        m_bombHandler(),
         m_helperData(m_map, m_bombHandler, m_soundPlayer),
 
         m_camera((float) m_map.getMask().getSize().x,
@@ -40,7 +43,10 @@ Game::Game(const Level &level) :
                                   {
                                       addMovingObject(std::move(object));
                                   });
-
+    m_bombHandler.setAddFragments([this](auto pos, auto dir)
+                                  {
+                                      addFragments(pos, dir);
+                                  });
     const sf::Image &mask = *resources_manager::getImage(
             std::vformat(resources_manager::PATH_LEVELS,
                          std::make_format_args(level.levelNumber)));
@@ -235,12 +241,7 @@ void Game::stopMovingObjects()
 
     }
     int x = 3;
-    std::unique_ptr<Crate> healthCrate = std::make_unique<HealthCrate>(
-            MapVector(0, 0), m_helperData);
-    std::unique_ptr<Crate> crate = std::make_unique<HealthCrate>(
-            MapVector{float(x), 0}, m_helperData);
-    std::vector<std::unique_ptr<Crate>> crates;
-    crates.emplace_back(new HealthCrate(MapVector(0, 0), m_helperData));
+
 }
 
 void Game::addCharacter(const PlayerColor &color, const MapVector &position)
@@ -272,7 +273,7 @@ void Game::addCharacter(const PlayerColor &color, const MapVector &position)
             1,
             m_helperData
     ));
-    
+
     m_teams[color].addCharacter(character);
     m_movingObjects.emplace_back(character);
 }
@@ -305,4 +306,9 @@ PlayerColor Game::winingTeam() const
         return PlayerColor::SIZE;
     }
     return winingTeam;
+}
+
+void Game::addFragments(MapVector pos, MapVector velocity)
+{
+    m_movingObjects.emplace_back(new Fragments(pos, m_helperData, velocity));
 }

@@ -5,6 +5,7 @@
 #include "Screen/MainScreen.h"
 #include "Physics.h"
 #include "MapObject/MovingMapObject.h"
+#include <SFML/Audio.hpp>
 const sf::Vector2u EndGameScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
 const sf::Vector2f EndGameScreen::BUTTONS_SIZE = sf::Vector2f(150, 50);
 const unsigned int EndGameScreen::NUM_OF_BUTTONS = 3;
@@ -93,6 +94,11 @@ std::unique_ptr<Screen> EndGameScreen::run(sf::RenderWindow &window)
             (float) WINDOW_SIZE.y * 0.1f -
             winningText.getGlobalBounds().height / 2
     );
+    sf::SoundBuffer buffer = resources_manager::get<sf::SoundBuffer>(
+            resources_manager::SOUND_WIN_PATH);
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    sound.play();
     while (window.isOpen() && !m_nextScreen)
     {
         sf::Event event{};

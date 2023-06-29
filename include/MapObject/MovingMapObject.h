@@ -22,6 +22,8 @@ class WeaponCrate;
 
 class Missile;
 
+class Fragments;
+
 /**
  * all object in the game are derived from this class.
  * this class know to draw the object, and to update it's position according to
@@ -83,12 +85,12 @@ public:
      * getter for the stuck point
      */
     [[nodiscard]] const MapVector &getStuckPoint() const;
-    
+
     /**
      * get the GameHelperData of the game
      */
     [[nodiscard]] GameHelperData &getGameHelperData() const;
-    
+
     /**
      * is the object still alive
      */
@@ -179,9 +181,12 @@ public:
     
     // with WeaponCrate
     virtual bool collideDD2(WeaponCrate &otherObject);
-    
+
     // with Missile
     virtual bool collideDD2(Missile &otherObject);
+
+    //WITH Fragments
+    virtual bool collideDD2(Fragments &otherObject);
 
     /**
      * handle the collision physically with the other object
@@ -214,7 +219,6 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void unrest();
-
 
 
 protected:

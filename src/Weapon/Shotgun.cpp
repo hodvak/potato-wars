@@ -32,5 +32,6 @@ void Shotgun::handleMousePressed(const MapVector &mousePosition)
         // todo: magic numbers? 30, 3, 0.6 ?
         shot(temp, 0.3, 30, 3);
     }
+    getGameHelperData().addSound(resources_manager::SOUND_SHOTGUN_PATH);
     die();
 }

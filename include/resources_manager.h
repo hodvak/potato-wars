@@ -114,7 +114,7 @@ namespace resources_manager
 
     const std::string IMG_BAZOOKA_PATH = "resources/Images/Textures/bazooka.png";
     const sf::Vector2u IMG_BAZOOKA_SIZE = {100, 100};
-    
+
     const std::string IMG_TARGET_BAZOOKA_PATH = "resources/Images/Textures/targetBazooka.png";
     const sf::Vector2u IMG_TARGET_BAZOOKA_SIZE = {100, 100};
     // 5 * 5
@@ -127,8 +127,9 @@ namespace resources_manager
     const int IMG_MISSILE_ANIMATIONS = 5;
     const float IMG_MISSILE_RADIUS = 20.f;
     const sf::Vector2f IMG_MISSILE_ORIGIN = {80, 20};
-    
 
+
+    const std::string IMG_FRAGMENTS_PATH = "resources/Images/Textures/fragments.png";
     // 1 * 5
     // arr[a] is the jump image in the color a (`PlayerColor`) and
     // arr[4] is jump image without color
@@ -165,6 +166,12 @@ namespace resources_manager
     const std::string SOUND_CAMERASWITCH_PATH = "resources/Sounds/CameraPan.wav";
     const std::string SOUND_CRATEIMPACT_PATH = "resources/Sounds/CrateImpact.wav";
     const std::string SOUND_BOMBEXPLOSION_PATH = "resources/Sounds/Explosion2.wav";
+    const std::string SOUND_BAZOOKASHOT_PATH = "resources/Sounds/BazookaShoot.wav";
+    const std::string SOUND_BAZOOKAEXPLOSION_PATH = "resources/Sounds/BazookaExplosion.wav";
+    const std::string SOUND_BAZOKAFLY_PATH = "resources/Sounds/JetPackLoop1.wav";
+    const std::string SOUND_SHOTGUN_PATH = "resources/Sounds/ShotGunFire.wav";
+    const std::string SOUND_GROUNDIMPAT_PATH = "resources/Sounds/WormLanding.WAV";
+    const std::string SOUND_WIN_PATH = "resources/Sounds/FrenchAnthem.wav";
 
 
 
