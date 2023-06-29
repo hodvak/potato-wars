@@ -20,5 +20,6 @@ private:
     const Character &m_character;
     GunTexture m_texture;
     
+    const static float MAX_ANGLE_DIFF; // max rotation speed in radians/sec
 
 };

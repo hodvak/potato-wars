@@ -1,7 +1,10 @@
+#include <numbers>
 #include "Weapon/TargetBazooka.h"
 #include "MapObject/Missile.h"
 #include "MapObject/Character.h"
 #include "resources_manager.h"
+
+const float TargetBazooka::MAX_ANGLE_DIFF = 3.f;
 
 // todo: 10 is magic 
 TargetBazooka::TargetBazooka(const Character &owner, GameHelperData &gameHelperData) :
@@ -58,8 +61,21 @@ void TargetBazooka::update(const sf::Time &deltaTime)
             return;
         }
         MapVector direction = getGameHelperData().getMousePositionInMap() - m_missile->getPosition();
-        m_missile->setAngle(direction.getAngle());
+        float angle = direction.getAngle();
+        float missileAngle = m_missile->getVelocity().getAngle();
+        float angleDiff = angle - missileAngle;
+        if(angleDiff > std::numbers::pi)
+            angleDiff -= std::numbers::pi * 2;
+        else if(angleDiff < -std::numbers::pi)
+            angleDiff += std::numbers::pi * 2;
         
+        
+        if(angleDiff > MAX_ANGLE_DIFF * deltaTime.asSeconds())
+            m_missile->setAngle(missileAngle + MAX_ANGLE_DIFF * deltaTime.asSeconds());
+        else if(angleDiff < -MAX_ANGLE_DIFF * deltaTime.asSeconds())
+            m_missile->setAngle(missileAngle - MAX_ANGLE_DIFF * deltaTime.asSeconds());
+        else
+            m_missile->setAngle(angle);
     }
     m_texture.setPosition(m_character.getPosition());
     m_texture.setAimPosition(getGameHelperData().getMousePositionInMap());
