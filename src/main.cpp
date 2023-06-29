@@ -11,7 +11,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "Potato War!",sf::Style::Default,settings);
     
     // set the screen manager and run it
-    ScreenManager screenManager(std::make_unique<MainScreen>());
+    Settings settings1 = {false, 100};
+    ScreenManager screenManager(std::make_unique<MainScreen>(settings1));
     screenManager.run(window);
     
     // exit the program successfully

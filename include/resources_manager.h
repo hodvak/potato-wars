@@ -150,6 +150,10 @@ namespace resources_manager
     const std::string IMG_BUTTON_BACK_PATH = "resources/Images/Textures/button_back .png";
     const std::string IMG_BUTTON_LEFT_PATH = "resources/Images/Textures/button_left_arrow.png";
     const std::string IMG_BUTTON_RIGHT_PATH = "resources/Images/Textures/button_right_arrow.png";
+    const std::string IMG_BUTTON_PLUS_PATH = "resources/Images/Textures/button_volum_up.png";
+    const std::string IMG_BUTTON_MINUS_PATH = "resources/Images/Textures/button_volum_down.png";
+    const std::string IMG_BUTTON_MUTE_PATH = "resources/Images/Textures/button_mute.png";
+    const std::string IMG_BUTTON_UNMUTE_PATH = "resources/Images/Textures/button_unmute.png";
 
     // all the levels will be in the format of:
     // std::format(PATH_LEVELS,int levelNumber) 

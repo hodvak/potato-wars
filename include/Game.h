@@ -19,7 +19,7 @@
 /**
  * a class that handle the game (the main class in the project)
  */
-class Game: public sf::Drawable
+class Game : public sf::Drawable
 {
 public:
     /**
@@ -27,14 +27,14 @@ public:
      * @param levelNumber the name of the level to load
      */
     explicit Game(const Level &level);
-    
+
     /**
      * update the game
      * @param deltaTime the time passed since the last update
      */
     virtual PlayerColor update(const sf::Time &deltaTime);
-    
-    
+
+
     /**
      * handle the mouse pressed event
      * @param mousePosition the mouse position
@@ -47,18 +47,23 @@ public:
      * @param states the states to draw with
      */
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    
+
     /**
      * handle the mice scrolled event
      * @param delta the delta of the scroll
      */
     void handleScroll(float delta);
-    
+
     /**
      * set the RenderWindow of the game
      */
     void setWindow(const sf::RenderWindow &window);
 
+    void m_setMute(bool mute);
+
+
+
+    void m_ChangeVolume(float volume);
 
 private:
     SoundPlayer m_soundPlayer;
@@ -122,9 +127,10 @@ private:
      * add a moving object to the game
      * @param object the object to add
      */
-    void addFragments(MapVector pos,MapVector velocity);
+    void addFragments(MapVector pos, MapVector velocity);
 
     void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
+
     /**
      * stop the objects in the game if all need to stop
      */
@@ -133,15 +139,18 @@ private:
     /**
      * add a character to the game
      */
-    void addCharacter(const PlayerColor &color,const MapVector &position);
+    void addCharacter(const PlayerColor &color, const MapVector &position);
+
     /**
      * if all object stopped moving
      */
     bool m_allStopped{};
+
     /**
      * the crate dropper
      */
-     PlayerColor winingTeam() const;
+    PlayerColor winingTeam() const;
+
     CrateDropper m_crateDropper;
     TeamCamera m_teamCamera;
 

@@ -25,7 +25,7 @@ public:
      * check if the button was clicked, and if so, call the function
      * @param pos the position of the click
      */
-    void onClick(const sf::Vector2f &pos);
+    virtual void onClick(const sf::Vector2f &pos);
 
     /**
      *  handle the hover event

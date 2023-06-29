@@ -2,6 +2,11 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
+struct Settings
+{
+    bool m_mute;
+    float m_volume;
+};
 
 /**
  * Abstract class for screens
@@ -24,4 +29,8 @@ public:
      * virtual destructor (due to the fact that this is an abstract class)
      */
     virtual ~Screen() = default;
+    [[nodiscard]] const Settings &getSettings() const;
+    void setSettings(const Settings &settings);
+private:
+    Settings m_settings = {false, 100};
 };

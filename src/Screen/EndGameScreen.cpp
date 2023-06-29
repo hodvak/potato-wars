@@ -6,12 +6,15 @@
 #include "Physics.h"
 #include "MapObject/MovingMapObject.h"
 #include <SFML/Audio.hpp>
+
 const sf::Vector2u EndGameScreen::WINDOW_SIZE = sf::Vector2u(1200, 900);
 const sf::Vector2f EndGameScreen::BUTTONS_SIZE = sf::Vector2f(150, 50);
 const unsigned int EndGameScreen::NUM_OF_BUTTONS = 3;
-EndGameScreen::EndGameScreen(PlayerColor winner)
+
+EndGameScreen::EndGameScreen(PlayerColor winner, const Settings &settings)
         : m_winner(winner), m_buttonsGroup(), m_nextScreen(nullptr)
 {
+    setSettings(settings);
     m_buttonsGroup.add(std::make_unique<TextureButton>(
             sf::Vector2f((float) WINDOW_SIZE.x * 1 /
                          (float) (NUM_OF_BUTTONS + 1) -
@@ -19,7 +22,11 @@ EndGameScreen::EndGameScreen(PlayerColor winner)
                          (float) WINDOW_SIZE.y * 0.85f -
                          (float) BUTTONS_SIZE.y / 2),
             EndGameScreen::BUTTONS_SIZE,
-            [this] { m_nextScreen = std::make_unique<MapSelectionScreen>(); },
+            [this]
+            {
+                m_nextScreen = std::make_unique<MapSelectionScreen>(
+                        getSettings());
+            },
             resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_NEW_GAME_PATH)
     ));
@@ -32,7 +39,10 @@ EndGameScreen::EndGameScreen(PlayerColor winner)
                          (float) WINDOW_SIZE.y * 0.85f -
                          (float) BUTTONS_SIZE.y / 2),
             BUTTONS_SIZE,
-            [this] { m_nextScreen = std::make_unique<MainScreen>(); },
+            [this]
+            {
+                m_nextScreen = std::make_unique<MainScreen>(getSettings());
+            },
             resources_manager::get<sf::Texture>(
                     resources_manager::IMG_BUTTON_BACK_PATH)
     ));
@@ -84,7 +94,7 @@ std::unique_ptr<Screen> EndGameScreen::run(sf::RenderWindow &window)
     sf::Text winningText;
     winningText.setFont(resources_manager::get<sf::Font>(
             resources_manager::FONT_ARCADE_PATH));
-    winningText.setString(winnigColor +"  Team " +  " Won!");
+    winningText.setString(winnigColor + "  Team " + " Won!");
     winningText.setCharacterSize(100);
     winningText.setFillColor(sf::Color::White);
     winningText.setOutlineColor(sf::Color::Black);
@@ -98,7 +108,11 @@ std::unique_ptr<Screen> EndGameScreen::run(sf::RenderWindow &window)
             resources_manager::SOUND_WIN_PATH);
     sf::Sound sound;
     sound.setBuffer(buffer);
-    sound.play();
+    sound.setVolume(getSettings().m_volume);
+    if (!getSettings().m_mute)
+    {
+        sound.play();
+    }
     while (window.isOpen() && !m_nextScreen)
     {
         sf::Event event{};
