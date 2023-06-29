@@ -5,6 +5,7 @@
 
 /**
  * a struct class for the BombHandler
+ * that represent an explosion
  */
 struct Explosion
 {

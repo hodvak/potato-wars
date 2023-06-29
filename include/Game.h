@@ -59,13 +59,23 @@ public:
      */
     void setWindow(const sf::RenderWindow &window);
 
+    /**
+     * mutes the game
+     *
+     */
     void m_setMute(bool mute);
 
 
-
+    /**
+     * change the volume of the game
+     * @param volume the new volume
+     */
     void m_ChangeVolume(float volume);
 
 private:
+    /**
+     * maneges all the sounds in the game
+     */
     SoundPlayer m_soundPlayer;
     /**
      * the helper data of the game
@@ -124,11 +134,16 @@ private:
     void updateCollision();
 
     /**
-     * add a moving object to the game
-     * @param object the object to add
+     * add a fragment to the game
+     * @param pos the position of the fragment
+     * @param velocity the velocity of the fragment
      */
     void addFragments(MapVector pos, MapVector velocity);
 
+    /**
+     * add a moving object to the game
+     * @param object the object to add
+     */
     void addMovingObject(std::unique_ptr<MovingMapObject> &&object);
 
     /**
@@ -150,8 +165,14 @@ private:
      * the crate dropper
      */
     PlayerColor winingTeam() const;
-
+    /**
+     * the crate dropper
+     */
     CrateDropper m_crateDropper;
+    /**
+     * the camera following the mouse
+     *
+     */
     TeamCamera m_teamCamera;
 
 };

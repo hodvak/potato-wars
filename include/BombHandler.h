@@ -40,5 +40,8 @@ private:
      * the bombs in the handler
      */
     std::vector<Explosion> m_bombs;
+    /**
+     * the function to add fragments to the map
+     */
     std::function<void(MapVector ,MapVector)> m_addFragments;
 };
