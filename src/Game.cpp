@@ -109,6 +109,12 @@ PlayerColor Game::update(const sf::Time &deltaTime)
         if (team.removeDeadCharacters())
         {
             m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+
+            while (m_teams[m_teamTurnIndex].isDead())
+            {
+
+                m_teamTurnIndex = (m_teamTurnIndex + 1) % PlayerColor::SIZE;
+            }
         }
     }
 

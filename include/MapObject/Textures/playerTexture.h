@@ -47,6 +47,10 @@ private:
     
     sf::RectangleShape m_lifeBar;
     /**
+     * the shield bar of the player with the current shield level
+     */
+    sf::RectangleShape m_shieldBar;
+    /**
      * the life bar of the player with the full life level (black) 
      * for the background
      */
