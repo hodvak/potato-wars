@@ -94,7 +94,7 @@ void TeamCamera::handleScroll(float_t delta)
     {
         m_zoomLevel = minZoom;
     }
-    std::cout << m_zoomLevel << "--" << m_gameHelperData.getView().getSize()<<  std::endl;
+
     m_view.setSize(m_originalViewRect.width * std::pow(1.1, m_zoomLevel),
                    m_originalViewRect.height * std::pow(1.1, m_zoomLevel));
 

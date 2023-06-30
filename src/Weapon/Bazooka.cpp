@@ -3,7 +3,7 @@
 #include "MapObject/Character.h"
 #include "resources_manager.h"
 
-// todo: 10 is magic 
+
 Bazooka::Bazooka(const Character &owner, GameHelperData &gameHelperData) :
         Weapon(gameHelperData),
         m_character(owner),

@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.23)
 
-project (PotatoWars)
+project (oop2_project)
 set (MY_AUTHORS "Tomer-Mellick_Hod-Vaknin")
 
 include (cmake/CompilerSettings.cmake)

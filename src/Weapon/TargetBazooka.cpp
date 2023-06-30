@@ -6,7 +6,7 @@
 
 const float TargetBazooka::MAX_ANGLE_DIFF = 3.f;
 
-// todo: 10 is magic 
+
 TargetBazooka::TargetBazooka(const Character &owner, GameHelperData &gameHelperData) :
         Weapon(gameHelperData),
         m_character(owner),

@@ -3,6 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include "SoundPlayer.h"
 #include "GameHelperData.h"
+/***
+ * a class that represent the camera for the players turns
+ * and controls the view of the game with the mouse
+ */
 class TeamCamera
 {
 public:
