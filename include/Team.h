@@ -32,7 +32,9 @@ public:
     [[nodiscard]] bool isDead() const;
 
     int getCharactersCount() const;
-
+    /**
+     * @return true if the team is done with their turn
+     */
     bool takeFocus() const;
 
 private:

@@ -87,4 +87,4 @@ const int MAX_VEHICLES = 10;
 ### namespaces ###
 All the namespaces must be named in `snake_case`.
 
-<!-- todo: is namespace really a `snake_case`? -->
+

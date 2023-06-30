@@ -180,7 +180,7 @@ std::optional<float> MovingMapObject::collisionMap()
 
     norm *= -1.0f; //bounce back
 
-    norm *= 0.8f; // fraction (kind of) todo:fix consts
+    norm *= 0.8f;
 
     if (tang.getMagnitude() < Physics::FRICTION * norm.getMagnitude())
     {
@@ -189,7 +189,7 @@ std::optional<float> MovingMapObject::collisionMap()
     else
     {
         float ang = tang.getAngle();
-        float mag = // todo: fix fraction on rolling
+        float mag =
                 tang.getMagnitude() - norm.getMagnitude() * Physics::FRICTION;
         tang = MapVector::getVectorFromAngle(ang, mag);
     }

@@ -1,4 +1,4 @@
 1 ground2.bmp sunset 9
 2 ground.bmp mountain 4
-3 ground3.png sky 5
+3 ground3.bmp sky 5
 4 ground4.bmp mountain 4

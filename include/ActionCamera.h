@@ -5,7 +5,9 @@
 
 /**
  * a class that handle camera movement, focus and zoom
- */
+ * following a list of objects that are moving
+ *
+ * */
 class ActionCamera
 {
 public:
