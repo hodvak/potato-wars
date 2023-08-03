@@ -1,8 +1,8 @@
 # Potato Wars #
 ![GitHub](https://img.shields.io/github/license/hodvak/potato-wars)  
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/hodvak/potato-wars)  
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hodvak/potato-wars)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/hodvak/potato-wars)](https://github.com/hodvak/potato-wars/releases/latest)  
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hodvak/potato-wars)](https://github.com/hodvak/potato-wars/tags)
 
 Welcome to Potato Wars, a 2D multiplayer game made in C++ for Windows. Gather your friends for some local multiplayer
 fun and engage in epic potato battles!
