@@ -1,11 +1,11 @@
 cmake_minimum_required (VERSION 3.23)
 
-project (oop2_project)
+project (POTATO_WARS)
 set (MY_AUTHORS "Tomer-Mellick_Hod-Vaknin")
 
 include (cmake/CompilerSettings.cmake)
 
-add_executable (${CMAKE_PROJECT_NAME})
+add_executable (${CMAKE_PROJECT_NAME} WIN32)
 
 add_subdirectory (include)
 add_subdirectory (src)

@@ -4,3 +4,5 @@ README.txt
 
 /cmake-build-debug-visual-studio/
 /cmake-build-debug-mingw/
+out
+.vs
